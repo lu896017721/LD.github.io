@@ -42,96 +42,132 @@
   <section class="article-entry">
     <p>title: 时序预测方法总结</p>
 <p>该文档总结了时间序列预测任务中常涉及的模型，对模型基本概念及其对于用于时序预测的作用进行了简单介绍。</p>
-<h3 id="自回归移动平均模型（ARMA）"><a href="#自回归移动平均模型（ARMA）" class="headerlink" title="自回归移动平均模型（ARMA）"></a>自回归移动平均模型（ARMA）</h3><p><img src="C:\Users\LuD\AppData\Roaming\Typora\typora-user-images\image-20220315184103757.png" alt="image-20220315184103757"></p>
+<h3 id="自回归移动平均模型（ARMA）">自回归移动平均模型（ARMA）</h3>
+<p><img src="C:%5CUsers%5CLuD%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220315184103757.png" alt="image-20220315184103757"></p>
 <p>$ARMA$属于时间序列参数模型。假设$x_t$表示$t$时刻的时间序列的值，$p$和$q$表示时间窗的大小，$\varepsilon_t$表示$t$时刻的白噪声，$\alpha_1,\dots,\alpha_p$和$\beta_1,\dots,\beta_q$表示权重系数，则：</p>
-<p>$MA(q)$可以表示为：$X_t&#x3D;\sum_{i&#x3D;1}^{q}\beta_i\varepsilon_{t-i}+\varepsilon_{t}$，$MA$模型研究时间序列在$t$时刻的值与$t-1, t-2, …$ 时刻随机干扰值的相关关系；$MA$模型主要考察外部影响对变量的影响情况和相应的记忆期限。</p>
-<p>$AR(p)$可以表示为：$X_t&#x3D;\sum_{i&#x3D;1}^{p}\alpha_iX_{t-i}+\varepsilon_t$，$AR$ 模型研究第$t$时刻的序列值受$t-1, t-2, …$时刻的序列值以及当前随机干扰值的影响；$AR$模型主要考察变量的记忆特征和记忆衰减情况；</p>
-<p>$ARMA(p,q)$可以表示为：$X_t&#x3D;\sum_{i&#x3D;1}^{p}\alpha_iX_{t-i}+\sum_{i&#x3D;1}^{q}\beta_i\varepsilon_{t-i}+\varepsilon_t$，由自回归模型（$AR$）和移动平均模型（$MA$模型）为基础“混合”构成。</p>
-<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ul>
-<li><p>$ARMA$方法作为基于统计的传统时间序列预测方法，其优点是复杂度低、计算速度快。但是针对现实世界复杂的时间序列，传统的单一统计学模型的准确率相对来说会比机器学习差。</p>
+<p>$MA(q)$可以表示为：$X_t=\sum_{i=1}^{q}\beta_i\varepsilon_{t-i}+\varepsilon_{t}$，$MA$模型研究时间序列在$t$时刻的值与$t-1, t-2, …$ 时刻随机干扰值的相关关系；$MA$模型主要考察外部影响对变量的影响情况和相应的记忆期限。</p>
+<p>$AR§$可以表示为：$X_t=\sum_{i=1}^{p}\alpha_iX_{t-i}+\varepsilon_t$，$AR$ 模型研究第$t$时刻的序列值受$t-1, t-2, …$时刻的序列值以及当前随机干扰值的影响；$AR$模型主要考察变量的记忆特征和记忆衰减情况；</p>
+<p>$ARMA(p,q)$可以表示为：$X_t=\sum_{i=1}^{p}\alpha_iX_{t-i}+\sum_{i=1}^{q}\beta_i\varepsilon_{t-i}+\varepsilon_t$，由自回归模型（$AR$）和移动平均模型（$MA$模型）为基础“混合”构成。</p>
+<h4 id="特点">特点</h4>
+<ul>
+<li>
+<p>$ARMA$方法作为基于统计的传统时间序列预测方法，其优点是复杂度低、计算速度快。但是针对现实世界复杂的时间序列，传统的单一统计学模型的准确率相对来说会比机器学习差。</p>
 </li>
-<li><p>传统的时间序列预测方法非常依赖参数模型的选择，能 否正确选择参数模型在很大程度上决定了预测结果的准确率。</p>
+<li>
+<p>传统的时间序列预测方法非常依赖参数模型的选择，能 否正确选择参数模型在很大程度上决定了预测结果的准确率。</p>
 </li>
-<li><p>只能适用于单变量时序预测</p>
+<li>
+<p>只能适用于单变量时序预测</p>
 </li>
 </ul>
-<h4 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h4><p>传统时间序列预测模型也有其重要的意义：</p>
+<h4 id="意义">意义</h4>
+<p>传统时间序列预测模型也有其重要的意义：</p>
 <ul>
 <li>可以作为预测的基准模型，为项目提供一个准确率的基准线，来帮助评估其他模型。</li>
 <li>前置清洗作用，时序模型由于其较好的可解释性，可以帮助剔除一些异常值。</li>
 <li>作为集成模型中的一块，参与时序集成模型的训练。</li>
 </ul>
-<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/6250e60fa28a%E3%80%81https://cloud.tencent.com/developer/article/1666552%E3%80%81https://www.jianshu.com/p/e52a4b82654e">https://www.jianshu.com/p/6250e60fa28a、https://cloud.tencent.com/developer/article/1666552、https://www.jianshu.com/p/e52a4b82654e</a></p>
-<h4 id="改进1：ARIMA模型"><a href="#改进1：ARIMA模型" class="headerlink" title="改进1：ARIMA模型"></a>改进1：ARIMA模型</h4><p>$ARIMA$模型是$ARMA$模型的推广。当时间序列${X_t}$不满足平稳性时, 我们通常使用<strong>差分</strong>的技巧使序列变得平稳, 然后再应用$ARMA$模型。使得$ARMA$模型可以应用于非平稳序列中。但$ARIMA$模型在长时间序列预测工作表现较差。</p>
+<h4 id="参考">参考</h4>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/6250e60fa28a%E3%80%81https://cloud.tencent.com/developer/article/1666552%E3%80%81https://www.jianshu.com/p/e52a4b82654e">https://www.jianshu.com/p/6250e60fa28a、https://cloud.tencent.com/developer/article/1666552、https://www.jianshu.com/p/e52a4b82654e</a></p>
+<h4 id="改进1：ARIMA模型">改进1：ARIMA模型</h4>
+<p>$ARIMA$模型是$ARMA$模型的推广。当时间序列${X_t}$不满足平稳性时, 我们通常使用<strong>差分</strong>的技巧使序列变得平稳, 然后再应用$ARMA$模型。使得$ARMA$模型可以应用于非平稳序列中。但$ARIMA$模型在长时间序列预测工作表现较差。</p>
 <p><img src="https://img-blog.csdnimg.cn/20190220160453715.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzE2MDUwNTYx,size_16,color_FFFFFF,t_70" alt="img"></p>
-<h4 id="改进2：VARMA模型"><a href="#改进2：VARMA模型" class="headerlink" title="改进2：VARMA模型"></a>改进2：VARMA模型</h4><p>解决ARMA只能适用于单变量时序的局限性。</p>
-<p>$m$维$ARMA(p,q)$序列，即$VARMA(p,q)$：$X_t&#x3D;\sum_{j&#x3D;1}^p A_jX_j+\varepsilon_t-\sum_{j&#x3D;1}^q B_j\varepsilon_{t-j}$</p>
+<h4 id="改进2：VARMA模型">改进2：VARMA模型</h4>
+<p>解决ARMA只能适用于单变量时序的局限性。</p>
+<p>$m$维$ARMA(p,q)$序列，即$VARMA(p,q)$：$X_t=\sum_{j=1}^p A_jX_j+\varepsilon_t-\sum_{j=1}^q B_j\varepsilon_{t-j}$</p>
 <p>平稳可逆的$VARMA$模型具有平稳解，但需要估计出$VARMA(p,q)$模型的参数$A_1,\dots,A_p,B_1,\dots,B_q$，这是很麻烦的事情。</p>
-<p>若$q&#x3D;0$，模型退化为$m$维$AR(p)$模型，记为$VAR(p)$；</p>
-<p>若$p&#x3D;0$，模型退化为$m$维$MA(q)$模型，记为$VMA(q)$；</p>
+<p>若$q=0$，模型退化为$m$维$AR§$模型，记为$VAR§$；</p>
+<p>若$p=0$，模型退化为$m$维$MA(q)$模型，记为$VMA(q)$；</p>
 <p>参考：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/338638679">https://zhuanlan.zhihu.com/p/338638679</a></p>
-<h3 id="支持向量机（SVM）"><a href="#支持向量机（SVM）" class="headerlink" title="支持向量机（SVM）"></a>支持向量机（SVM）</h3><p>支持向量机在回归上的应用之一便是时序预测。为了使用$SVR$进行非线性回归，使用核函数将输入空间$x(i)$映射到高维特征空间$w(x(i))$。<strong>核函数的使用</strong>是$SVR$应用的关键。它提供了将非线性数据映射到本质上是线性的“特征”空间的能力。为了使$SVR$能在时序预测上取得好的效果，也出现了很多改进，如$LSSVM、ASVM、\varepsilon-DSVM$等。</p>
+<h3 id="支持向量机（SVM）">支持向量机（SVM）</h3>
+<p>支持向量机在回归上的应用之一便是时序预测。为了使用$SVR$进行非线性回归，使用核函数将输入空间$x(i)$映射到高维特征空间$w(x(i))$。<strong>核函数的使用</strong>是$SVR$应用的关键。它提供了将非线性数据映射到本质上是线性的“特征”空间的能力。为了使$SVR$能在时序预测上取得好的效果，也出现了很多改进，如$LSSVM、ASVM、\varepsilon-DSVM$等。</p>
 <p>在广泛使用$SVR$技术的时间序列预测应用中，将$SVR$视为时间序列预测方法的根本原因是预测问题的非线性方面。传统的基于模型的技术在预测非线性系统生成的时间序列方面通常不如$SVR$。而当时基于传统人工神经网络（$ANN$）的多层感知器等模型的性能不一定比$SVR$好。这可能是由于其固有的局限性，即无法保证网络优化的全局最小值。通过设计，$SVR$保证了这种全局最小解，并且通常在泛化能力方面具有优越性。随着深度学习的发展，$SVR$在非线性回归上的优势逐渐减低。</p>
-<h4 id="参考-1"><a href="#参考-1" class="headerlink" title="参考"></a>参考</h4><p>N. I. Sapankevych and R. Sankar, “Time series prediction using support vector machines: A survey,” IEEE Comput. Intell. Mag., vol. 4, no. 2,pp. 24–38, May 2009.</p>
-<h3 id="径向基-RBF-函数神经网络"><a href="#径向基-RBF-函数神经网络" class="headerlink" title="径向基(RBF)函数神经网络"></a>径向基(RBF)函数神经网络</h3><p>基函数神经网络是一类特殊的前馈神经网络模型。这类网络的前提是，要逼近的函数可以写成一些基函数的线性展开，并且只用在网络中产生一个隐藏层。基函数神经网络的一个主要优点是：可以使用线性自适应算法（如最小均方（LMS）和递归最小二乘（RLS）算法）来执行学习过程。基函数神经网络的例子包括径向、多项式和小波。这些基函数对输出单元执行非线性数据转换，以产生任意输出函数。</p>
-<p>$RBF$神经网络的基本思想是：用$RBF$作为隐单元的“基”来构成隐空间，从而将输入矢量直接映射到隐空间，而不需要通过权连接。当$RBF$的中心点确定以后，这种映射关系也就确定了。而隐含层空间到输出空间的映射是线性的，即网络的输出是隐单元输出的线性加权和。<strong>所以，隐含层的作用是把向量从低维度映射到高维度，这样低维度线性不可分的情况到高维度就可以线性可分了，类似核函数的思想。</strong>这样，网络由输入到输出的映射是非线性的，而网络输出对可调参数而言却又是线性的。网络的权就可由线性方程组直接解出，从而大大加快学习速度并避免局部极小问题。</p>
+<h4 id="参考-2">参考</h4>
+<p>N. I. Sapankevych and R. Sankar, “Time series prediction using support vector machines: A survey,” IEEE Comput. Intell. Mag., vol. 4, no. 2,pp. 24–38, May 2009.</p>
+<h3 id="径向基-RBF-函数神经网络">径向基(RBF)函数神经网络</h3>
+<p>基函数神经网络是一类特殊的前馈神经网络模型。这类网络的前提是，要逼近的函数可以写成一些基函数的线性展开，并且只用在网络中产生一个隐藏层。基函数神经网络的一个主要优点是：可以使用线性自适应算法（如最小均方（LMS）和递归最小二乘（RLS）算法）来执行学习过程。基函数神经网络的例子包括径向、多项式和小波。这些基函数对输出单元执行非线性数据转换，以产生任意输出函数。</p>
+<p>$RBF$神经网络的基本思想是：用$RBF$作为隐单元的“基”来构成隐空间，从而将输入矢量直接映射到隐空间，而不需要通过权连接。当$RBF$的中心点确定以后，这种映射关系也就确定了。而隐含层空间到输出空间的映射是线性的，即网络的输出是隐单元输出的线性加权和。**所以，隐含层的作用是把向量从低维度映射到高维度，这样低维度线性不可分的情况到高维度就可以线性可分了，类似核函数的思想。**这样，网络由输入到输出的映射是非线性的，而网络输出对可调参数而言却又是线性的。网络的权就可由线性方程组直接解出，从而大大加快学习速度并避免局部极小问题。</p>
 <p>基函数神经网络用于时序预测，一方面因为它们具有良好的非线性拟合能力，另一方面通过非线性的基函数来实现非线性到线性的映射，从而增加神经网络的性能。</p>
-<h4 id="参考-2"><a href="#参考-2" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/pinking/p/9349695.html">https://www.cnblogs.com/pinking/p/9349695.html</a></p>
-<h3 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h3><p>$CNN$用于时序数据的主要目的是提取时序数据上的特征，在一般情况下，$CNN$更常用于时序分类问题。</p>
+<h4 id="参考-3">参考</h4>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/pinking/p/9349695.html">https://www.cnblogs.com/pinking/p/9349695.html</a></p>
+<h3 id="CNN">CNN</h3>
+<p>$CNN$用于时序数据的主要目的是提取时序数据上的特征，在一般情况下，$CNN$更常用于时序分类问题。</p>
 <p>将$CNN$应用于时间序列预测的想法是学习能代表序列中某些重复模式的过滤器，并使用这些过滤器预测未来值。由于CNN的分层结构，它们可以很好地处理含噪序列，在随后的每一层中丢弃噪声，只提取有意义的模式。</p>
 <p>针对时序数据的非线性，提高$CNN$学习非线性依赖关系能力的一种方法是使用大量的层和过滤器，但往往会遇到学习非线性的能力和过拟合之间的权衡问题。</p>
-<h4 id="改进1：TCN（时间卷积网络）"><a href="#改进1：TCN（时间卷积网络）" class="headerlink" title="改进1：TCN（时间卷积网络）"></a>改进1：TCN（时间卷积网络）</h4><p>$TCN$的体系结构与深度前馈神经网络相同，只是每一层的激活值是通过使用前一层的值来计算的。扩张卷积用于选择前一层神经元的哪些值将影响下一层神经元的值。因此，这种扩大的卷积运算捕获了局部和时间信息。</p>
-<p>膨胀卷积：膨胀卷积允许卷积时的输入存在间隔采样，采样率受参数d控制。  最下面一层的d&#x3D;1，表示输入时每个点都采样，中间层d&#x3D;2，表示输入时每2个点采样一个作为输入。一般来讲，越高的层级使用的d的大小越大。所以，膨胀卷积使得有效窗口的大小随着层数呈指数型增长。这样卷积网络用比较少的层，就可以获得很大的感受野。</p>
-<h5 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h5><ol>
+<h4 id="改进1：TCN（时间卷积网络）">改进1：TCN（时间卷积网络）</h4>
+<p>$TCN$的体系结构与深度前馈神经网络相同，只是每一层的激活值是通过使用前一层的值来计算的。扩张卷积用于选择前一层神经元的哪些值将影响下一层神经元的值。因此，这种扩大的卷积运算捕获了局部和时间信息。</p>
+<p>膨胀卷积：膨胀卷积允许卷积时的输入存在间隔采样，采样率受参数d控制。  最下面一层的d=1，表示输入时每个点都采样，中间层d=2，表示输入时每2个点采样一个作为输入。一般来讲，越高的层级使用的d的大小越大。所以，膨胀卷积使得有效窗口的大小随着层数呈指数型增长。这样卷积网络用比较少的层，就可以获得很大的感受野。</p>
+<h5 id="优点：">优点：</h5>
+<ol>
 <li>并行性。可以并行处理数据。</li>
 <li>灵活的感受野。$TCN$的感受野的大小受层数、卷积核大小、扩张系数等决定。可以根据不同的任务不同的特性灵活定制。</li>
 <li>稳定的梯度。$TCN$不太存在梯度消失和爆炸问题。</li>
 <li>内存更低。$RNN$需要将每步的信息都保存下来，从而占据大量的内存，$TCN$在一层里面卷积核是共享的，内存使用更低。</li>
 </ol>
-<h5 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h5><p>  $TCN$是卷积神经网络的变种，虽然使用扩展卷积可以扩大感受野，但相比于$Transformer$可以提取任意长度的相关信息的特性还是差了点。</p>
-<p><img src="C:\Users\LuD\AppData\Roaming\Typora\typora-user-images\image-20220317163822436.png" alt="image-20220317163822436"></p>
-<h4 id="参考-3"><a href="#参考-3" class="headerlink" title="参考"></a>参考</h4><p> A. Borovykh, S. Bohte, and C. W. Oosterlee, “Conditional time series forecasting with convolutional neural networks,” 2017, arXiv:1703. 04691. [Online]. Available: <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1703.04691%E3%80%81https://blog.csdn.net/qq_27586341/article/details/90751794/">https://arxiv.org/abs/1703.04691、https://blog.csdn.net/qq_27586341/article/details/90751794/</a></p>
-<h3 id="RNN"><a href="#RNN" class="headerlink" title="RNN"></a>RNN</h3><p>模型的输入是时间序列，其呈现出一个共同的特征，即数据之间存在时间依赖性。传统的神经网络不能考虑到这种依赖关系，$RNN$正是为了解决这个问题而出现的。</p>
+<h5 id="缺点">缺点</h5>
+<p>$TCN$是卷积神经网络的变种，虽然使用扩展卷积可以扩大感受野，但相比于$Transformer$可以提取任意长度的相关信息的特性还是差了点。</p>
+<p><img src="C:%5CUsers%5CLuD%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220317163822436.png" alt="image-20220317163822436"></p>
+<h4 id="参考-4">参考</h4>
+<p>A. Borovykh, S. Bohte, and C. W. Oosterlee, “Conditional time series forecasting with convolutional neural networks,” 2017, arXiv:1703. 04691. [Online]. Available: <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1703.04691%E3%80%81https://blog.csdn.net/qq_27586341/article/details/90751794/">https://arxiv.org/abs/1703.04691、https://blog.csdn.net/qq_27586341/article/details/90751794/</a></p>
+<h3 id="RNN">RNN</h3>
+<p>模型的输入是时间序列，其呈现出一个共同的特征，即数据之间存在时间依赖性。传统的神经网络不能考虑到这种依赖关系，$RNN$正是为了解决这个问题而出现的。</p>
 <img src="C:\Users\LuD\AppData\Roaming\Typora\typora-user-images\image-20220318105605529.png" alt="image-20220318105605529" style="zoom:50%;" />
-
-<h4 id="改进1：LSTM"><a href="#改进1：LSTM" class="headerlink" title="改进1：LSTM"></a>改进1：LSTM</h4><p>标准的基本$RNN$存在消失梯度问题，即梯度随着层数的增加而减小。实际上，对于具有大量层的深层$RNN$，梯度实际上变为零，从而阻止了网络的学习。因此，这些网络只具有短期记忆，在处理需要记忆完整序列中包含的所有信息的长序列时，不会获得良好的结果。长短时记忆（$LSTM$）递归网络的出现是为了解决梯度消失问题。</p>
+<h4 id="改进1：LSTM">改进1：LSTM</h4>
+<p>标准的基本$RNN$存在消失梯度问题，即梯度随着层数的增加而减小。实际上，对于具有大量层的深层$RNN$，梯度实际上变为零，从而阻止了网络的学习。因此，这些网络只具有短期记忆，在处理需要记忆完整序列中包含的所有信息的长序列时，不会获得良好的结果。长短时记忆（$LSTM$）递归网络的出现是为了解决梯度消失问题。</p>
 <p><img src="https://pic2.zhimg.com/v2-1428c54d3ae79cf12616e7051c07799d_r.jpg" alt="preview"></p>
-<h4 id="改进2：GRU"><a href="#改进2：GRU" class="headerlink" title="改进2：GRU"></a>改进2：GRU</h4><p>$GRU$也是长期记忆网络，由于$LSTM$网络的高计算成本，$GRU$在作为$LSTM$的简化版本出现。$GRU$是在实际应用中对于许多不同的问题都是健壮和有用的。$GRU$在$RNN$的基础上使用门控机制使得捕获远程依赖成为可能，同时相对于$LSTM$有三个门，但$GRU$通过减少门的数量，使得模型更简单，计算速度更快。</p>
-<p><img src="C:\Users\LuD\AppData\Roaming\Typora\typora-user-images\image-20220317162500255.png" alt="image-20220317162500255"></p>
-<h4 id="改进3：双向机制（BRNN、BiLSTM）"><a href="#改进3：双向机制（BRNN、BiLSTM）" class="headerlink" title="改进3：双向机制（BRNN、BiLSTM）"></a>改进3：双向机制（BRNN、BiLSTM）</h4><p>RNN和LSTM都只能依据之前时刻的时序信息来预测下一时刻的输出，但在有些问题中，<strong>当前时刻的输出不仅和之前的状态有关，还可能和未来的状态有关系</strong>。为了获取时间序列在某一时刻前后序列的信息，出现了BRNN等带双向的递归神经网络。主要缺点是在预测之前需要整个数据序列的信息，计算量大。</p>
-<h4 id="改进4：DRNN"><a href="#改进4：DRNN" class="headerlink" title="改进4：DRNN"></a>改进4：DRNN</h4><p><strong>DRNN可以增强模型的表达能力，主要是将每个时刻上的循环体重复多次</strong>，每一层循环体中参数是共享的，但不同层之间的参数可以不同。</p>
-<p><img src="C:\Users\LuD\AppData\Roaming\Typora\typora-user-images\image-20220318110734017.png" alt="image-20220318110734017"></p>
-<h4 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h4><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/123211148%E3%80%81Torres">https://zhuanlan.zhihu.com/p/123211148、Torres</a> J F, Hadjout D, Sebaa A, et al. Deep learning for time series forecasting: a survey[J]. Big Data, 2021, 9(1): 3-21.</p>
-<h3 id="自编码器"><a href="#自编码器" class="headerlink" title="自编码器"></a>自编码器</h3><img src="C:\Users\LuD\AppData\Roaming\Typora\typora-user-images\image-20220319094312851.png" alt="image-20220319094312851" style="zoom:50%;" />
-
-<p>自编码器(autoencoder) 是神经网络的一种，该网络可以看作由两部分组成：一个编码器函数$h &#x3D; f(x) $和一个生成重构的解码器$r &#x3D; g(h)$。自编码器是一种无监督的神经网络模型，它可以学习到输入数据的隐含特征，这称为编码，同时用学习到的新特征可以重构出原始输入数据，称之为解码。从直观上来看，自编码器可以用于特征降维，其相比PCA性能更强。除了进行特征降维，自编码器学习到的新特征可以送入有监督学习模型中，所以自编码器可以起到特征提取器的作用。</p>
-<h4 id="改进1：SAE-堆栈自编码器"><a href="#改进1：SAE-堆栈自编码器" class="headerlink" title="改进1：SAE(堆栈自编码器)"></a>改进1：SAE(堆栈自编码器)</h4><p>即通过堆叠多层的自编码来学习更多的特征，将它用于时序主要还是像CNN那样方便提取特征。</p>
-<h4 id="参考-4"><a href="#参考-4" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/31742653">https://zhuanlan.zhihu.com/p/31742653</a></p>
-<h3 id="隐马尔可夫模型（HMM）"><a href="#隐马尔可夫模型（HMM）" class="headerlink" title="隐马尔可夫模型（HMM）"></a>隐马尔可夫模型（HMM）</h3><p>隐马尔可夫模型是关于时序（顺序）的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态随机序列，再由各个状态生成一个观测而产生观测随机序列的过程。隐藏的马尔可夫链随机生成的状态的序列，称为状态序列；每个状态生成一个观测，而由此产生的观测的随机序列，称为观测序列。序列的每一个位置又可以看作是一个时刻。基本原理：当一个随机过程在给定现在状态及所有过去状态情况下，其未来状态的条件概率分布仅依赖于当前状态；</p>
+<h4 id="改进2：GRU">改进2：GRU</h4>
+<p>$GRU$也是长期记忆网络，由于$LSTM$网络的高计算成本，$GRU$在作为$LSTM$的简化版本出现。$GRU$是在实际应用中对于许多不同的问题都是健壮和有用的。$GRU$在$RNN$的基础上使用门控机制使得捕获远程依赖成为可能，同时相对于$LSTM$有三个门，但$GRU$通过减少门的数量，使得模型更简单，计算速度更快。</p>
+<p><img src="C:%5CUsers%5CLuD%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220317162500255.png" alt="image-20220317162500255"></p>
+<h4 id="改进3：双向机制（BRNN、BiLSTM）">改进3：双向机制（BRNN、BiLSTM）</h4>
+<p>RNN和LSTM都只能依据之前时刻的时序信息来预测下一时刻的输出，但在有些问题中，<strong>当前时刻的输出不仅和之前的状态有关，还可能和未来的状态有关系</strong>。为了获取时间序列在某一时刻前后序列的信息，出现了BRNN等带双向的递归神经网络。主要缺点是在预测之前需要整个数据序列的信息，计算量大。</p>
+<h4 id="改进4：DRNN">改进4：DRNN</h4>
+<p><strong>DRNN可以增强模型的表达能力，主要是将每个时刻上的循环体重复多次</strong>，每一层循环体中参数是共享的，但不同层之间的参数可以不同。</p>
+<p><img src="C:%5CUsers%5CLuD%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220318110734017.png" alt="image-20220318110734017"></p>
+<h4 id="参考：">参考：</h4>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/123211148%E3%80%81Torres">https://zhuanlan.zhihu.com/p/123211148、Torres</a> J F, Hadjout D, Sebaa A, et al. Deep learning for time series forecasting: a survey[J]. Big Data, 2021, 9(1): 3-21.</p>
+<h3 id="自编码器">自编码器</h3>
+<img src="C:\Users\LuD\AppData\Roaming\Typora\typora-user-images\image-20220319094312851.png" alt="image-20220319094312851" style="zoom:50%;" />
+<p>自编码器(autoencoder) 是神经网络的一种，该网络可以看作由两部分组成：一个编码器函数$h = f(x) $和一个生成重构的解码器$r = g(h)$。自编码器是一种无监督的神经网络模型，它可以学习到输入数据的隐含特征，这称为编码，同时用学习到的新特征可以重构出原始输入数据，称之为解码。从直观上来看，自编码器可以用于特征降维，其相比PCA性能更强。除了进行特征降维，自编码器学习到的新特征可以送入有监督学习模型中，所以自编码器可以起到特征提取器的作用。</p>
+<h4 id="改进1：SAE-堆栈自编码器">改进1：SAE(堆栈自编码器)</h4>
+<p>即通过堆叠多层的自编码来学习更多的特征，将它用于时序主要还是像CNN那样方便提取特征。</p>
+<h4 id="参考-5">参考</h4>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/31742653">https://zhuanlan.zhihu.com/p/31742653</a></p>
+<h3 id="隐马尔可夫模型（HMM）">隐马尔可夫模型（HMM）</h3>
+<p>隐马尔可夫模型是关于时序（顺序）的概率模型，描述由一个隐藏的马尔可夫链随机生成不可观测的状态随机序列，再由各个状态生成一个观测而产生观测随机序列的过程。隐藏的马尔可夫链随机生成的状态的序列，称为状态序列；每个状态生成一个观测，而由此产生的观测的随机序列，称为观测序列。序列的每一个位置又可以看作是一个时刻。基本原理：当一个随机过程在给定现在状态及所有过去状态情况下，其未来状态的条件概率分布仅依赖于当前状态；</p>
 <p>隐马尔可夫模型的基本假设：</p>
 <p>1.齐次马尔科夫性假设：即假设隐藏的马尔科夫链在任意时刻t的状态只依赖于其前一时刻的状态，与其他时刻的状态及观测无关，也与时刻t无关；</p>
 <p>2.观测独立性假设：即假设任意时刻的观测只依赖于该时刻的马尔科夫链的状态，与其他观测即状态无关。</p>
-<h4 id="参考-5"><a href="#参考-5" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/29938926">https://zhuanlan.zhihu.com/p/29938926</a></p>
-<h3 id="深度置信网络（DBN）"><a href="#深度置信网络（DBN）" class="headerlink" title="深度置信网络（DBN）"></a>深度置信网络（DBN）</h3><p>假设有一个二部图，每一层的节点之间没有链接，一层是可视层，即输入数据层（v)，一层是隐藏层（h），如果假设所有的节点都是随机二值变量节点（只能取0或者1值），同时假设全概率分布$p(v,h)$满足Boltzmann 分布，则称这个模型是受限玻尔茨曼机 (RBM)。</p>
+<h4 id="参考-6">参考</h4>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/29938926">https://zhuanlan.zhihu.com/p/29938926</a></p>
+<h3 id="深度置信网络（DBN）">深度置信网络（DBN）</h3>
+<p>假设有一个二部图，每一层的节点之间没有链接，一层是可视层，即输入数据层（v)，一层是隐藏层（h），如果假设所有的节点都是随机二值变量节点（只能取0或者1值），同时假设全概率分布$p(v,h)$满足Boltzmann 分布，则称这个模型是受限玻尔茨曼机 (RBM)。</p>
 <p>深度置信网络：当输入v的时候，通过$p(h|v)$可以得到隐藏层h，而得到隐藏层h之后，通过$p(v|h)$又能得到可视层，通过调整参数，使得从隐藏层得到的可视层v1与原来的可视层v如果一样，那么得到的隐藏层就是可视层另外一种表达，因此隐藏层可以作为可视层输入数据的特征。</p>
 <p><img src="https://img-blog.csdn.net/20131217190130109?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd2hpdGVpbmJsdWU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="img"></p>
 <p>如果把隐藏层的层数增加，同时在靠近可视层的部分使用贝叶斯信念网络（即有向图模型），而在最远离可视层的部分使用RBM，便可以得到DBN。</p>
-<p><img src="C:\Users\LuD\AppData\Roaming\Typora\typora-user-images\image-20220321105813797.png" alt="image-20220321105813797"></p>
-<h4 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h4><p>RBM能够将输入分类到一个特征空间，因此多个RBM层可以在DBN中提取高层特征。学习方式：<strong>逐层贪婪训练</strong>。</p>
-<h4 id="参考-6"><a href="#参考-6" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/kellyroslyn/article/details/82668733">https://blog.csdn.net/kellyroslyn/article/details/82668733</a></p>
-<h3 id="GAN"><a href="#GAN" class="headerlink" title="GAN"></a>GAN</h3><p>生成性对抗网络可分为判别网络和生成网络。经过训练的判别网络能够通过学习给定输入输出的条件概率分布来预测给定输入输出。而经过训练的生成网络通过学习输入和输出的联合分布，能够生成与训练样本具有相似分布的样本。</p>
-<p><img src="C:\Users\LuD\AppData\Roaming\Typora\typora-user-images\image-20220321145501389.png" alt="image-20220321145501389"></p>
+<p><img src="C:%5CUsers%5CLuD%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220321105813797.png" alt="image-20220321105813797"></p>
+<h4 id="特点-2">特点</h4>
+<p>RBM能够将输入分类到一个特征空间，因此多个RBM层可以在DBN中提取高层特征。学习方式：<strong>逐层贪婪训练</strong>。</p>
+<h4 id="参考-7">参考</h4>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/kellyroslyn/article/details/82668733">https://blog.csdn.net/kellyroslyn/article/details/82668733</a></p>
+<h3 id="GAN">GAN</h3>
+<p>生成性对抗网络可分为判别网络和生成网络。经过训练的判别网络能够通过学习给定输入输出的条件概率分布来预测给定输入输出。而经过训练的生成网络通过学习输入和输出的联合分布，能够生成与训练样本具有相似分布的样本。</p>
+<p><img src="C:%5CUsers%5CLuD%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220321145501389.png" alt="image-20220321145501389"></p>
 <p>GAN用于时序预测主要因为生成对抗的思想，通过预测网络（如LSTM）与判别网络（如CNN）之间的相互对抗来提升预测网络的预测精度，从而获得较好的预测精度。</p>
-<p><img src="C:\Users\LuD\AppData\Roaming\Typora\typora-user-images\image-20220321150651996.png" alt="image-20220321150651996"></p>
-<h4 id="参考-7"><a href="#参考-7" class="headerlink" title="参考"></a>参考</h4><p>Zhou X, Pan Z, Hu G, et al. Stock market prediction on high-frequency  data using generative adversarial nets[J]. Mathematical Problems in  Engineering, 2018.</p>
-<h3 id="Transformers"><a href="#Transformers" class="headerlink" title="Transformers"></a>Transformers</h3><p>Transformers对序列数据中的长期依赖关系和交互具有强大的建模能力，因此可以适合于时间序列建模。 利用在输入嵌入中加入的位置编码，对序列信息进行建模。</p>
+<p><img src="C:%5CUsers%5CLuD%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220321150651996.png" alt="image-20220321150651996"></p>
+<h4 id="参考-8">参考</h4>
+<p>Zhou X, Pan Z, Hu G, et al. Stock market prediction on high-frequency  data using generative adversarial nets[J]. Mathematical Problems in  Engineering, 2018.</p>
+<h3 id="Transformers">Transformers</h3>
+<p>Transformers对序列数据中的长期依赖关系和交互具有强大的建模能力，因此可以适合于时间序列建模。 利用在输入嵌入中加入的位置编码，对序列信息进行建模。</p>
 <p>从网络结构和应用领域的角度看时间序列建模Transformers：</p>
-<p><img src="C:\Users\LuD\AppData\Roaming\Typora\typora-user-images\image-20220322162918132.png" alt="image-20220322162918132"></p>
-<h4 id="位置编码"><a href="#位置编码" class="headerlink" title="位置编码"></a>位置编码</h4><p>Vanilla Positional Encoding：该编码可以从时间序列中提取一些位置信息，但它们不能充分利用时间序列数据的重要特征。</p>
+<p><img src="C:%5CUsers%5CLuD%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220322162918132.png" alt="image-20220322162918132"></p>
+<h4 id="位置编码">位置编码</h4>
+<p>Vanilla Positional Encoding：该编码可以从时间序列中提取一些位置信息，但它们不能充分利用时间序列数据的重要特征。</p>
 <p>Learnable Positional Encoding：从时间序列中学习适当的位置编码</p>
 <p>Timestamp Encoding：使用数据对应的现实时间戳信息</p>
-<h4 id="自注意力机制"><a href="#自注意力机制" class="headerlink" title="自注意力机制"></a>自注意力机制</h4><p>在神经网络模型处理大量输入信息的过程中，利用注意力机制，可以做到只选择一些关键的的输入信息进行处理，来<strong>提高神经网络的效率</strong>。自注意力机制是注意力机制的变体，其<strong>减少了对外部信息的依赖，更擅长捕捉数据或特征的内部相关性</strong>。Transformer的核心是自注意力机制。它可以看作是一个全连通层，其权值是根据输入的两两相似度动态生成的。因此，它与全连接层共享相同的最大路径长度，但参数量要少得多，这使得它适合于建模长期依赖关系。</p>
-<h4 id="参考-8"><a href="#参考-8" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/265108616%E3%80%81Wen">https://zhuanlan.zhihu.com/p/265108616、Wen</a> Q, Zhou T, Zhang C, et al. Transformers in Time Series: A Survey[J]. arXiv preprint arXiv:2202.07125, 2022.</p>
+<h4 id="自注意力机制">自注意力机制</h4>
+<p>在神经网络模型处理大量输入信息的过程中，利用注意力机制，可以做到只选择一些关键的的输入信息进行处理，来<strong>提高神经网络的效率</strong>。自注意力机制是注意力机制的变体，其<strong>减少了对外部信息的依赖，更擅长捕捉数据或特征的内部相关性</strong>。Transformer的核心是自注意力机制。它可以看作是一个全连通层，其权值是根据输入的两两相似度动态生成的。因此，它与全连接层共享相同的最大路径长度，但参数量要少得多，这使得它适合于建模长期依赖关系。</p>
+<h4 id="参考-9">参考</h4>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/265108616%E3%80%81Wen">https://zhuanlan.zhihu.com/p/265108616、Wen</a> Q, Zhou T, Zhang C, et al. Transformers in Time Series: A Survey[J]. arXiv preprint arXiv:2202.07125, 2022.</p>
 
   </section>
 </article>
