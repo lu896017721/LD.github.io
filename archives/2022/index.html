@@ -41,7 +41,7 @@
           font-size: 1.6rem;
         }
       </style>
-    </head>
+    <link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
   </html>
 </html>
 
@@ -91,34 +91,13 @@
       <article class="archive-article archive-type-post">
   <div class="archive-article-inner">
     <header class="archive-article-header">
-      <a href="/2022/04/17/%E6%97%B6%E5%BA%8F%E9%A2%84%E6%B5%8B%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/" class="archive-article-date">
-  <time datetime="2022-04-17T08:56:55.095Z" itemprop="datePublished">04/17</time>
+      <a href="/2022/04/18/%E6%97%B6%E5%BA%8F%E9%A2%84%E6%B5%8B%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/" class="archive-article-date">
+  <time datetime="2022-04-18T10:10:25.508Z" itemprop="datePublished">04/18</time>
 </a>
        
 <h2 itemprop="name">
-  <a class="archive-article-title" href="/2022/04/17/%E6%97%B6%E5%BA%8F%E9%A2%84%E6%B5%8B%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/"
+  <a class="archive-article-title" href="/2022/04/18/%E6%97%B6%E5%BA%8F%E9%A2%84%E6%B5%8B%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/"
     >时序预测方法总结</a> 
-</h2>
- 
-
-    </header>
-    
-    
-  </div>
-</article>
-      
-  
-  
-      <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2022/04/17/hello-world/" class="archive-article-date">
-  <time datetime="2022-04-17T02:52:32.328Z" itemprop="datePublished">04/17</time>
-</a>
-       
-<h2 itemprop="name">
-  <a class="archive-article-title" href="/2022/04/17/hello-world/"
-    >Hello World</a> 
 </h2>
  
 
@@ -141,7 +120,7 @@
     <ul>
       <li>
         Copyrights &copy;
-        2015-2022
+        2022
         <i class="ri-heart-fill heart_icon"></i> Lu Dong
       </li>
     </ul>
@@ -152,13 +131,6 @@
     </ul>
     <ul>
       <li>
-        
-        
-        <span>
-  <span><i class="ri-user-3-fill"></i>访问人数:<span id="busuanzi_value_site_uv"></span></span>
-  <span class="division">|</span>
-  <span><i class="ri-eye-fill"></i>浏览次数:<span id="busuanzi_value_page_pv"></span></span>
-</span>
         
       </li>
     </ul>
@@ -171,8 +143,6 @@
     <ul>
       <li>
         <!-- cnzz统计 -->
-        
-        <script type="text/javascript" src='https://s9.cnzz.com/z_stat.php?id=1278069914&amp;web_id=1278069914'></script>
         
       </li>
     </ul>
@@ -219,10 +189,6 @@
       <a class="nav-item-link" href="/friends">友链</a>
     </li>
     
-    <li class="nav-item">
-      <a class="nav-item-link" href="/2022/about">关于我</a>
-    </li>
-    
   </ul>
 </nav>
 <nav class="navbar navbar-bottom">
@@ -252,16 +218,6 @@
   <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
   <div class="reward-box">
     
-    <div class="reward-item">
-      <img class="reward-img" src="/images/alipay.jpg">
-      <span class="reward-type">支付宝</span>
-    </div>
-    
-    
-    <div class="reward-item">
-      <img class="reward-img" src="/images/wechat.jpg">
-      <span class="reward-type">微信</span>
-    </div>
     
   </div>
 </div>
@@ -389,13 +345,42 @@
     viewer_init()
 </script> 
 <!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/mathjax/2.7.7/MathJax.js"></script>
+<script src="https://cdn.staticfile.org/mathjax/2.7.7/config/TeX-AMS-MML_HTMLorMML-full.js"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
 
 <!-- Katex -->
-
+ 
+    
+        <link rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.15.1/katex.min.css">
+        <script src="https://cdn.staticfile.org/KaTeX/0.15.1/katex.min.js"></script>
+        <script src="https://cdn.staticfile.org/KaTeX/0.15.1/contrib/auto-render.min.js"></script>
+        
+    
+ 
 <!-- busuanzi  -->
- 
-<script src="/js/busuanzi-2.3.pure.min.js"></script>
- 
+
 <!-- ClickLove -->
 
 <!-- ClickBoom1 -->
