@@ -104,32 +104,32 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h3 id="GBDT-Gradient-Boosting-Decision-Tree">GBDT (Gradient Boosting Decision Tree)</h3>
+  <h3 id="gbdt-gradient-boosting-decision-tree">GBDT (Gradient Boosting Decision Tree)</h3>
 <p>主要思想是利用弱分类器（决策树）迭代训练以得到最优模型，该模型具有<strong>训练效果好、不易过拟合</strong>等优点。</p>
 <p>目前已有的 GBDT 工具基本都是基于预排序的决策树算法(如 Xgboost)。这种构建决策树的算法基本思想是：</p>
 <p>首先，对所有特征都按照特征的数值进行预排序。其次，在遍历分割点的时候用O(n)的代价找到一个特征上的最好分割点。最后，找到一个特征的分割点后，将数据分裂成左右子节点。</p>
 <p>这样的预排序算法的优点是：能精确地找到分割点。缺点也很明显：首先，空间消耗大。这样的算法需要保存数据的特征值，还保存了特征排序的结果（例如排序后的索引，为了后续快速的计算分割点），这里需要消耗训练数据两倍的内存。其次，时间上也有较大的开销，在遍历每一个分割点的时候，都需要进行分裂增益的计算，消耗的代价大。</p>
-<h3 id="LGBM（LightGBM）">LGBM（LightGBM）</h3>
+<h3 id="lgbm-lightgbm">LGBM（LightGBM）</h3>
 <p>LightGBM 的动机：常用的机器学习算法，例如神经网络等算法，都可以用 mini-batch 的方式训练，训练数据的大小不会受到内存限制。而 GBDT 在每一次迭代的时候，都需要遍历整个训练数据集多次。如果把整个训练数据装进内存则会限制训练数据集的大小；如果不装进内存，反复遍历训练数据集又会消耗大量时间。尤其面对工业上海量的数据，普通的 GBDT 算法是不能满足其需求的。LightGBM 提出的主要原因就是为了解决 GBDT 在海量数据上遇到的问题，让 GBDT 可以更好地用于工业实践。</p>
 <p>LGBM与传统算法相比具有的优点：更快的训练效率；低内存使用；更高的准确率；支持并行化学习；可处理大规模数据；原生支持类别特征，不需要对类别特征再进行0-1编码。</p>
-<h4 id="Histogram-算法">Histogram 算法</h4>
+<h4 id="histogram-算法">Histogram 算法</h4>
 <p>直方图算法的基本思想是先把连续的浮点特征值离散化成k个整数，同时构造一个宽度为k的直方图。在遍历数据的时候，根据离散化后的值作为索引在直方图中累积统计量，当遍历一次数据后，直方图累积了需要的统计量，然后根据直方图的离散值，遍历寻找最优的分割点。</p>
 <p>在计算上的代价也大幅降低，预排序算法每遍历一个特征值就需要计算一次分裂的增益，而直方图算法只需要计算k次（k为超参数），时间复杂度从O(data * feature)优化到O(k * features)。</p>
 <p>Histogram 算法由于特征被离散化后，找到的并不是很精确的分割点，所以会对结果产生影响。但在不同的数据集上的结果表明，离散化的分割点对最终的精度影响并不是很大，甚至有时候会更好一点。原因是决策树本来就是弱模型，分割点是不是精确并不是太重要；较粗的分割点也有正则化的效果，可以有效地防止过拟合；即使单棵树的训练误差比精确分割的算法稍大，但在梯度提升（Gradient Boosting）的框架下没有太大的影响。</p>
-<h4 id="Leaf-wise">Leaf-wise</h4>
+<h4 id="leaf-wise">Leaf-wise</h4>
 <p>LGBM抛弃了大多数 GBDT 工具使用的按层生长 (level-wise) 的决策树生长策略，而使用了带有深度限制的按叶子生长 (leaf-wise) 算法。Level-wise 过一次数据可以同时分裂同一层的叶子，容易进行多线程优化，也好控制模型复杂度，不容易过拟合。但实际上 Level-wise 是一种低效的算法，因为它不加区分的对待同一层的叶子，而实际上很多叶子的分裂增益较低，没必要进行搜索和分裂，从而带来了很多没必要的开销。</p>
 <p>Leaf-wise 则是一种更为高效的策略，每次从当前所有叶子中，找到分裂增益最大的一个叶子，然后分裂，如此循环。因此同 Level-wise 相比，在分裂次数相同的情况下，Leaf-wise 可以降低更多的误差，得到更好的精度。Leaf-wise 的缺点是可能会长出比较深的决策树，产生过拟合。因此 LightGBM 在 Leaf-wise 之上增加了一个最大深度的限制，在保证高效率的同时防止过拟合。</p>
-<h4 id="Gradient-based-One-Side-Sampling-GOSS">Gradient-based One-Side Sampling(GOSS)</h4>
+<h4 id="gradient-based-one-side-sampling-goss">Gradient-based One-Side Sampling(GOSS)</h4>
 <p>GOSS技术是去掉了很大一部分梯度很小的数据，只使用剩下的去估计信息增益，避免低梯度长尾部分的影响。由于梯度大的数据在计算信息增益的时候更重要，所以GOSS在小很多的数据上仍然可以取得相当准确的估计值。</p>
-<h4 id="Exclusive-Feature-Bundling-EFB">Exclusive Feature Bundling(EFB)</h4>
+<h4 id="exclusive-feature-bundling-efb">Exclusive Feature Bundling(EFB)</h4>
 <p>EFB技术是指捆绑互斥的特征（如他们经常同时取值为0），以减少特征的数量。对互斥特征寻找最佳的捆绑方式是一个NP难问题，不过贪婪算法可以取得相当好的近似率，因此可以在不显著影响分裂点选择的准确性的情况下，显著地减少特征数量。</p>
 <h3 id="模型创建">模型创建</h3>
-<h4 id="LGBM">LGBM</h4>
+<h4 id="lgbm">LGBM</h4>
 <h5 id="方式1：使用lgb的风格">方式1：使用lgb的风格</h5>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> LGBM <span class="keyword">as</span> lgb</span><br><span class="line">params_lgb_ = &#123;</span><br><span class="line">    <span class="string">&#x27;boosting_type&#x27;</span>: <span class="string">&#x27;gbdt&#x27;</span>, </span><br><span class="line">    <span class="string">&#x27;objective&#x27;</span>: <span class="string">&#x27;regression&#x27;</span>, </span><br><span class="line"> </span><br><span class="line">    <span class="string">&#x27;learning_rate&#x27;</span>: <span class="number">0.1</span>, </span><br><span class="line">    <span class="string">&#x27;num_leaves&#x27;</span>: <span class="number">50</span>, </span><br><span class="line">    <span class="string">&#x27;max_depth&#x27;</span>: <span class="number">6</span>,</span><br><span class="line"> </span><br><span class="line">    <span class="string">&#x27;subsample&#x27;</span>: <span class="number">0.8</span>, </span><br><span class="line">    <span class="string">&#x27;colsample_bytree&#x27;</span>: <span class="number">0.8</span>, </span><br><span class="line">    &#125;</span><br><span class="line">model_lgb = lgb.cv(</span><br><span class="line">    params_lgb_, train_data, num_boost_round=<span class="number">50000</span>, nfold=<span class="number">5</span>, stratified=<span class="literal">False</span>, shuffle=<span class="literal">True</span>, metrics=<span class="string">&#x27;mse&#x27;</span>,</span><br><span class="line">    early_stopping_rounds=<span class="number">50</span>, verbose_eval=<span class="number">50</span>, show_stdv=<span class="literal">True</span>, seed=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
 <h5 id="方式二：使用sklearn风格">方式二：使用sklearn风格</h5>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> LGBM <span class="keyword">as</span> lgb</span><br><span class="line">params_test1 = &#123;<span class="string">&#x27;num_leaves&#x27;</span>:[<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]&#125;</span><br><span class="line">model_lgb = lgb.LGBMRegressor(objective=<span class="string">&#x27;regression&#x27;</span>,</span><br><span class="line">                              max_depth = <span class="number">3</span>,</span><br><span class="line">                              learning_rate=<span class="number">0.1</span>, </span><br><span class="line">                              n_estimators=<span class="number">3938</span>,</span><br><span class="line">                              metric=<span class="string">&#x27;rmse&#x27;</span>, </span><br><span class="line">                              bagging_fraction = <span class="number">0.8</span>,</span><br><span class="line">                              feature_fraction = <span class="number">0.8</span>)</span><br><span class="line">gsearch1 = GridSearchCV(estimator=model_lgb, </span><br><span class="line">                        param_grid=params_test1, </span><br><span class="line">                        scoring=<span class="string">&#x27;neg_mean_squared_error&#x27;</span>, </span><br><span class="line">                        cv=<span class="number">5</span>, </span><br><span class="line">                        verbose=<span class="number">1</span>, </span><br><span class="line">                        n_jobs=<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="LGBMRegressor参数">LGBMRegressor参数</h3>
+<h3 id="lgbmregressor参数">LGBMRegressor参数</h3>
 <p><strong>boosting_type</strong> ：‘gbdt’,‘rf’</p>
 <p><strong>n_jobs</strong>  几核cpu</p>
 <p><strong>silent</strong> 默认选择True，选择False会输出很多建模中的细节，作用不大还刷屏。</p>
@@ -225,10 +225,19 @@
    
   <nav class="article-nav">
     
+      <a href="/2022/05/05/Autoformer/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Autoformer
+          
+        </div>
+      </a>
     
-      <a href="/2022/04/19/Autoformer/" class="article-nav-link">
+    
+      <a href="/2022/04/18/%E6%97%B6%E5%BA%8F%E9%A2%84%E6%B5%8B%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Autoformer</div>
+        <div class="article-nav-title">时序预测方法总结</div>
       </a>
     
   </nav>
