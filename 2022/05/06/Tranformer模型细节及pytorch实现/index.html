@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>Tranformer模型细节及pytorch实现 |  LD_blog</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      
+<link rel="stylesheet" href="/css/fonts/remixicon.css">
+
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    <link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-Tranformer模型细节及pytorch实现"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Tranformer模型细节及pytorch实现
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/" class="article-date">
+  <time datetime="2022-05-06T02:05:18.000Z" itemprop="datePublished">2022-05-06</time>
+</a>   
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">2.4k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">9 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="transformer模型的基本结构">Transformer模型的基本结构</h2>
+<p>下图是Transformer用于中英文翻译的整体结构：</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/1.png" alt></p>
+<p>从上图可以看到Transformer由编码器和解码器两个部分组成，Encoder和Decoder均可以有多个进行堆叠。</p>
+<h3 id="工作流程">工作流程</h3>
+<p>以上面的中英文翻译为例来介绍Transformer的工作流程：</p>
+<p><strong>第一步</strong>：获取输入句子的每一个单词的表示向量 X。向量X由该单词的 Embedding和单词位置的 Embedding 相加得到。</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/2.png" alt></p>
+<p>注：想了解词嵌入的可以去看文档：<a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/891928f17c192279168884868762caaedd33ba7a.html">深度学习-Embedding（词嵌入）</a></p>
+<p><strong>第二步</strong>：将得到的单词表示向量矩阵 (如上图所示，每一行是一个单词的表示 x) 输入 Encoder 中后可以得到句子所有单词的编码信息矩阵 C，如下图。单词向量矩阵用 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mi>n</mi></msub><mo>×</mo><mi>d</mi></mrow><annotation encoding="application/x-tex">X_n\times d</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.07847em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">d</span></span></span></span>表示， n 是句子中单词个数，d 是表示向量的维度 (Transformer论文中 d=512)。其中每一个 Encoder block 输出的矩阵维度与输入完全一致。</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/3.png" alt></p>
+<p><strong>第三步</strong>：将 Encoder 输出的编码信息矩阵 C传递到 Decoder 中，Decoder  依次会根据当前翻译过的单词 1~ i 来翻译下一个单词 i+1，如下图所示。在使用的过程中，翻译到单词 i+1 的时候需要通过 Mask (掩盖) 操作遮盖住 i+1 之后的单词，从而避免通过i+1后面的单词翻译单词i+1。</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/4.png" alt></p>
+<p>上图 Decoder 接收了 Encoder 的编码矩阵 C，然后首先输入一个翻译开始符 &lt;Begin&gt;，预测第一个单词 “I”；然后输入翻译开始符 &lt;Begin&gt;和单词 “I”，预测单词 “have”，以此类推。</p>
+<p>如果加上Encoder和Decoder的细节，便可以得到下图经典的Transformer模型结构图：</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/5.jpeg" alt></p>
+<h2 id="transformer模型各结构细节">Transformer模型各结构细节</h2>
+<p>下面将根据Transformer的工作流程介绍每个部分的细节。</p>
+<h3 id="positional-encoding">Positional Encoding</h3>
+<p>Transformer 模型没有循环神经网络那样可以通过迭代来挖掘输入的顺序关系，所以在用Transformer进行相关需要顺序关系的任务时，必须提供每个字的位置信息给 Transformer，这样它才能识别出输入数据的顺序关系。</p>
+<p>Positional Encoding也就是位置嵌入，位置嵌入的维度为 [max_sequence_length, embedding_dimension]，位置嵌入的第二个维度与词向量的维度是相同的，都是 embedding_dimension。max_sequence_length属于超参数，指的是限定每个句子最长由多少个词构成。</p>
+<p>注意，以中英文翻译为例，一般以字为单位训练 Transformer 模型，因此初始化字编码的大小为 [vocab_size, embedding_dimension]，vocab_size为字库的大小，embedding_dimension为字向量的维度，对应到 PyTorch 代码中，其实就是 <code>nn.Embedding(vocab_size, embedding_dimension)</code></p>
+<p>论文中使用了 sin 和 cos 函数的线性变换来提供给模型位置信息:</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/5.png" alt></p>
+<p>其中，pos 表示单词在句子中的位置，范围是[0,max_sequence_length]；d 表示位置嵌入的维度，即等于embedding_dimension；2i 表示偶数的维度，2i+1 表示奇数维度（即 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>i</mi><mo>≤</mo><mi>d</mi><mo separator="true">,</mo><mn>2</mn><mi>i</mi><mo>+</mo><mn>1</mn><mo>≤</mo><mi>d</mi></mrow><annotation encoding="application/x-tex">2i≤d, 2i+1≤d</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.79549em;vertical-align:-0.13597em;"></span><span class="mord">2</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">d</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">2</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.78041em;vertical-align:-0.13597em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">d</span></span></span></span>）。</p>
+<p>Transformer通过sin和cos函数对位置信息进行处理，从而产生不同的周期性变化（同一维度，不同位置时，其编码呈现周期性），而位置嵌入在 embedding_dimension维度上随着维度序号增大，周期变化会越来越慢，最终产生一种包含位置信息的纹理，正如论文原文中第六页讲的，位置嵌入函数的周期从<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord mathdefault" style="margin-right:0.03588em;">π</span></span></span></span>到<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10000</mn><mo>∗</mo><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">10000* 2\pi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord mathdefault" style="margin-right:0.03588em;">π</span></span></span></span>变化，而每一个位置在 embedding_dimension维度上都会得到不同周期的sin和cos函数的取值组合，从而产生独一的纹理位置信息（同一位置，不同维度时，呈现独一的变化趋势），最终使得模型学到位置之间的依赖关系和自然语言的时序特性。以下两图展示了上面所说的两者变化情况：</p>
+<p>固定d=512，embedding_dimension第1个和第50个维度的前100个位置值编码变化图：</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/6.png" alt></p>
+<p>固定d=512，第1个、第10个和第50个位置的embedding_dimension从1到100对应的位置编码变化图：</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/7.png" alt></p>
+<h3 id="self-attention-mechanism">Self Attention Mechanism</h3>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/8.png" alt></p>
+<p>上图就是Self-Attention 的结构，它的输入有三个矩阵：<strong>查询矩阵Q</strong>、<strong>键矩阵K</strong>、<strong>值矩阵V</strong>。在实际中，Self-Attention 接收的是输入是单词的表示向量x组成的矩阵X， 或者上一个 Encoder block 的输出。而Q、K、V正是通过 Self-Attention 的输入进行线性变换得到的。</p>
+<p>Self-Attention 的输入用矩阵X进行表示，则可以使用线性变阵矩阵WQ、WK、WV计算得到Q、K、V。计算如下图所示，注意 X、Q、K、V 的每一行都表示一个单词。</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/9.png" alt></p>
+<p>得到矩阵 Q、K、V之后就可以计算出 Self-Attention 的输出了，计算的公式如下：</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/10.png" alt></p>
+<ul>
+<li>公式中先计算矩阵Q和K每一行向量的内积，为了防止内积过大，因此除以<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">d_k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">d</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 的平方根。</li>
+<li>Q乘以K的转置后，得到的矩阵行列数都为 n，n 为句子单词数，因此这个矩阵可以表示单词之间的注意力大小。</li>
+<li>得到<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><msup><mi>K</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">QK^T</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.035771em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">Q</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span></span></span></span>之后，使用 Softmax 计算每一个单词对于其他单词的注意力大小，公式中的 Softmax 是对矩阵的每一行进行 Softmax，即每一行的和都变为 1。</li>
+<li>得到 Softmax 矩阵之后可以和V相乘，得到最终的输出Z，这就相当于根据注意力来对单词相应位置进行加权和。</li>
+</ul>
+<h3 id="multi-head-attention">Multi-Head Attention</h3>
+<p>Multi-Head Attention 是由多个 Self-Attention 组合形成的，下图是论文中 Multi-Head Attention 的结构图。</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/11.png" alt></p>
+<p>从上图可以看到 Multi-Head Attention 包含多个 Self-Attention 层，首先将输入X分别传递到 h 个不同的 Self-Attention 中，计算得到 h 个输出矩阵<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Z</mi><mn>1</mn></msub><mo>…</mo><msub><mi>Z</mi><mi>h</mi></msub></mrow><annotation encoding="application/x-tex">Z_1\dots Z_h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">Z</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">Z</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">h</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>。得到 h个输出矩阵之后，Multi-Head Attention 将它们拼接在一起 (Concat)，然后传入一个Linear层，得到 Multi-Head Attention 最终的输出Z。</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/12.png" alt></p>
+<h3 id="padding-mask">Padding Mask</h3>
+<p>Self-Attention的计算过程中，通常使用mini-batch来计算，也就是一次计算多句话，即 输入X的维度是 [batch_size, sequence_length]，sequence_length是句子长度，所以一个 mini-batch 是由多个不等长的句子组成的，为了输入模型中可以统一处理，需要按照这个 mini-batch 中最大的句长对剩余的句子进行补齐，一般用0进行填充，这个过程叫做 padding。但这时在进行 softmax 就会产生问题。因为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>e</mi><mn>0</mn></msup><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">e^0=1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathdefault">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>是有值的，这样 softmax 中被 padding 的部分也会参与运算，这可能会产生很大的隐患。因此需要做一个 mask 操作，让这些无效的区域不参与运算，一般是给无效区域加一个很大的负数偏置，即</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/13.png" alt="png"></p>
+<h3 id="encoder">Encoder</h3>
+<p>下图是Encoder的结构图及其部分细节。</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/14.png" alt="png"></p>
+<p>运算过程：输入<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">x_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>经 self-attention 层之后得到<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>z</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">z_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.04398em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>z</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">z_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.04398em;">z</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.04398em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，然后和输入<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">x_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>进行残差连接，经过 LayerNorm 后输出给全连接层。全连接层也有一个残差连接和一个 LayerNorm，最后得到该Encoder Block的输出。（每个 Encoder Block 中的 FeedForward 层权重都是共享的）</p>
+<h4 id="残差连接">残差连接</h4>
+<p>通常用于解决多层网络训练的问题，可以让网络只关注当前差异的部分，在 ResNet 中经常用到：</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/15.png" alt="png"></p>
+<h4 id="layer-normalization">Layer Normalization</h4>
+<p>Layer Normalization的作用是把神经网络中隐藏层归一为标准正态分布，并假设独立同分布，以起到加快训练速度，加速收敛的作用。</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/16.png" alt="image-20220506150346432"></p>
+<p>即用每一列的每一个元素减去这列的均值，再除以这列的标准差，从而得到归一化后的数值，加<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">ϵ</span></span></span></span>是为了防止分母为 0。</p>
+<h4 id="feed-forward">Feed Forward</h4>
+<p>Feed Forward 层是一个两层的全连接层，第一层的激活函数为 Relu，第二层不使用激活函数，对应的公式如下，其中X是输入且Feed Forward 最终得到的输出矩阵的维度与X一致。</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/17.png" alt="image-20220506150346432"></p>
+<h3 id="decoder">Decoder</h3>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/18.png" alt="image"></p>
+<p>上图红色部分为 Transformer 的 Decoder Block 结构，与 Encoder Block 相似，但也存在一些区别：</p>
+<ul>
+<li>包含两个 Multi-Head Attention 层。</li>
+<li>第一个 Multi-Head Attention 层采用了 Masked 操作。</li>
+<li>第二个 Multi-Head Attention 层的K、V矩阵使用 Encoder 的编码信息矩阵C进行计算，而Q则使用上一个Decoder block 的输出计算。</li>
+<li>最后有一个 Softmax 层，用于计算下一个翻译单词的概率。</li>
+</ul>
+<h4 id="masked-multi-head-attention">Masked Multi-Head Attention</h4>
+<p>Decoder block 的第一个 Multi-Head Attention 采用了 Masked 操作，因为在翻译的过程中是顺序翻译的，即翻译完第 i 个单词，才可以翻译第 i+1 个单词。通过 Masked 操作可以防止第 i 个单词知道 i+1 个单词之后的信息。结构如图所示：</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/8.png" alt></p>
+<p>上图中的mask是唯一不同于其他多头注意力的地方，实现方式是通过设置一个特殊矩阵，如图所示：</p>
+<p><img src="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/19.png" alt="image-20220506153029789"></p>
+<p>这样，预测当前词时，不会用到该词以后的词的信息。值为-inf是因为，之后再做softmax就能把-inf变为0，从而使得其权重为0。</p>
+<h2 id="transformer的pytorch实现">Transformer的PyTorch实现</h2>
+<p>完成以下实验需要：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader,Dataset</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
+<h3 id="positional-encoding">Positional Encoding</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_sinusoid_encoding_table</span>(<span class="params">n_position, d_model</span>):</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">cal_angle</span>(<span class="params">position, hid_idx</span>):</span><br><span class="line">        <span class="keyword">return</span> position / np.power(<span class="number">10000</span>, <span class="number">2</span> * (hid_idx // <span class="number">2</span>) / d_model)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_posi_angle_vec</span>(<span class="params">position</span>):</span><br><span class="line">        <span class="keyword">return</span> [cal_angle(position, hid_j) <span class="keyword">for</span> hid_j <span class="keyword">in</span> <span class="built_in">range</span>(d_model)]</span><br><span class="line"></span><br><span class="line">    sinusoid_table = np.array([get_posi_angle_vec(pos_i) <span class="keyword">for</span> pos_i <span class="keyword">in</span> <span class="built_in">range</span>(n_position)])</span><br><span class="line">    </span><br><span class="line">    sinusoid_table[:, <span class="number">0</span>::<span class="number">2</span>] = np.sin(sinusoid_table[:, <span class="number">0</span>::<span class="number">2</span>])  <span class="comment"># dim 2i</span></span><br><span class="line">    </span><br><span class="line">    sinusoid_table[:, <span class="number">1</span>::<span class="number">2</span>] = np.cos(sinusoid_table[:, <span class="number">1</span>::<span class="number">2</span>])  <span class="comment"># dim 2i+1</span></span><br><span class="line">    <span class="keyword">return</span> torch.FloatTensor(sinusoid_table)</span><br></pre></td></tr></table></figure>
+<h2 id="参考">参考</h2>
+<p>1、<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38410428/article/details/112348321">Transformer模型详解（图解最完整版）</a></p>
+<p>2、<a target="_blank" rel="noopener" href="https://wmathor.com/index.php/archives/1438/">Transformer 详解</a></p>
+<p>3、<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37236745/article/details/107352273">Transformer的PyTorch实现（超详细）</a></p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/transformer/" rel="tag">transformer</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2022/05/09/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-9/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Leetcode之每日一题：2022.5.9
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2022/05/05/Autoformer/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Autoformer</div>
+      </a>
+    
+  </nav>
+
+  
+   
+    
+    <script src="https://cdn.staticfile.org/twikoo/1.4.18/twikoo.all.min.js"></script>
+    <div id="twikoo" class="twikoo"></div>
+    <script>
+        twikoo.init({
+            envId: ""
+        })
+    </script>
+ 
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2022
+        <i class="ri-heart-fill heart_icon"></i> Lu Dong
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="LD_blog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.staticfile.org/justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/mathjax/2.7.7/MathJax.js"></script>
+<script src="https://cdn.staticfile.org/mathjax/2.7.7/config/TeX-AMS-MML_HTMLorMML-full.js"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+ 
+    
+        <link rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.15.1/katex.min.css">
+        <script src="https://cdn.staticfile.org/KaTeX/0.15.1/katex.min.js"></script>
+        <script src="https://cdn.staticfile.org/KaTeX/0.15.1/contrib/auto-render.min.js"></script>
+        
+    
+ 
+<!-- busuanzi  -->
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.staticfile.org/clipboard.js/2.0.10/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    
+
+  </div>
+</body>
+
+</html>
