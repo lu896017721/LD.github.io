@@ -11,7 +11,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>Leetcode之每日一题：2022.5.9 |  LD_blog</title>
+      <title>Leetcode之每日一题：2022-5-9 |  LD_blog</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -64,7 +64,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Leetcode之每日一题：2022.5.9
+  Leetcode之每日一题：2022-5-9
 </h1>
  
 
@@ -110,7 +110,7 @@
 <p>​    如果 <code>perm[i] &lt; perm[i + 1] </code>，那么<code> s[i] == 'I'</code></p>
 <p>​    如果 <code>perm[i] &gt; perm[i + 1]</code> ，那么<code>s[i] == 'D'</code></p>
 <p>给定一个字符串 s ，重构排列 perm 并返回它。如果有多个有效排列perm，则返回其中 任何一个 。</p>
-<h3 id="示例：">示例：</h3>
+<h3 id="示例">示例</h3>
 <ol>
 <li>输入：<code>s = &quot;IDID&quot;</code></li>
 </ol>
@@ -136,7 +136,7 @@
 <h3 id="思路">思路</h3>
 <p>可以发现“III”的输出是增序，“DDD”是降序。所以某一位置出现I可以表示该位置为未分配的数字中的最小值，D则可以表示该位置为未分配的数字中的最大值。按照这样的想法，使用双指针，一个指向最小值，一个指向最大值，按照字符串s的顺序添加进列表即可。</p>
 <h3 id="代码">代码</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">diStringMatch</span>(<span class="params">self, s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">list</span>:</span><br><span class="line">        length = <span class="built_in">len</span>(s)</span><br><span class="line">        s = s + <span class="string">&#x27;I&#x27;</span> <span class="comment"># 因为字符串长度为n，而实际有n+1个数，所以可以加一个I或D使得字符串一个字符对应一个数</span></span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        j = length </span><br><span class="line">        result = <span class="built_in">list</span>()</span><br><span class="line">        n = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> i &lt;= j:</span><br><span class="line">            <span class="keyword">if</span> s[n] == <span class="string">&#x27;I&#x27;</span>:</span><br><span class="line">                result.append(i)</span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                result.append(j)</span><br><span class="line">                j -= <span class="number">1</span></span><br><span class="line">            n += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">diStringMatch</span>(<span class="params">self, s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">list</span>:</span><br><span class="line">        length = <span class="built_in">len</span>(s)</span><br><span class="line">        s = s + <span class="string">&#x27;I&#x27;</span> <span class="comment"># 因为字符串长度为n，而实际有n+1个数，所以可以加一个I或D使得字符串一个字符对应一个数</span></span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        j = length</span><br><span class="line">        result = <span class="built_in">list</span>()</span><br><span class="line">        n = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> i &lt;= j:</span><br><span class="line">            <span class="keyword">if</span> s[n] == <span class="string">&#x27;I&#x27;</span>:</span><br><span class="line">                result.append(i)</span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                result.append(j)</span><br><span class="line">                j -= <span class="number">1</span></span><br><span class="line">            n += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
  
       <!-- reward -->
       
@@ -213,6 +213,15 @@
 
    
   <nav class="article-nav">
+    
+      <a href="/2022/05/10/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-10/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Leetcode之每日一题：2022-5-10
+          
+        </div>
+      </a>
     
     
       <a href="/2022/05/06/Tranformer%E6%A8%A1%E5%9E%8B%E7%BB%86%E8%8A%82%E5%8F%8Apytorch%E5%AE%9E%E7%8E%B0/" class="article-nav-link">
