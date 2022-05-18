@@ -11,7 +11,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>Leetcode之每日一题：2022-5-16 |  LD_blog</title>
+      <title>Leetcode之每日一题：2022-5-18 |  LD_blog</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -53,7 +53,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-Leetcode之每日一题：2022-5-16"
+  id="post-Leetcode之每日一题：2022-5-18"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -64,7 +64,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Leetcode之每日一题：2022-5-16
+  Leetcode之每日一题：2022-5-18
 </h1>
  
 
@@ -72,15 +72,15 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2022/05/16/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-16/" class="article-date">
-  <time datetime="2022-05-16T11:14:19.000Z" itemprop="datePublished">2022-05-16</time>
+      <a href="/2022/05/18/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-18/" class="article-date">
+  <time datetime="2022-05-18T10:42:11.000Z" itemprop="datePublished">2022-05-18</time>
 </a>   
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">638</span>
+            <span class="post-count">572</span>
         </span>
     </span>
 
@@ -105,42 +105,29 @@
     <div class="article-entry" itemprop="articleBody">
        
   <h2 id="问题描述">问题描述</h2>
-<h3 id="题目：后继者">题目：后继者</h3>
-<p>设计一个算法，找出二叉搜索树中指定节点的“下一个”节点（也即中序后继）。如果指定节点没有对应的“下一个”节点，则返回null。</p>
+<h3 id="题目：乘法表中第k小的数">题目：乘法表中第k小的数</h3>
+<p>给定高度m 、宽度n 的一张 m * n的乘法表，以及正整数k，你需要返回表中第k 小的数字。</p>
 <h3 id="示例">示例</h3>
 <ol>
 <li>
-<p>输入: root = [2,1,3], p = 1</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  2</span><br><span class="line"> / \</span><br><span class="line">1   3</span><br></pre></td></tr></table></figure>
-<p>输出: 2</p>
+<p>输入: m = 3, n = 3, k = 5输出: 3解释:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">乘法表:</span><br><span class="line">    1  2  3</span><br><span class="line"></span><br><span class="line">    2  4  6</span><br><span class="line"></span><br><span class="line">    3  6  9</span><br><span class="line">第5小的数字是 3 (1, 2, 2, 3, 3).</span><br></pre></td></tr></table></figure>
 </li>
 <li>
-<p>输入: root = [5,3,6,2,4,null,null,1], p = 6</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">      5</span><br><span class="line">     / \</span><br><span class="line">    3   6</span><br><span class="line">   / \</span><br><span class="line">  2   4</span><br><span class="line"> /   </span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-<p>输出: null</p>
+<p>输入: m = 2, n = 3, k = 6</p>
+<p>输出: 6</p>
+<p>解释:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">乘法表:</span><br><span class="line">    1	2	3</span><br><span class="line">    2	4	6</span><br><span class="line"></span><br><span class="line">第6小的数字是 6 (1, 2, 2, 3, 4, 6).</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<pre><code>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">### 注意</span><br><span class="line"></span><br><span class="line">- m 和 n 的范围在  [1, 30000] 之间。</span><br><span class="line">- k 的范围在 [1, m * n] 之间。</span><br><span class="line"></span><br><span class="line">### 来源</span><br><span class="line"></span><br><span class="line">力扣（LeetCode），链接：https://leetcode.cn/problems/kth-smallest-number-in-multiplication-table</span><br><span class="line"></span><br><span class="line">## 问题解答</span><br><span class="line"></span><br><span class="line">### 二分法</span><br><span class="line"></span><br><span class="line">#### 思想</span><br><span class="line"></span><br><span class="line">首先，给了一个 m∗n 乘法表的二维矩阵，我们其实能很快地找到矩阵中有多少个数字小于等于 x。</span><br><span class="line"></span><br><span class="line">由于第 i 行的数字分别是 $i, 2i, 3i,...$，因此这一行小于等于 x 的数字个数为 $\min(\frac&#123;x&#125;&#123;i&#125;,n)$。因为$\frac&#123;x&#125;&#123;i&#125;$ 得到了 x 是 i 的多少倍，表示在第 i 行最多有多少数字小于等于 x。同时矩阵最多有 n 列，因此需要取个最小值。</span><br><span class="line"></span><br><span class="line">那么矩阵中小于等于 x 的数字个数等于各行的累加，即$ \sum_&#123;i=1&#125;^m \min(\frac&#123;x&#125;&#123;i&#125;, n)$个。</span><br><span class="line"></span><br><span class="line">所以该题就是希望得到$ \sum_&#123;i=1&#125;^m \min(\frac&#123;x&#125;&#123;i&#125;, n) = k$时的 x 的最小值，之所以最小是因为乘法表中数字是离散，小于 x 的个数可能和小于 x+1的个数一样。得到整个 x 的方法就是二分查找。</span><br><span class="line"></span><br><span class="line">注意一点：找出最小的 x 在代码中的体现就是当小于 x 的个数等于k时，应该将中间值 mid 赋给上限。</span><br><span class="line"></span><br><span class="line">#### 代码</span><br><span class="line"></span><br><span class="line">```python</span><br><span class="line">class Solution:</span><br><span class="line">    def findKthNumber(self, m: int, n: int, k: int) -&gt; int:</span><br><span class="line">        num_min = 1</span><br><span class="line">        num_max = n*m</span><br><span class="line">        def getnums(num):</span><br><span class="line">            result = 0</span><br><span class="line">            for i in range(1, m+1): </span><br><span class="line">                    result += n if i*n &lt;= num else int(num/i)</span><br><span class="line">            return result</span><br><span class="line">        </span><br><span class="line">        while 1:</span><br><span class="line">            mid = int((num_max + num_min)/2)</span><br><span class="line">            if getnums(mid) &lt; k:</span><br><span class="line">                num_min = mid </span><br><span class="line">            elif getnums(mid) &gt;= k:</span><br><span class="line">                num_max = mid </span><br><span class="line">    </span><br><span class="line">            print(num_max, num_min)</span><br><span class="line">            if (num_max == num_min):</span><br><span class="line">                return num_min</span><br><span class="line">            elif (num_min + 1 == num_max):</span><br><span class="line">                return num_max</span><br></pre></td></tr></table></figure>
+
+</code></pre>
 </li>
 </ol>
-<h3 id="来源">来源</h3>
-<p>力扣（LeetCode） 链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/successor-lcci">https://leetcode.cn/problems/successor-lcci</a></p>
-<h2 id="问题解答">问题解答</h2>
-<h3 id="暴力法">暴力法</h3>
-<h4 id="思想">思想</h4>
-<p>先中序遍历树得到节点遍历顺序列表，再一一对比找出指定节点及其下一个节点。</p>
-<h4 id="代码">代码</h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x</span>):</span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inorderSuccessor</span>(<span class="params">self, root: TreeNode, p: TreeNode</span>) -&gt; TreeNode:</span><br><span class="line">        result = <span class="built_in">list</span>()</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">getitem</span>(<span class="params">rootnode</span>):</span><br><span class="line">            <span class="keyword">if</span> rootnode <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            getitem(rootnode.left)</span><br><span class="line">            result.append(rootnode)</span><br><span class="line">            getitem(rootnode.right)</span><br><span class="line">        getitem(root)</span><br><span class="line">        <span class="keyword">for</span> i, j <span class="keyword">in</span> <span class="built_in">enumerate</span>(result):</span><br><span class="line">            <span class="keyword">if</span> j <span class="keyword">is</span> p:</span><br><span class="line">                <span class="keyword">if</span> i &lt; <span class="built_in">len</span>(result) - <span class="number">1</span>:</span><br><span class="line">                    <span class="keyword">return</span> result[i+<span class="number">1</span>]</span><br><span class="line">        		<span class="keyword">else</span>:</span><br><span class="line">            		<span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">         <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
-<h4 id="改进">改进</h4>
-<p>因为只需要找出指定节点的下一个节点，所以可以用两个指针，一个指向当前节点的上一个节点，一个指向当前节点；若上一个节点是指定节点，则返回当前节点，否则返回null。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inorderSuccessor</span>(<span class="params">self, root: TreeNode, p: TreeNode</span>) -&gt; TreeNode:</span><br><span class="line">        <span class="keyword">global</span> last, now </span><br><span class="line">        last = <span class="literal">None</span></span><br><span class="line">        now = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">getitem</span>(<span class="params">rootnode</span>):</span><br><span class="line">            <span class="keyword">global</span> last, now</span><br><span class="line">            <span class="keyword">if</span> rootnode <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            getitem(rootnode.left)</span><br><span class="line">            <span class="keyword">if</span> last <span class="keyword">is</span> p:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            last = now</span><br><span class="line">            now = rootnode  </span><br><span class="line">            getitem(rootnode.right)</span><br><span class="line">        getitem(root)</span><br><span class="line">        <span class="keyword">if</span> last <span class="keyword">is</span> p:</span><br><span class="line">            <span class="keyword">return</span> now</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
-<h2 id="bst-特性-递归">BST 特性 + 递归</h2>
-<h4 id="思路">思路</h4>
-<p>利用 BST 的特性，我们可以根据当前节点 root 与 p 的值大小关系来确定搜索方向：</p>
-<ul>
-<li>若有<code>root.val &lt;= p.val</code>: 根据 BST 特性可知当前节点 root 及其左子树子节点均满足「值小于等于 p.val」，因此不可能是 p 点的后继，我们直接到 root 的右子树搜索 p 的后继（递归处理）；</li>
-<li>若有 <code>root.val &gt; p.val </code>: 当第一次搜索到满足此条件的节点时，在以 root 为根节点的子树中「位于最左下方」的值为 p 的后继，但也有可能 root 没有左子树，因此 p 的后继要么在 root 的左子树中（若有），要么是 root 本身，此时我们可以直接到 root 的左子树搜索，若搜索结果为空返回 root，否则返回搜索结果。</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inorderSuccessor</span>(<span class="params">self, root: TreeNode, p: TreeNode</span>) -&gt; TreeNode:</span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>: <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="keyword">if</span> root.val &lt;= p.val: </span><br><span class="line">            <span class="keyword">return</span> self.inorderSuccessor(root.right, p)</span><br><span class="line">        ans = self.inorderSuccessor(root.left, p)</span><br><span class="line">        <span class="keyword">return</span> root <span class="keyword">if</span> ans <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">else</span> ans</span><br></pre></td></tr></table></figure>
 <h4 id="作者">作者</h4>
-<p>AC_OIer，链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/successor-lcci/solution/by-ac_oier-xib5/">https://leetcode.cn/problems/successor-lcci/solution/by-ac_oier-xib5/</a></p>
+<p>fuxuemingzhu，链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/kth-smallest-number-in-multiplication-table/solution/by-fuxuemingzhu-8eq4/">https://leetcode.cn/problems/kth-smallest-number-in-multiplication-table/solution/by-fuxuemingzhu-8eq4/</a></p>
  
       <!-- reward -->
       
@@ -205,7 +192,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/05/16/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-16/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/05/18/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-18/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -218,19 +205,10 @@
    
   <nav class="article-nav">
     
-      <a href="/2022/05/18/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-18/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            Leetcode之每日一题：2022-5-18
-          
-        </div>
-      </a>
     
-    
-      <a href="/2022/05/12/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-12/" class="article-nav-link">
+      <a href="/2022/05/16/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-16/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Leetcode之每日一题：2022-5-12</div>
+        <div class="article-nav-title">Leetcode之每日一题：2022-5-16</div>
       </a>
     
   </nav>
