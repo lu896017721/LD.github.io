@@ -104,10 +104,10 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h2 id="问题描述-2">问题描述</h2>
+  <h2 id="问题描述">问题描述</h2>
 <h3 id="题目：后继者">题目：后继者</h3>
 <p>设计一个算法，找出二叉搜索树中指定节点的“下一个”节点（也即中序后继）。如果指定节点没有对应的“下一个”节点，则返回null。</p>
-<h3 id="示例-2">示例</h3>
+<h3 id="示例">示例</h3>
 <ol>
 <li>
 <p>输入: root = [2,1,3], p = 1</p>
@@ -120,26 +120,26 @@
 <p>输出: null</p>
 </li>
 </ol>
-<h3 id="来源-2">来源</h3>
+<h3 id="来源">来源</h3>
 <p>力扣（LeetCode） 链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/successor-lcci">https://leetcode.cn/problems/successor-lcci</a></p>
-<h2 id="问题解答-2">问题解答</h2>
-<h3 id="暴力法-2">暴力法</h3>
+<h2 id="问题解答">问题解答</h2>
+<h3 id="暴力法">暴力法</h3>
 <h4 id="思想">思想</h4>
 <p>先中序遍历树得到节点遍历顺序列表，再一一对比找出指定节点及其下一个节点。</p>
-<h4 id="代码-3">代码</h4>
+<h4 id="代码">代码</h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x</span>):</span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inorderSuccessor</span>(<span class="params">self, root: TreeNode, p: TreeNode</span>) -&gt; TreeNode:</span><br><span class="line">        result = <span class="built_in">list</span>()</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">getitem</span>(<span class="params">rootnode</span>):</span><br><span class="line">            <span class="keyword">if</span> rootnode <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            getitem(rootnode.left)</span><br><span class="line">            result.append(rootnode)</span><br><span class="line">            getitem(rootnode.right)</span><br><span class="line">        getitem(root)</span><br><span class="line">        <span class="keyword">for</span> i, j <span class="keyword">in</span> <span class="built_in">enumerate</span>(result):</span><br><span class="line">            <span class="keyword">if</span> j <span class="keyword">is</span> p:</span><br><span class="line">                <span class="keyword">if</span> i &lt; <span class="built_in">len</span>(result) - <span class="number">1</span>:</span><br><span class="line">                    <span class="keyword">return</span> result[i+<span class="number">1</span>]</span><br><span class="line">        		<span class="keyword">else</span>:</span><br><span class="line">            		<span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">         <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
 <h4 id="改进">改进</h4>
 <p>因为只需要找出指定节点的下一个节点，所以可以用两个指针，一个指向当前节点的上一个节点，一个指向当前节点；若上一个节点是指定节点，则返回当前节点，否则返回null。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inorderSuccessor</span>(<span class="params">self, root: TreeNode, p: TreeNode</span>) -&gt; TreeNode:</span><br><span class="line">        <span class="keyword">global</span> last, now </span><br><span class="line">        last = <span class="literal">None</span></span><br><span class="line">        now = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">getitem</span>(<span class="params">rootnode</span>):</span><br><span class="line">            <span class="keyword">global</span> last, now</span><br><span class="line">            <span class="keyword">if</span> rootnode <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            getitem(rootnode.left)</span><br><span class="line">            <span class="keyword">if</span> last <span class="keyword">is</span> p:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            last = now</span><br><span class="line">            now = rootnode  </span><br><span class="line">            getitem(rootnode.right)</span><br><span class="line">        getitem(root)</span><br><span class="line">        <span class="keyword">if</span> last <span class="keyword">is</span> p:</span><br><span class="line">            <span class="keyword">return</span> now</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
-<h2 id="BST-特性-递归">BST 特性 + 递归</h2>
-<h4 id="思路-2">思路</h4>
+<h2 id="bst-特性-递归">BST 特性 + 递归</h2>
+<h4 id="思路">思路</h4>
 <p>利用 BST 的特性，我们可以根据当前节点 root 与 p 的值大小关系来确定搜索方向：</p>
 <ul>
 <li>若有<code>root.val &lt;= p.val</code>: 根据 BST 特性可知当前节点 root 及其左子树子节点均满足「值小于等于 p.val」，因此不可能是 p 点的后继，我们直接到 root 的右子树搜索 p 的后继（递归处理）；</li>
 <li>若有 <code>root.val &gt; p.val </code>: 当第一次搜索到满足此条件的节点时，在以 root 为根节点的子树中「位于最左下方」的值为 p 的后继，但也有可能 root 没有左子树，因此 p 的后继要么在 root 的左子树中（若有），要么是 root 本身，此时我们可以直接到 root 的左子树搜索，若搜索结果为空返回 root，否则返回搜索结果。</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inorderSuccessor</span>(<span class="params">self, root: TreeNode, p: TreeNode</span>) -&gt; TreeNode:</span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>: <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="keyword">if</span> root.val &lt;= p.val: </span><br><span class="line">            <span class="keyword">return</span> self.inorderSuccessor(root.right, p)</span><br><span class="line">        ans = self.inorderSuccessor(root.left, p)</span><br><span class="line">        <span class="keyword">return</span> root <span class="keyword">if</span> ans <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">else</span> ans</span><br></pre></td></tr></table></figure>
-<h4 id="作者-2">作者</h4>
+<h4 id="作者">作者</h4>
 <p>AC_OIer，链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/successor-lcci/solution/by-ac_oier-xib5/">https://leetcode.cn/problems/successor-lcci/solution/by-ac_oier-xib5/</a></p>
  
       <!-- reward -->
