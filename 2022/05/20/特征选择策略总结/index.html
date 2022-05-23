@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>特征选择策略总结 |  LD_blog</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      
+<link rel="stylesheet" href="/css/fonts/remixicon.css">
+
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    <link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-特征选择策略总结"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  特征选择策略总结
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/" class="article-date">
+  <time datetime="2022-05-20T01:28:25.000Z" itemprop="datePublished">2022-05-20</time>
+</a>   
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">3.9k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">16 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <p>转载：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/507101225">https://zhuanlan.zhihu.com/p/507101225</a></p>
+<h2 id="特征选择">特征选择</h2>
+<p>太多的特征会增加模型的复杂性和过拟合，而太少的特征会导致模型的拟合不足。将模型优化为足够复杂以使其性能可推广，但又足够简单易于训练、维护和解释是特征选择的主要工作。“特征选择”意味着可以保留一些特征并放弃其他一些特征。本文的目的是概述一些特征选择策略：</p>
+<ol>
+<li>删除未使用的列</li>
+<li>删除具有缺失值的列</li>
+<li>不相关的特征</li>
+<li>低方差特征</li>
+<li>多重共线性</li>
+<li>特征系数</li>
+<li>p 值</li>
+<li>方差膨胀因子 (VIF)</li>
+<li>基于特征重要性的特征选择</li>
+<li>使用 sci-kit learn 进行自动特征选择</li>
+<li>主成分分析 (PCA)</li>
+</ol>
+<h2 id="数据集">数据集</h2>
+<p>为了更好的展示各个特征选择策略的结果，下面使用的数据集是来自 PyCaret（一个开源的低代码机器学习库）。数据集相当干净，但做了一些预处理。</p>
+<p>加载数据集：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">data = <span class="string">&#x27;https://raw.githubusercontent.com/pycaret/pycaret/master/datasets/automobile.csv&#x27;</span> </span><br><span class="line">df = pd.read_csv(data) </span><br><span class="line"> </span><br><span class="line">df.sample(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/1.png" alt="image-20220520093922825"></p>
+<p>该数据集包含 202 行和 26 列——每行代表一个汽车实例，每列代表其特征和相应的价格。 这些列包括：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Index([<span class="string">&#x27;symboling&#x27;</span>, <span class="string">&#x27;normalized-losses&#x27;</span>, <span class="string">&#x27;make&#x27;</span>, <span class="string">&#x27;fuel-type&#x27;</span>, <span class="string">&#x27;aspiration&#x27;</span>, <span class="string">&#x27;num-of-doors&#x27;</span>, <span class="string">&#x27;body-style&#x27;</span>, <span class="string">&#x27;drive-wheels&#x27;</span>, <span class="string">&#x27;engine-location&#x27;</span>,<span class="string">&#x27;wheel-base&#x27;</span>, <span class="string">&#x27;length&#x27;</span>, <span class="string">&#x27;width&#x27;</span>, <span class="string">&#x27;height&#x27;</span>, <span class="string">&#x27;curb-weight&#x27;</span>, <span class="string">&#x27;engine-type&#x27;</span>, <span class="string">&#x27;num-of-cylinders&#x27;</span>, <span class="string">&#x27;engine-size&#x27;</span>, <span class="string">&#x27;fuel-system&#x27;</span>, <span class="string">&#x27;bore&#x27;</span>, <span class="string">&#x27;stroke&#x27;</span>, <span class="string">&#x27;compression-ratio&#x27;</span>, <span class="string">&#x27;horsepower&#x27;</span>, <span class="string">&#x27;peak-rpm&#x27;</span>, <span class="string">&#x27;city-mpg&#x27;</span>, <span class="string">&#x27;highway-mpg&#x27;</span>, <span class="string">&#x27;price&#x27;</span>], dtype=<span class="string">&#x27;object&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>现在让我们深入研究特征选择的 11 种策略。</p>
+<h2 id="实现模型之前">实现模型之前</h2>
+<h3 id="删除未使用的列">删除未使用的列</h3>
+<p>通过一定的先验知识，可以判别出某些列在最终模型中不会以任何形式使用（例如“ID”、“FirstName”、“LastName”等列）。 如果有这样某个特定列将不会被使用，请随时将其删除。</p>
+<p>在上述的数据集中，没有发现这样一列有这样的问题，所以这里不删除任何列。</p>
+<h3 id="删除具有缺失值的列">删除具有缺失值的列</h3>
+<p>缺失值会给后续的分析、处理带来很大的困扰，因此需采用不同的策略来清理缺失数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># total null values per column </span></span><br><span class="line">df.isnull().<span class="built_in">sum</span>() </span><br><span class="line"> </span><br><span class="line">&gt;&gt; </span><br><span class="line">symboling             <span class="number">0</span> </span><br><span class="line">normalized-losses    <span class="number">37</span> </span><br><span class="line">make                  <span class="number">0</span> </span><br><span class="line">fuel-<span class="built_in">type</span>             <span class="number">0</span> </span><br><span class="line">aspiration            <span class="number">0</span> </span><br><span class="line">num-of-doors          <span class="number">2</span> </span><br><span class="line">body-style            <span class="number">0</span> </span><br><span class="line">drive-wheels          <span class="number">0</span> </span><br><span class="line">engine-location       <span class="number">0</span> </span><br><span class="line">wheel-base            <span class="number">0</span> </span><br><span class="line">length                <span class="number">0</span> </span><br><span class="line">width                 <span class="number">0</span> </span><br><span class="line">height                <span class="number">0</span> </span><br><span class="line">curb-weight           <span class="number">0</span> </span><br><span class="line">engine-<span class="built_in">type</span>           <span class="number">0</span> </span><br><span class="line">num-of-cylinders      <span class="number">0</span> </span><br><span class="line">engine-size           <span class="number">0</span> </span><br><span class="line">fuel-system           <span class="number">0</span> </span><br><span class="line">bore                  <span class="number">0</span> </span><br><span class="line">stroke                <span class="number">0</span> </span><br><span class="line">compression-ratio     <span class="number">0</span> </span><br><span class="line">horsepower            <span class="number">0</span> </span><br><span class="line">peak-rpm              <span class="number">0</span> </span><br><span class="line">city-mpg              <span class="number">0</span> </span><br><span class="line">highway-mpg           <span class="number">0</span> </span><br><span class="line">price                 <span class="number">0</span> </span><br><span class="line">dtype: int64</span><br></pre></td></tr></table></figure>
+<p>1、如果列中缺少大量数据，那么完全删除它是非常好的方法。如这里数据集里面的‘ normalized-losses ’这一列，缺失率达到了17%，那么删除它可能是一个好的选择。</p>
+<p>2、如果列中缺少少量数据，那么可以采用插补的方法。如这里数据集里面的‘ num-of-doors ’ 。插补的方法一般有个案剔除法（直接删除有缺失值这一条数据）、均值替换法（用全局或附近数据的均值来替换均值）、附近替换法（直接用附近某一条数据的值来替换缺失值）。</p>
+<h3 id="不相关的特征">不相关的特征</h3>
+<p>无论模型处理的是回归问题（预测数字）还是分类问题（预测类别），输入特征都需要与目标值具有相关性。 如果一个特征没有表现出相关性，它就是一个主要的消除目标。 对于数值特征和分类特征可以分别进行相关性测试。</p>
+<h4 id="数值变量">数值变量</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># correlation between target and features </span></span><br><span class="line">(df.corr().loc[<span class="string">&#x27;price&#x27;</span>] </span><br><span class="line"> .plot(kind=<span class="string">&#x27;barh&#x27;</span>, figsize=(<span class="number">4</span>,<span class="number">10</span>)))</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/2.png" alt="img"></p>
+<p>在此示例中，<em>peak-rpm</em>, <em>compression-ratio, stroke, bore</em> , <em>symboling</em> 等特征与价格几乎没有相关性，因此可以删除它们。</p>
+<p>可以手动删除列，也可以使用相关阈值进行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># drop uncorrelated numeric features (threshold &lt;0.2) </span></span><br><span class="line">corr = <span class="built_in">abs</span>(df.corr().loc[<span class="string">&#x27;price&#x27;</span>]) </span><br><span class="line">corr = corr[corr&lt;<span class="number">0.2</span>] </span><br><span class="line">cols_to_drop = corr.index.to_list() </span><br><span class="line">df = df.drop(cols_to_drop, axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="分类变量">分类变量</h4>
+<p>可以使用箱线图查找目标和分类特征之间的相关性：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns </span><br><span class="line"> </span><br><span class="line">sns.boxplot(y = <span class="string">&#x27;price&#x27;</span>, x = <span class="string">&#x27;fuel-type&#x27;</span>, data=df)</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/3.png" alt="img"></p>
+<p><img src="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/4.png" alt="img"></p>
+<p>柴油车的中位价高于汽油车。 这意味着这个分类变量可以解释汽车价格，所以整个特征是具有相关性的。从第二个箱线图也可以看出普通吸入方式和涡轮增压两个对于汽车价格也具有相关性。</p>
+<h3 id="低方差特征">低方差特征</h3>
+<p>检查一下各个特征的差异：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np </span><br><span class="line"> </span><br><span class="line"><span class="comment"># variance of numeric features </span></span><br><span class="line">(df </span><br><span class="line"> .select_dtypes(include=np.number) </span><br><span class="line"> .var() </span><br><span class="line"> .astype(<span class="string">&#x27;str&#x27;</span>))</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/5.png" alt="image-20220520101044816"></p>
+<p>这里的“symboling”具有极低的方差，虽然这是删除的候选者， 在这个数据集中，因为它的值在-2和3之间，因此方差很低:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;symboling&#x27;</span>].describe()</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/6.png" alt="image-20220520101329463"></p>
+<p>另两个特征“height”和“width”，他们的方差都不高，而且他们的取值也很大，所以可以删除这两个特征。</p>
+<p><img src="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/8.png" alt="image-20220520101845865"><img src="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/7.png" alt="image-20220520101830675"></p>
+<h3 id="多重共线性">多重共线性</h3>
+<p>当任何两个特征之间存在相关性时，就会出现多重共线性。 在机器学习中，期望每个特征都应该独立于其他特征，即它们之间没有共线性。 如高马力车辆往往具有高发动机尺寸。 所以你可能想消除其中一个，让另一个决定目标变量——价格。</p>
+<p>我们可以分别测试数字和分类特征的多重共线性：</p>
+<h4 id="数值变量-2">数值变量</h4>
+<p>Heatmap 是检查和寻找相关特征的最简单方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt </span><br><span class="line"> </span><br><span class="line">sns.<span class="built_in">set</span>(rc=&#123;<span class="string">&#x27;figure.figsize&#x27;</span>:(<span class="number">16</span>,<span class="number">10</span>)&#125;) </span><br><span class="line">sns.heatmap(df.corr(), </span><br><span class="line">            annot=<span class="literal">True</span>, </span><br><span class="line">            linewidths=<span class="number">.5</span>, </span><br><span class="line">            center=<span class="number">0</span>, </span><br><span class="line">            cbar=<span class="literal">False</span>, </span><br><span class="line">            cmap=<span class="string">&quot;PiYG&quot;</span>) </span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/9.png" alt="img"></p>
+<p>大多数特征在某种程度上相互关联，但有些特征具有非常高的相关性，例如长度与轴距以及发动机尺寸与马力。</p>
+<p>可以根据相关阈值手动或以编程方式删除这些功能。 我将手动删除具有 0.80 共线性阈值的特征。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># drop correlated features </span></span><br><span class="line">df = df.drop([<span class="string">&#x27;length&#x27;</span>, <span class="string">&#x27;width&#x27;</span>, <span class="string">&#x27;curb-weight&#x27;</span>, <span class="string">&#x27;engine-size&#x27;</span>, <span class="string">&#x27;city-mpg&#x27;</span>], axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>还可以使用称为方差膨胀因子 (VIF) 的方法来确定多重共线性并根据高 VIF 值删除特征。</p>
+<h4 id="分类变量-2">分类变量</h4>
+<p>检查分类变量之间的共线性，诸如独立性卡方检验之类的统计检验。</p>
+<p>检查一下数据集中的两个分类列——燃料类型和车身风格——是独立的还是相关的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df_cat = df[[<span class="string">&#x27;fuel-type&#x27;</span>, <span class="string">&#x27;body-style&#x27;</span>]] </span><br><span class="line">df_cat.sample(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/10.png" alt="image-20220520103040597"></p>
+<p>然后在每一列中创建一个类别的交叉表/列联表。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">crosstab = pd.crosstab(df_cat[<span class="string">&#x27;fuel-type&#x27;</span>], df_cat[<span class="string">&#x27;body-style&#x27;</span>]) </span><br><span class="line">crosstab</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/11.png" alt="image-20220520103157014"></p>
+<p>最后在交叉表上运行卡方检验，其结果将说明这两个特征是否独立。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> chi2_contingency </span><br><span class="line"> </span><br><span class="line">chi2_contingency(crosstab)</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/12.png" alt="image-20220520103313909"></p>
+<p>输出依次是卡方值、p 值、自由度和预期频率数组。</p>
+<p>因为 p 值 &lt;0.05，因此可以拒绝特征之间没有关联的原假设，即两个特征之间存在统计上的显著关系。由于这两个特征之间存在关联，可以选择删除其中一个。</p>
+<h2 id="实现模型之后">实现模型之后</h2>
+<p>到目前为止已经展示了在实现模型之前应用的特征选择策略。 这些策略在第一轮特征选择以建立初始模型时很有用。 但是一旦构建了模型，就可以获得有关模型性能中每个特征的适应度的更多信息。 根据这些新信息，可以进一步确定要保留哪些功能。</p>
+<p>下面使用最简单的线性模型展示其中的一些方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># drop columns with missing values </span></span><br><span class="line">df = df.dropna() </span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split </span><br><span class="line"><span class="comment"># get dummies for categorical features </span></span><br><span class="line">df = pd.get_dummies(df, drop_first=<span class="literal">True</span>) </span><br><span class="line"><span class="comment"># X features </span></span><br><span class="line">X = df.drop(<span class="string">&#x27;price&#x27;</span>, axis=<span class="number">1</span>) </span><br><span class="line"><span class="comment"># y target </span></span><br><span class="line">y = df[<span class="string">&#x27;price&#x27;</span>] </span><br><span class="line"><span class="comment"># split data into training and testing set </span></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="number">0.3</span>, random_state=<span class="number">42</span>) </span><br><span class="line"> </span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression </span><br><span class="line"><span class="comment"># scaling </span></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler </span><br><span class="line">scaler = StandardScaler() </span><br><span class="line">X_train = scaler.fit_transform(X_train) </span><br><span class="line">X_test = scaler.fit_transform(X_test) </span><br><span class="line"><span class="comment"># convert back to dataframe </span></span><br><span class="line">X_train = pd.DataFrame(X_train, columns = X.columns.to_list()) </span><br><span class="line">X_test = pd.DataFrame(X_test, columns = X.columns.to_list()) </span><br><span class="line"><span class="comment"># instantiate model </span></span><br><span class="line">model = LinearRegression()<span class="comment"># fit </span></span><br><span class="line">model.fit(X_train, y_train)</span><br></pre></td></tr></table></figure>
+<p>现在已经拟合了模型，下面进行另一轮特征选择。</p>
+<h3 id="特征系数">特征系数</h3>
+<p>如果正在运行回归任务，则特征适应度的一个关键指标是回归系数（所谓的 beta 系数），它显示了模型中特征的相对贡献。 有了这些信息，可以删除贡献很小或没有贡献的功能。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># feature coefficients </span></span><br><span class="line">coeffs = model.coef_ </span><br><span class="line"> </span><br><span class="line"><span class="comment"># visualizing coefficients </span></span><br><span class="line">index = X_train.columns.tolist() </span><br><span class="line"> </span><br><span class="line">(pd.DataFrame(coeffs, index = index, columns = [<span class="string">&#x27;coeff&#x27;</span>]).sort_values(by = <span class="string">&#x27;coeff&#x27;</span>) </span><br><span class="line"> .plot(kind=<span class="string">&#x27;barh&#x27;</span>, figsize=(<span class="number">4</span>,<span class="number">10</span>)))</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/13.png" alt="img"></p>
+<p>某些特征beta 系数很小，对汽车价格的预测贡献不大。 可以过滤掉这些特征：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># filter variables near zero coefficient value </span></span><br><span class="line">temp = pd.DataFrame(coeffs, index = index, columns = [<span class="string">&#x27;coeff&#x27;</span>]).sort_values(by = <span class="string">&#x27;coeff&#x27;</span>) </span><br><span class="line">temp = temp[(temp[<span class="string">&#x27;coeff&#x27;</span>]&gt;<span class="number">1</span>) | (temp[<span class="string">&#x27;coeff&#x27;</span>]&lt; -<span class="number">1</span>)] </span><br><span class="line"> </span><br><span class="line"><span class="comment"># drop those features </span></span><br><span class="line">cols_coeff = temp.index.to_list() </span><br><span class="line">X_train = X_train[cols_coeff] </span><br><span class="line">X_test = X_test[cols_coeff]</span><br></pre></td></tr></table></figure>
+<h3 id="p-值">p 值</h3>
+<p>在回归任务中，p 值告诉我们预测变量和目标之间的关系是否具有统计显著性。 statsmodels 库提供了带有特征系数和相关 p 值的回归输出的函数。</p>
+<p>如果某些特征不显著，可以将它们一个一个移除，然后每次重新运行模型，直到找到一组具有显著 p 值的特征，并通过更高的调整 R2 提高性能。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> statsmodels.api <span class="keyword">as</span> sm </span><br><span class="line">ols = sm.OLS(y, X).fit() </span><br><span class="line"><span class="built_in">print</span>(ols.summary())</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/14.png" alt="image-20220520104330245"></p>
+<p>如上面的“curb-weight”特征的 p 值只有0.001，可以删除。</p>
+<h3 id="方差膨胀因子-VIF">方差膨胀因子 (VIF)</h3>
+<p>方差膨胀因子 (VIF) 是衡量多重共线性的另一种方法。 它定义为整体模型方差与每个独立特征的方差的比率。 一个特征的高 VIF 表明它与一个或多个其他特征相关。 根据经验：</p>
+<ul>
+<li>VIF = 1 表示无相关性</li>
+<li>VIF = 1-5 中等相关性</li>
+<li>VIF &gt; 5 高相关</li>
+</ul>
+<p>VIF 是一种消除多重共线性特征的有用技术。 这里将所有 VIF 高于10的删除。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> statsmodels.stats.outliers_influence <span class="keyword">import</span> variance_inflation_factor </span><br><span class="line"> </span><br><span class="line"><span class="comment"># calculate VIF </span></span><br><span class="line">vif = pd.Series([variance_inflation_factor(X.values, i) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(X.shape[<span class="number">1</span>])], index=X.columns) </span><br><span class="line"> </span><br><span class="line"><span class="comment"># display VIFs in a table </span></span><br><span class="line">index = X_train.columns.tolist() </span><br><span class="line">vif_df = pd.DataFrame(vif, index = index, columns = [<span class="string">&#x27;vif&#x27;</span>]).sort_values(by = <span class="string">&#x27;vif&#x27;</span>, ascending=<span class="literal">False</span>) </span><br><span class="line">vif_df[vif_df[<span class="string">&#x27;vif&#x27;</span>]&lt;<span class="number">10</span>]</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/15.png" alt="image-20220520104823147"></p>
+<h3 id="基于特征重要性选择">基于特征重要性选择</h3>
+<p>决策树/随机森林使用一个特征来分割数据，该特征最大程度地减少了杂质(以基尼系数杂质或信息增益衡量)。 找到最佳特征是算法如何在分类任务中工作的关键部分。 我们可以通过 feature_importances_ 属性访问最好的特征。</p>
+<p>让我们在我们的数据集上实现一个随机森林模型并过滤一些特征。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier </span><br><span class="line"> </span><br><span class="line"><span class="comment"># instantiate model </span></span><br><span class="line">model = RandomForestClassifier(n_estimators=<span class="number">200</span>, random_state=<span class="number">0</span>) </span><br><span class="line"><span class="comment"># fit model </span></span><br><span class="line">model.fit(X,y)</span><br></pre></td></tr></table></figure>
+<p>现在让我们看看特征重要性：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  feature importance </span></span><br><span class="line">importances = model.feature_importances_ </span><br><span class="line"> </span><br><span class="line"><span class="comment"># visualization </span></span><br><span class="line">cols = X.columns </span><br><span class="line">(pd.DataFrame(importances, cols, columns = [<span class="string">&#x27;importance&#x27;</span>]) </span><br><span class="line"> .sort_values(by=<span class="string">&#x27;importance&#x27;</span>, ascending=<span class="literal">True</span>) </span><br><span class="line"> .plot(kind=<span class="string">&#x27;barh&#x27;</span>, figsize=(<span class="number">4</span>,<span class="number">10</span>)))</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/16.png" alt="img"></p>
+<p>上面的输出显示了每个特征在减少每个节点/拆分处的重要性。</p>
+<p>由于随机森林分类器有很多估计量（例如上面例子中的 200 棵决策树），可以用置信区间计算相对重要性的估计值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># calculate standard deviation of feature importances  </span></span><br><span class="line">std = np.std([i.feature_importances_ <span class="keyword">for</span> i <span class="keyword">in</span> model.estimators_], axis=<span class="number">0</span>) </span><br><span class="line"> </span><br><span class="line"><span class="comment"># visualization </span></span><br><span class="line">feat_with_importance  = pd.Series(importances, X.columns) </span><br><span class="line">fig, ax = plt.subplots(figsize=(<span class="number">12</span>,<span class="number">5</span>)) </span><br><span class="line">feat_with_importance.plot.bar(yerr=std, ax=ax) </span><br><span class="line">ax.set_title(<span class="string">&quot;Feature importances&quot;</span>) </span><br><span class="line">ax.set_ylabel(<span class="string">&quot;Mean decrease in impurity&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/17.png" alt="img"></p>
+<p>现在我们知道了每个特征的重要性，可以手动或以编程方式确定保留哪些特征以及删除哪些特征。</p>
+<h3 id="使用-Scikit-Learn-自动选择特征">使用 Scikit Learn 自动选择特征</h3>
+<p>sklearn 库中有一个完整的模块，只需几行代码即可处理特征选择。</p>
+<p>sklearn 中有许多自动化流程，但这里只展示一些：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># import modules </span></span><br><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> (SelectKBest, chi2, SelectPercentile, SelectFromModel, SequentialFeatureSelector, SequentialFeatureSelector)</span><br></pre></td></tr></table></figure>
+<h4 id="基于卡方的技术">基于卡方的技术</h4>
+<p>基于卡方的技术根据一些预定义的分数选择特定数量的用户定义特征 (k)。 这些分数是通过计算 X（独立）和 y（因）变量之间的卡方统计量来确定的。 在 sklearn 中，需要做的就是确定要保留多少特征。 如果想保留 10 个功能，实现将如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># select K best features </span></span><br><span class="line">X_best = SelectKBest(chi2, k=<span class="number">10</span>).fit_transform(X,y) </span><br><span class="line"> </span><br><span class="line"><span class="comment"># number of best features </span></span><br><span class="line">X_best.shape[<span class="number">1</span>] </span><br><span class="line"> </span><br><span class="line">&gt;&gt; <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<p>如果有大量特征，可以指定要保留的特征百分比。 假设我们想要保留 75% 的特征并丢弃剩余的 25%：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># keep 75% top features  </span></span><br><span class="line">X_top = SelectPercentile(chi2, percentile = <span class="number">75</span>).fit_transform(X,y) </span><br><span class="line"> </span><br><span class="line"><span class="comment"># number of best features </span></span><br><span class="line">X_top.shape[<span class="number">1</span>] </span><br><span class="line"> </span><br><span class="line">&gt;&gt; <span class="number">36</span></span><br></pre></td></tr></table></figure>
+<h4 id="正则化">正则化</h4>
+<p>正则化减少了过拟合。 如果有太多的特征，正则化控制它们的效果，或者通过缩小特征系数（称为 L2 正则化）或将一些特征系数设置为零（称为 L1 正则化）。</p>
+<p>一些模型具有内置的 L1/L2 正则化作为超参数来惩罚特征。 可以使用转换器 SelectFromModel 消除这些特征。</p>
+<p>下面实现一个带有惩罚 = ‘l1’ 的 LinearSVC 算法。 然后使用 SelectFromModel 删除一些特征。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># implement algorithm </span></span><br><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> LinearSVC </span><br><span class="line">model = LinearSVC(penalty= <span class="string">&#x27;l1&#x27;</span>, C = <span class="number">0.002</span>, dual=<span class="literal">False</span>) </span><br><span class="line">model.fit(X,y) </span><br><span class="line"><span class="comment"># select features using the meta transformer </span></span><br><span class="line">selector = SelectFromModel(estimator = model, prefit=<span class="literal">True</span>) </span><br><span class="line"> </span><br><span class="line">X_new = selector.transform(X) </span><br><span class="line">X_new.shape[<span class="number">1</span>] </span><br><span class="line"> </span><br><span class="line">&gt;&gt; <span class="number">2</span> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># names of selected features </span></span><br><span class="line">feature_names = np.array(X.columns) </span><br><span class="line">feature_names[selector.get_support()] </span><br><span class="line"> </span><br><span class="line">&gt;&gt; array([<span class="string">&#x27;wheel-base&#x27;</span>, <span class="string">&#x27;horsepower&#x27;</span>], dtype=<span class="built_in">object</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="序贯法">序贯法</h4>
+<p>序贯法是一种经典的统计技术。 在这种情况下一次添加/删除一个功能并检查模型性能，直到它针对需求进行优化。</p>
+<p>序贯法有两种变体。 前向选择技术从 0 特征开始，然后添加一个最大程度地减少错误的特征； 然后添加另一个特征，依此类推。</p>
+<p>向后选择在相反的方向上起作用。 模型从包含的所有特征开始并计算误差； 然后它消除了一个可以进一步减少误差的特征。 重复该过程，直到保留所需数量的特征。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># instantiate model </span></span><br><span class="line">model = RandomForestClassifier(n_estimators=<span class="number">100</span>, random_state=<span class="number">0</span>) </span><br><span class="line"> </span><br><span class="line"><span class="comment"># select features </span></span><br><span class="line">selector = SequentialFeatureSelector(estimator=model, n_features_to_select=<span class="number">10</span>, direction=<span class="string">&#x27;backward&#x27;</span>, cv=<span class="number">2</span>) </span><br><span class="line">selector.fit_transform(X,y) </span><br><span class="line"> </span><br><span class="line"><span class="comment"># check names of features selected </span></span><br><span class="line">feature_names = np.array(X.columns) </span><br><span class="line">feature_names[selector.get_support()] </span><br><span class="line"> </span><br><span class="line">&gt;&gt; array([<span class="string">&#x27;bore&#x27;</span>, <span class="string">&#x27;make_mitsubishi&#x27;</span>, <span class="string">&#x27;make_nissan&#x27;</span>, <span class="string">&#x27;make_saab&#x27;</span>, </span><br><span class="line">       <span class="string">&#x27;aspiration_turbo&#x27;</span>, <span class="string">&#x27;num-of-doors_two&#x27;</span>, <span class="string">&#x27;body style_hatchback&#x27;</span>, <span class="string">&#x27;engine-type_ohc&#x27;</span>, <span class="string">&#x27;num-of-cylinders_twelve&#x27;</span>, <span class="string">&#x27;fuel-system_spdi&#x27;</span>], dtype=<span class="built_in">object</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="主成分分析-PCA">主成分分析 (PCA)</h3>
+<p>PCA的主要目的是降低高维特征空间的维数。原始特征被重新投影到新的维度（即主成分）。 最终目标是找到最能解释数据方差的特征数量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># import PCA module </span></span><br><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA </span><br><span class="line"><span class="comment"># scaling data </span></span><br><span class="line">X_scaled = scaler.fit_transform(X) </span><br><span class="line"><span class="comment"># fit PCA to data </span></span><br><span class="line">pca = PCA() </span><br><span class="line">pca.fit(X_scaled) </span><br><span class="line">evr = pca.explained_variance_ratio_ </span><br><span class="line"> </span><br><span class="line"><span class="comment"># visualizing the variance explained by each principal components </span></span><br><span class="line">plt.figure(figsize=(<span class="number">12</span>, <span class="number">5</span>)) </span><br><span class="line">plt.plot(<span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(evr)), evr.cumsum(), marker=<span class="string">&quot;o&quot;</span>, linestyle=<span class="string">&quot;--&quot;</span>) </span><br><span class="line">plt.xlabel(<span class="string">&quot;Number of components&quot;</span>) </span><br><span class="line">plt.ylabel(<span class="string">&quot;Cumulative explained variance&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/18.png" alt="img"></p>
+<p>20 个主成分解释了超过 80% 的方差，因此可以将模型拟合到这 20 个成分（特征）。 可以预先确定方差阈值并选择所需的主成分数量。</p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/05/20/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E6%80%BB%E7%BB%93/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Knowledge-summary/" rel="tag">Knowledge summary</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2022/05/23/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-23/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Leetcode之每日一题：2022-5-23
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2022/05/19/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-19/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Leetcode之每日一题：2022-5-19</div>
+      </a>
+    
+  </nav>
+
+  
+   
+    
+    <script src="https://cdn.staticfile.org/twikoo/1.4.18/twikoo.all.min.js"></script>
+    <div id="twikoo" class="twikoo"></div>
+    <script>
+        twikoo.init({
+            envId: ""
+        })
+    </script>
+ 
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2022
+        <i class="ri-heart-fill heart_icon"></i> Lu Dong
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="LD_blog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.staticfile.org/justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/mathjax/2.7.7/MathJax.js"></script>
+<script src="https://cdn.staticfile.org/mathjax/2.7.7/config/TeX-AMS-MML_HTMLorMML-full.js"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+ 
+    
+        <link rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.15.1/katex.min.css">
+        <script src="https://cdn.staticfile.org/KaTeX/0.15.1/katex.min.js"></script>
+        <script src="https://cdn.staticfile.org/KaTeX/0.15.1/contrib/auto-render.min.js"></script>
+        
+    
+ 
+<!-- busuanzi  -->
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.staticfile.org/clipboard.js/2.0.10/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    
+
+  </div>
+</body>
+
+</html>
