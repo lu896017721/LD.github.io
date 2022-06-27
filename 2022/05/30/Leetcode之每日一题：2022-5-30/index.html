@@ -111,7 +111,7 @@
 <p>每个方块都从一个比目前所有的落地方块更高的高度掉落而下。方块沿 y 轴负方向下落，直到着陆到 另一个正方形的顶边 或者是 x 轴上 。一个方块仅仅是擦过另一个方块的左侧边或右侧边不算着陆。一旦着陆，它就会固定在原地，无法移动。</p>
 <p>在每个方块掉落后，你必须记录目前所有已经落稳的 方块堆叠的最高高度 。</p>
 <p>返回一个整数数组 ans ，其中 ans[i] 表示在第 i 块方块掉落后堆叠的最高高度。</p>
-<h3 id="示例">示例</h3>
+<h3 id="示例-7">示例</h3>
 <ol>
 <li>
 <p>输入：positions = [[1,2],[2,3],[6,1]]</p>
@@ -123,41 +123,41 @@
 <p>2.输入：positions = [[100,100],[200,100]]</p>
 <p>输出：[100,100]</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">解释：</span><br><span class="line"></span><br><span class="line">第 1 个方块掉落后，最高的堆叠由方块 1 组成，堆叠的最高高度为 100 。</span><br><span class="line"></span><br><span class="line">第 2 个方块掉落后，最高的堆叠可以由方块 1 组成也可以由方块 2 组成，堆叠的最高高度为 100 。</span><br><span class="line"></span><br><span class="line">因此，返回 [100, 100] 作为答案。</span><br><span class="line"></span><br><span class="line">注意，方块 2 擦过方块 1 的右侧边，但不会算作在方块 1 上着陆。</span><br></pre></td></tr></table></figure>
-<h3 id="提示">提示</h3>
+<h3 id="提示-3">提示</h3>
 <p>$ 1 &lt;= positions.length &lt;= 1000$</p>
-<p>​    <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>&lt;</mo><mo>=</mo><mi>l</mi><mi>e</mi><mi>f</mi><mi>t</mi><mi>i</mi><mo>&lt;</mo><mo>=</mo><mn>1</mn><msup><mn>0</mn><mn>8</mn></msup></mrow><annotation encoding="application/x-tex">1 &lt;= lefti &lt;= 10^8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68354em;vertical-align:-0.0391em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault">t</span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span></span></span></span></p>
+<p>​    $1 &lt;= lefti &lt;= 10^8$</p>
 <p>$ 1 &lt;= sideLengthi &lt;= 10^6$</p>
-<h3 id="来源">来源</h3>
+<h3 id="来源-7">来源</h3>
 <p>力扣（LeetCode）,链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/falling-squares">https://leetcode.cn/problems/falling-squares</a></p>
-<h3 id="问题解答">问题解答</h3>
+<h3 id="问题解答-7">问题解答</h3>
 <h4 id="暴力枚举">暴力枚举</h4>
 <p>用数组 heights 记录各个方块掉落后的高度。对于第 i 个掉落的方块，如果它的底部区间与第 j 个掉落的方块有重叠，那么它掉落后的高度至少为 heights[j]+sizei，其中 j&lt;i且 sizei为第 i 个掉落的方块的边长。因此对于第 i 个掉落的方块，heights[i] 的初始值为 sizei，我们暴力枚举所有之前已经掉落的方块，如果两者的底部区间有重叠，那么更新heights[i] = max⁡(heights[i],heights[j]+sizei)。</p>
 <p>因为题目要求返回一个所有已经落稳的方块的最大堆叠高度列表，我们从 i=1 开始，更新 heights[i]=max⁡(heights[i],heights[i−1])，然后返回 heights 即可。</p>
-<h5 id="代码">代码</h5>
+<h5 id="代码-10">代码</h5>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">fallingSquares</span>(<span class="params">self, positions: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span><br><span class="line">        n = <span class="built_in">len</span>(positions)</span><br><span class="line">        heights = [<span class="number">0</span>] * n</span><br><span class="line">        <span class="keyword">for</span> i, (left1, side1) <span class="keyword">in</span> <span class="built_in">enumerate</span>(positions):</span><br><span class="line">            right1 = left1 + side1 - <span class="number">1</span></span><br><span class="line">            heights[i] = side1</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i):</span><br><span class="line">                left2, right2 = positions[j][<span class="number">0</span>], positions[j][<span class="number">0</span>] + positions[j][<span class="number">1</span>] - <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> right1 &gt;= left2 <span class="keyword">and</span> right2 &gt;= left1:</span><br><span class="line">                    heights[i] = <span class="built_in">max</span>(heights[i], heights[j] + side1)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">            heights[i] = <span class="built_in">max</span>(heights[i], heights[i - <span class="number">1</span>])</span><br><span class="line">        <span class="keyword">return</span> heights</span><br></pre></td></tr></table></figure>
-<h5 id="作者">作者</h5>
+<h5 id="作者-6">作者</h5>
 <p>LeetCode-Solution，链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/falling-squares/solution/diao-luo-de-fang-kuai-by-leetcode-soluti-2dmw/">https://leetcode.cn/problems/falling-squares/solution/diao-luo-de-fang-kuai-by-leetcode-soluti-2dmw/</a></p>
 <h2 id="问题2描述">问题2描述</h2>
 <h3 id="题目：从根到叶的二进制数之和">题目：从根到叶的二进制数之和</h3>
 <p>给出一棵二叉树，其上每个结点的值都是 0 或 1 。每一条从根到叶的路径都代表一个从最高有效位开始的二进制数。例如，如果路径为 0 -&gt; 1 -&gt; 1 -&gt; 0 -&gt; 1，那么它表示二进制数 01101，也就是 13 。</p>
 <p>对树上的每一片叶子，我们都要找出从根到该叶子的路径所表示的数字。</p>
 <p>返回这些数字之和。题目数据保证答案是一个 32 位 整数。</p>
-<h3 id="示例">示例</h3>
+<h3 id="示例-8">示例</h3>
 <p>输入：root = [1,0,1,0,1,0,1]<br>
 输出：22</p>
 <p><img src="/2022/05/30/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-30/2.png" alt="image-20220530182147285"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">解释：(100) + (101) + (110) + (111) = 4 + 5 + 6 + 7 = 22</span><br></pre></td></tr></table></figure>
-<h3 id="提示">提示</h3>
+<h3 id="提示-4">提示</h3>
 <ul>
 <li>树中的节点数在 <code>[1, 1000]</code> 范围内</li>
 <li><code>Node.val</code> 仅为 <code>0</code> 或 <code>1</code></li>
 </ul>
-<h3 id="来源">来源</h3>
+<h3 id="来源-8">来源</h3>
 <p>力扣（LeetCode），链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sum-of-root-to-leaf-binary-numbers">https://leetcode.cn/problems/sum-of-root-to-leaf-binary-numbers</a></p>
-<h3 id="问题解答">问题解答</h3>
+<h3 id="问题解答-8">问题解答</h3>
 <h4 id="直接遍历">直接遍历</h4>
 <p>直接对二叉树进行遍历，唯一需要做的就是在遍历一个节点时，需要更改节点的值val，其值为如果它为叶节点时，它到根节点路径对应的二进制数的值，node.val = node.val + num*2， num为父节点的值。最后将所有叶节点的节点值加起来即可。</p>
-<h4 id="代码">代码</h4>
+<h4 id="代码-11">代码</h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, val=<span class="number">0</span>, left=<span class="literal">None</span>, right=<span class="literal">None</span></span>):</span><br><span class="line">        self.val = val</span><br><span class="line">        self.left = left</span><br><span class="line">        self.right = right</span><br><span class="line"> </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">sumRootToLeaf</span>(<span class="params">self, root: <span class="type">Optional</span>[TreeNode]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> </span><br><span class="line">        leaflist = <span class="built_in">list</span>()</span><br><span class="line">        visiting = deque([root])</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">node, num</span>):</span><br><span class="line">            node.val = node.val + num*<span class="number">2</span></span><br><span class="line">            visiting.append(node)</span><br><span class="line">        <span class="keyword">while</span> visiting:</span><br><span class="line">            temp = visiting.popleft()</span><br><span class="line">            val = temp.val</span><br><span class="line">            <span class="keyword">if</span> (temp.right <span class="keyword">is</span> <span class="literal">None</span>) <span class="keyword">and</span> (temp.left <span class="keyword">is</span> <span class="literal">None</span>):</span><br><span class="line">                leaflist.append(temp)</span><br><span class="line">            <span class="keyword">elif</span> temp.right <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                add(temp.left, val)</span><br><span class="line">            <span class="keyword">elif</span> temp.left <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                add(temp.right, val)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                add(temp.left, val)</span><br><span class="line">                add(temp.right, val)</span><br><span class="line">        <span class="built_in">sum</span> = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> leaflist:</span><br><span class="line">            <span class="built_in">sum</span> += node.val</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">sum</span></span><br></pre></td></tr></table></figure>
  
       <!-- reward -->
@@ -235,6 +235,15 @@
 
    
   <nav class="article-nav">
+    
+      <a href="/2022/06/01/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-6-1/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Leetcode之每日一题：2022-6-1
+          
+        </div>
+      </a>
     
     
       <a href="/2022/05/23/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-23/" class="article-nav-link">

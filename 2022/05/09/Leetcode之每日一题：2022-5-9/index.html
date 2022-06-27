@@ -80,7 +80,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">388</span>
+            <span class="post-count">389</span>
         </span>
     </span>
 
@@ -110,7 +110,7 @@
 <p>​    如果 <code>perm[i] &lt; perm[i + 1] </code>，那么<code> s[i] == 'I'</code></p>
 <p>​    如果 <code>perm[i] &gt; perm[i + 1]</code> ，那么<code>s[i] == 'D'</code></p>
 <p>给定一个字符串 s ，重构排列 perm 并返回它。如果有多个有效排列perm，则返回其中 任何一个 。</p>
-<h3 id="示例">示例</h3>
+<h3 id="示例-6">示例</h3>
 <ol>
 <li>输入：<code>s = &quot;IDID&quot;</code></li>
 </ol>
@@ -125,17 +125,17 @@
 </li>
 </ol>
 <p>输出：<code>[3,2,0,1]</code></p>
-<h3 id="提示">提示</h3>
+<h3 id="提示-2">提示</h3>
 <ol>
-<li>$ 1 \leq s.length \leq 105$</li>
+<li>$ 1 \leq s.length \leq 10^5 $</li>
 <li>s 只包含字符 “I” 或 “D”</li>
 </ol>
-<h3 id="来源">来源</h3>
+<h3 id="来源-6">来源</h3>
 <p>力扣（LeetCode）链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/di-string-match">https://leetcode.cn/problems/di-string-match</a></p>
-<h2 id="问题解答">问题解答</h2>
-<h3 id="思路">思路</h3>
+<h2 id="问题解答-6">问题解答</h2>
+<h3 id="思路-5">思路</h3>
 <p>可以发现“III”的输出是增序，“DDD”是降序。所以某一位置出现I可以表示该位置为未分配的数字中的最小值，D则可以表示该位置为未分配的数字中的最大值。按照这样的想法，使用双指针，一个指向最小值，一个指向最大值，按照字符串s的顺序添加进列表即可。</p>
-<h3 id="代码">代码</h3>
+<h3 id="代码-9">代码</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">diStringMatch</span>(<span class="params">self, s: <span class="built_in">str</span></span>) -&gt; <span class="built_in">list</span>:</span><br><span class="line">        length = <span class="built_in">len</span>(s)</span><br><span class="line">        s = s + <span class="string">&#x27;I&#x27;</span> <span class="comment"># 因为字符串长度为n，而实际有n+1个数，所以可以加一个I或D使得字符串一个字符对应一个数</span></span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        j = length</span><br><span class="line">        result = <span class="built_in">list</span>()</span><br><span class="line">        n = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> i &lt;= j:</span><br><span class="line">            <span class="keyword">if</span> s[n] == <span class="string">&#x27;I&#x27;</span>:</span><br><span class="line">                result.append(i)</span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                result.append(j)</span><br><span class="line">                j -= <span class="number">1</span></span><br><span class="line">            n += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
  
       <!-- reward -->

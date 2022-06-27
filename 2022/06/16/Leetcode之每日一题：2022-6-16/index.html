@@ -11,7 +11,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>Leetcode之每日一题：2022-5-16 |  LD_blog</title>
+      <title>Leetcode之每日一题：2022-6-16 |  LD_blog</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -53,7 +53,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-Leetcode之每日一题：2022-5-16"
+  id="post-Leetcode之每日一题：2022-6-16"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -64,7 +64,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Leetcode之每日一题：2022-5-16
+  Leetcode之每日一题：2022-6-16
 </h1>
  
 
@@ -72,15 +72,15 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2022/05/16/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-16/" class="article-date">
-  <time datetime="2022-05-16T11:14:19.000Z" itemprop="datePublished">2022-05-16</time>
+      <a href="/2022/06/16/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-6-16/" class="article-date">
+  <time datetime="2022-06-16T07:09:08.000Z" itemprop="datePublished">2022-06-16</time>
 </a>   
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">638</span>
+            <span class="post-count">496</span>
         </span>
     </span>
 
@@ -104,43 +104,47 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h2 id="问题描述-2">问题描述</h2>
-<h3 id="题目：后继者">题目：后继者</h3>
-<p>设计一个算法，找出二叉搜索树中指定节点的“下一个”节点（也即中序后继）。如果指定节点没有对应的“下一个”节点，则返回null。</p>
-<h3 id="示例-2">示例</h3>
-<ol>
-<li>
-<p>输入: root = [2,1,3], p = 1</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  2</span><br><span class="line"> / \</span><br><span class="line">1   3</span><br></pre></td></tr></table></figure>
-<p>输出: 2</p>
-</li>
-<li>
-<p>输入: root = [5,3,6,2,4,null,null,1], p = 6</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">      5</span><br><span class="line">     / \</span><br><span class="line">    3   6</span><br><span class="line">   / \</span><br><span class="line">  2   4</span><br><span class="line"> /   </span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-<p>输出: null</p>
-</li>
-</ol>
-<h3 id="来源-2">来源</h3>
-<p>力扣（LeetCode） 链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/successor-lcci">https://leetcode.cn/problems/successor-lcci</a></p>
-<h2 id="问题解答-2">问题解答</h2>
-<h3 id="暴力法-2">暴力法</h3>
-<h4 id="思想">思想</h4>
-<p>先中序遍历树得到节点遍历顺序列表，再一一对比找出指定节点及其下一个节点。</p>
-<h4 id="代码-3">代码</h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x</span>):</span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inorderSuccessor</span>(<span class="params">self, root: TreeNode, p: TreeNode</span>) -&gt; TreeNode:</span><br><span class="line">        result = <span class="built_in">list</span>()</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">getitem</span>(<span class="params">rootnode</span>):</span><br><span class="line">            <span class="keyword">if</span> rootnode <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            getitem(rootnode.left)</span><br><span class="line">            result.append(rootnode)</span><br><span class="line">            getitem(rootnode.right)</span><br><span class="line">        getitem(root)</span><br><span class="line">        <span class="keyword">for</span> i, j <span class="keyword">in</span> <span class="built_in">enumerate</span>(result):</span><br><span class="line">            <span class="keyword">if</span> j <span class="keyword">is</span> p:</span><br><span class="line">                <span class="keyword">if</span> i &lt; <span class="built_in">len</span>(result) - <span class="number">1</span>:</span><br><span class="line">                    <span class="keyword">return</span> result[i+<span class="number">1</span>]</span><br><span class="line">        		<span class="keyword">else</span>:</span><br><span class="line">            		<span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">         <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
-<h4 id="改进">改进</h4>
-<p>因为只需要找出指定节点的下一个节点，所以可以用两个指针，一个指向当前节点的上一个节点，一个指向当前节点；若上一个节点是指定节点，则返回当前节点，否则返回null。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inorderSuccessor</span>(<span class="params">self, root: TreeNode, p: TreeNode</span>) -&gt; TreeNode:</span><br><span class="line">        <span class="keyword">global</span> last, now </span><br><span class="line">        last = <span class="literal">None</span></span><br><span class="line">        now = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">getitem</span>(<span class="params">rootnode</span>):</span><br><span class="line">            <span class="keyword">global</span> last, now</span><br><span class="line">            <span class="keyword">if</span> rootnode <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            getitem(rootnode.left)</span><br><span class="line">            <span class="keyword">if</span> last <span class="keyword">is</span> p:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            last = now</span><br><span class="line">            now = rootnode  </span><br><span class="line">            getitem(rootnode.right)</span><br><span class="line">        getitem(root)</span><br><span class="line">        <span class="keyword">if</span> last <span class="keyword">is</span> p:</span><br><span class="line">            <span class="keyword">return</span> now</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
-<h2 id="BST-特性-递归">BST 特性 + 递归</h2>
-<h4 id="思路-2">思路</h4>
-<p>利用 BST 的特性，我们可以根据当前节点 root 与 p 的值大小关系来确定搜索方向：</p>
+  <h2 id="问题描述-8">问题描述</h2>
+<h3 id="题目：数组中的-k-diff-数对">题目：数组中的 k-diff 数对</h3>
+<p>给你一个整数数组 nums 和一个整数 k，请你在数组中找出 不同的 k-diff 数对，并返回不同的 k-diff 数对 的数目。k-diff 数对定义为一个整数对 (nums[i], nums[j]) ，并满足下述全部条件：</p>
 <ul>
-<li>若有<code>root.val &lt;= p.val</code>: 根据 BST 特性可知当前节点 root 及其左子树子节点均满足「值小于等于 p.val」，因此不可能是 p 点的后继，我们直接到 root 的右子树搜索 p 的后继（递归处理）；</li>
-<li>若有 <code>root.val &gt; p.val </code>: 当第一次搜索到满足此条件的节点时，在以 root 为根节点的子树中「位于最左下方」的值为 p 的后继，但也有可能 root 没有左子树，因此 p 的后继要么在 root 的左子树中（若有），要么是 root 本身，此时我们可以直接到 root 的左子树搜索，若搜索结果为空返回 root，否则返回搜索结果。</li>
+<li>
+<p>0 &lt;= i, j &lt; nums.length</p>
+</li>
+<li>
+<p>i != j</p>
+</li>
+<li>
+<p>nums[i] - nums[j] == k</p>
+<p>注意，|val| 表示 val 的绝对值。</p>
+</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inorderSuccessor</span>(<span class="params">self, root: TreeNode, p: TreeNode</span>) -&gt; TreeNode:</span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>: <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="keyword">if</span> root.val &lt;= p.val: </span><br><span class="line">            <span class="keyword">return</span> self.inorderSuccessor(root.right, p)</span><br><span class="line">        ans = self.inorderSuccessor(root.left, p)</span><br><span class="line">        <span class="keyword">return</span> root <span class="keyword">if</span> ans <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">else</span> ans</span><br></pre></td></tr></table></figure>
-<h4 id="作者-2">作者</h4>
-<p>AC_OIer，链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/successor-lcci/solution/by-ac_oier-xib5/">https://leetcode.cn/problems/successor-lcci/solution/by-ac_oier-xib5/</a></p>
+<h3 id="示例-11">示例</h3>
+<ol>
+<li></li>
+</ol>
+   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [3, 1, 4, 1, 5], k = 2</span><br><span class="line"></span><br><span class="line">输出：2</span><br><span class="line"></span><br><span class="line">解释：数组中有两个 2-diff 数对, (1, 3) 和 (3, 5)。尽管数组中有两个1，但我们只应返回不同的数对的数量。</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li></li>
+</ol>
+   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [1, 2, 3, 4, 5], k = 1</span><br><span class="line"></span><br><span class="line">输出：4</span><br><span class="line"></span><br><span class="line">解释：数组中有四个 1-diff 数对, (1, 2), (2, 3), (3, 4) 和 (4, 5) 。</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li></li>
+</ol>
+   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [1, 3, 1, 5, 4], k = 0</span><br><span class="line"></span><br><span class="line">输出：1</span><br><span class="line"></span><br><span class="line">解释：数组中只有一个 0-diff 数对，(1, 1) 。</span><br></pre></td></tr></table></figure>
+<h3 id="提示-7">提示</h3>
+<ul>
+<li>1 &lt;= nums.length &lt;= $10^4$</li>
+<li>$-10^7$ &lt;= nums[i] &lt;= $10^7$</li>
+<li>0 &lt;= k &lt;= $10^7$</li>
+</ul>
+<h3 id="来源-11">来源</h3>
+<p>力扣（LeetCode）,链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/k-diff-pairs-in-an-array">https://leetcode.cn/problems/k-diff-pairs-in-an-array</a></p>
+<h2 id="问题解答-11">问题解答</h2>
+<h3 id="双指针法">双指针法</h3>
+<p>对于乱序的列表进行处理，可能只能暴力穷举，但如果是排好序的列表，如从高到低排好序，位置i和位置j（j &gt; i）的差小于 k ，那么 i 与 j 之间的数都不会间隔 k ， 等于 k 的数只会在 j 的后面（固定 i ），如果大于 k ，那么等于 k 的数就会在 i 的前面（固定 j ）。如果等于 k ，那么这就是一对满足条件的数对。移动 i ，那么就可以找到所有满足条件的数对。</p>
+<h3 id="代码-13">代码</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">findPairs</span>(<span class="params">self, nums: <span class="built_in">list</span>, k: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        nums.sort(reverse=<span class="literal">True</span>)</span><br><span class="line">        result = <span class="built_in">set</span>() <span class="comment"># 这样避免重复数对</span></span><br><span class="line">        length = <span class="built_in">len</span>(nums)</span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        j = <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> j &lt; length:</span><br><span class="line">            <span class="keyword">if</span> nums[i] - nums[j] &gt; k:</span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> i &gt;= j :</span><br><span class="line">                    j += <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> nums[i] - nums[j] &lt; k:</span><br><span class="line">                j += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                result.add((nums[j],nums[i]))</span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> i &gt;= j :</span><br><span class="line">                    j += <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(result) </span><br></pre></td></tr></table></figure>
  
       <!-- reward -->
       
@@ -205,7 +209,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/05/16/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-16/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/06/16/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-6-16/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -218,19 +222,19 @@
    
   <nav class="article-nav">
     
-      <a href="/2022/05/18/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-18/" class="article-nav-link">
+      <a href="/2022/06/27/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-6-27/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            Leetcode之每日一题：2022-5-18
+            Leetcode之每日一题：2022-6-27
           
         </div>
       </a>
     
     
-      <a href="/2022/05/12/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-12/" class="article-nav-link">
+      <a href="/2022/06/07/Python%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Leetcode之每日一题：2022-5-12</div>
+        <div class="article-nav-title">Python连接MySQL数据库</div>
       </a>
     
   </nav>

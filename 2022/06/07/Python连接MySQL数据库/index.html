@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>Python连接MySQL数据库 |  LD_blog</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      
+<link rel="stylesheet" href="/css/fonts/remixicon.css">
+
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    <link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-Python连接MySQL数据库"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Python连接MySQL数据库
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2022/06/07/Python%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/" class="article-date">
+  <time datetime="2022-06-07T06:46:33.000Z" itemprop="datePublished">2022-06-07</time>
+</a>   
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">3.1k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">13 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h1>01 MySQL安装和设置</h1>
+<p>这里不详细介绍，可以参考B站视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV12b411K7Zu?spm_id_from=333.337.search-card.all.click">MySQL_基础+高级篇- 数据库 -sql -mysql教程_mysql视频_mysql入门_尚硅谷</a></p>
+<h1>02 Python操作MySQL</h1>
+<p>目前，关于Python操作数据库主要有以下几种方法：</p>
+<ul>
+<li><strong>MySQLdb的使用</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MySQLdb是用于Python连接MySQL数据库的接口，它实现了Python数据库API规范V2.0，基于MySQL C API上建立的，目前只支持Python2.x。</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>PyMySQL的使用</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PyMySQL是Python中用于连接MySQL服务器的一个库，它支持Python3.x，是一个纯Python写的MySQL客户端，它的目标是替代MySQLdb。PyMySQL在MIT许可下发布。</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>mysql.connector 的使用</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">由于 MySQL 服务器以独立的进程运行，并通过网络对外服务，所以，需要支持 Python 的 MySQL 驱动来连接到 MySQL 服务器。</span><br><span class="line"></span><br><span class="line">目前，有两个 MySQL 驱动：</span><br><span class="line"></span><br><span class="line">1. mysql-connector-python：是 MySQL 官方的纯 Python 驱动</span><br><span class="line">2. MySQL-python ：是封装了 MySQL C驱动的 Python 驱动</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>SQLAlchemy的使用</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这是是一种ORM（Object-Relational Mapping）框架，将关系数据库的表结构映射到对象上，隐藏了数据库操作背后的细节，简化了数据操作。</span><br></pre></td></tr></table></figure>
+<h2 id="2-1在Python3-X上安装MySQL驱动">2.1在Python3.X上安装MySQL驱动</h2>
+<p>这里选择PyMySQL作为主要研究对象。安装方法和验证是否安装成功的步骤如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install pymysql</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymysql</span><br></pre></td></tr></table></figure>
+<p>如果没有产生错误，则表明安装成功。</p>
+<p>如果这里因网络原因没有安装成功，可以选择到网址 <a target="_blank" rel="noopener" href="https://pypi.org/">https://pypi.org/</a> 里面搜索pymysql下载（需要魔法）。</p>
+<h2 id="2-2-建立数据库连接"><strong>2.2 建立数据库连接</strong></h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;连接数据库，创建游标&#x27;&#x27;&#x27;</span></span><br><span class="line">connection = pymysql.connect(host=<span class="string">&#x27;localhost&#x27;</span>, <span class="comment"># IP地址，我这里用的本地地址</span></span><br><span class="line">                    port=<span class="number">3306</span>, <span class="comment"># 端口号</span></span><br><span class="line">                    user=<span class="string">&#x27;root&#x27;</span>, <span class="comment"># 用户名</span></span><br><span class="line">                    passwd=<span class="string">&#x27;123456&#x27;</span>, <span class="comment"># 密码</span></span><br><span class="line">                    charset = <span class="string">&#x27;utf8&#x27;</span> <span class="comment"># 编码方式</span></span><br><span class="line">                    )</span><br><span class="line">cursor = connection.cursor()</span><br></pre></td></tr></table></figure>
+<h2 id="2-3-创建数据库"><strong>2.3 创建数据库</strong></h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sql = <span class="string">&#x27;create database if not exists s;&#x27;</span></span><br><span class="line">cursor.execute(sql)</span><br><span class="line">connection.commit()</span><br></pre></td></tr></table></figure>
+<h2 id="2-4-创建数据表">2.4 创建数据表</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sql = <span class="string">&quot;create table stu(id int ,name varchar(20),class varchar(30),age varchar(10))&quot;</span></span><br><span class="line">cursor.execute(<span class="string">&quot;use s;&quot;</span>) </span><br><span class="line">cursor.execute(sql) </span><br><span class="line">connection.commit()</span><br></pre></td></tr></table></figure>
+<p><strong>cursor()：表示游标</strong></p>
+<p><strong>execute()：是执行语句</strong></p>
+<p><strong>commit()：是提交事务，执行语句后有这个才能对数据库进行真正的操作，也可以在创建连接时，设置autocommit = True</strong>。即：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">connection = pymysql.connect(host=<span class="string">&#x27;localhost&#x27;</span>, <span class="comment"># IP地址，我这里用的本地地址</span></span><br><span class="line">                    port=<span class="number">3306</span>, <span class="comment"># 端口号</span></span><br><span class="line">                    user=<span class="string">&#x27;root&#x27;</span>, <span class="comment"># 用户名</span></span><br><span class="line">                    passwd=<span class="string">&#x27;123456&#x27;</span>, <span class="comment"># 密码</span></span><br><span class="line">                    charset = <span class="string">&#x27;utf8&#x27;</span>, <span class="comment"># 编码方式</span></span><br><span class="line">                    autocommit = <span class="literal">True</span></span><br><span class="line">                    )</span><br></pre></td></tr></table></figure>
+<h2 id="2-5-增、改、删、查">2.5 增、改、删、查</h2>
+<h3 id="2-5-1-增">2.5.1 增</h3>
+<p>在cutomers表中插入数据用的是&quot;INSERT INTO&quot;语句。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">insert1 = <span class="string">&quot;INSERT INTO stu(id,name,class, age) Values(1,&#x27;ludong&#x27;,1,10);&quot;</span></span><br><span class="line">cursor.execute(<span class="string">&quot;use s;&quot;</span>) </span><br><span class="line">cursor.execute(insert1) </span><br><span class="line">connection.commit()</span><br></pre></td></tr></table></figure>
+<p>上面这种方式是在插入的时候，值是常量的情况，当值为变量的时候，可以采用下面这种方式，即多输入一个列表或元组来作为值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">insert2 = <span class="string">&quot;INSERT INTO stu(id,name,class, age) Values(%s,%s,%s,%s)&quot;</span></span><br><span class="line">values = [<span class="number">2</span>,<span class="string">&#x27;lisi&#x27;</span>,<span class="number">1</span>,<span class="number">10</span>]</span><br><span class="line">cursor.execute(<span class="string">&quot;use s;&quot;</span>) </span><br><span class="line">cursor.execute(insert2, values) </span><br><span class="line">connection.commit()</span><br></pre></td></tr></table></figure>
+<p>除了用一条条用execute( )插入之外，我们还可以用executemany（）的方式批量插入，也就是val中包含的是一个元组列表，包含我们想要插入的数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">insert2 = <span class="string">&quot;INSERT INTO stu(id,name,class, age) Values(%s,%s,%s,%s)&quot;</span></span><br><span class="line">values = [[<span class="number">2</span>,<span class="string">&#x27;lisi&#x27;</span>,<span class="number">1</span>,<span class="number">10</span>],[<span class="number">3</span>,<span class="string">&#x27;zhangsan&#x27;</span>,<span class="number">2</span>,<span class="number">11</span>]]</span><br><span class="line">cursor.execute(<span class="string">&quot;use s;&quot;</span>) </span><br><span class="line">cursor.executemany(insert2, values) </span><br><span class="line">connection.commit()</span><br></pre></td></tr></table></figure>
+<p>需要注意的事是：如果数据表格有更新，那么必须用到commit()语句，否则在workbench是看不到插入的数据的。执行以上代码后，回到数据库 s 下面的 stu 表格，我们可以看到最终的结果为：</p>
+<p><img src="/2022/06/07/Python%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/.%5CPython%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%5C1.png" alt="image-20220608194453767"></p>
+<h3 id="2-5-2-改">2.5.2 改</h3>
+<p>在 stu 表中更改数据用的是&quot;UPDATE&quot;语句。例如，我们将最后一条“zhangsan”的年龄改成10：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">update = <span class="string">&quot; UPDATE stu SET age=10 WHERE name=&#x27;zhangsan&#x27; &quot;</span></span><br><span class="line">cursor.execute(<span class="string">&quot;use s;&quot;</span>) </span><br><span class="line">cursor.execute(update) </span><br><span class="line">connection.commit() </span><br></pre></td></tr></table></figure>
+<p>执行代码，回到表格我们可以看到结果为：</p>
+<p><img src="/2022/06/07/Python%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/.%5CPython%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%5C2.png" alt="image-20220608194827301"></p>
+<h3 id="2-5-3-删">2.5.3 删</h3>
+<p>关于删，删除表格用的是“DROP TABLE ”语句。这里为了方便只写下代码，不执行。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">delete = <span class="string">&quot; DROP TABLE stu &quot;</span></span><br><span class="line">cursor.execute(<span class="string">&quot;use s;&quot;</span>) </span><br><span class="line">cursor.execute(update) </span><br><span class="line">connection.commit()</span><br></pre></td></tr></table></figure>
+<p>当需要删除一条数据记录时候，用到的语句是“DELETE  FROM”语句。例如：想在 stu 这个表格当中，删除重复的那两条数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">delete = <span class="string">&quot; DELETE FROM stu WHERE name=&#x27;lisi&#x27; &quot;</span></span><br><span class="line">cursor.execute(<span class="string">&quot;use s;&quot;</span>) </span><br><span class="line">cursor.execute(delete) </span><br><span class="line">connection.commit()</span><br></pre></td></tr></table></figure>
+<p>执行代码，回到 stu 我们可以看到结果为：</p>
+<p><img src="/2022/06/07/Python%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/.%5CPython%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%5C3.png" alt="image-20220608195255618"></p>
+<h3 id="2-5-4-查">2.5.4 查</h3>
+<ul>
+<li><strong>普通查询</strong></li>
+</ul>
+<p>普通查询数据用的是SELECT语句。例如：需要查询 stu 的所有信息，并且进行打印输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">sql=<span class="string">&quot;SELECT * FROM stu&quot;</span> </span><br><span class="line">cursor.execute(<span class="string">&quot;use s;&quot;</span>)  </span><br><span class="line">cursor.execute(sql)  </span><br><span class="line">myresult = cursor.fetchall()     <span class="comment"># fetchall() 获取所有记录  </span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> myresult:  </span><br><span class="line"> 	<span class="built_in">print</span>(x)  </span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;---------&quot;</span>)</span><br><span class="line">sql=<span class="string">&quot;SELECT * FROM stu&quot;</span> </span><br><span class="line">cursor.execute(<span class="string">&quot;use s;&quot;</span>)  </span><br><span class="line">cursor.execute(sql)  </span><br><span class="line">myresult = cursor.fetchone()     <span class="comment"># fetchone() 获取一条记录  </span></span><br><span class="line"><span class="built_in">print</span>(myresult)  </span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;---------&quot;</span>)</span><br><span class="line">sql=<span class="string">&quot;SELECT * FROM stu&quot;</span> </span><br><span class="line">cursor.execute(<span class="string">&quot;use s;&quot;</span>)  </span><br><span class="line">cursor.execute(sql)  </span><br><span class="line">myresult = cursor.fetchmany(size=<span class="number">2</span>)     <span class="comment"># fetchmany() 获取部分记录  </span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> myresult:  </span><br><span class="line"> 	<span class="built_in">print</span>(x)  </span><br></pre></td></tr></table></figure>
+<p>得到最终结果为：</p>
+<p><img src="/2022/06/07/Python%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/.%5CPython%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%5C4.png" alt="image-20220608201425200"></p>
+<p>值得注意的是：**fetchall()**表示的是获得所有记录；**fetchone()**表示只获取一条数据；**fetchmany(size=2)**表示获取两条记录。</p>
+<ul>
+<li><strong>限定条件查找</strong></li>
+</ul>
+<p>为了获取指定条件下的查找结果，我们可以使用where语句。例如：需要在查询 stu 的所有信息基础上，输出 class 为 2 的信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sql=<span class="string">&quot;SELECT * FROM stu WHERE class = 2&quot;</span>  </span><br><span class="line">mycursor.execute(sql)  </span><br><span class="line">myresult = mycursor.fetchall()     <span class="comment"># fetchall() 获取所有记录  </span></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> myresult:  </span><br><span class="line">  <span class="built_in">print</span>(x)  </span><br></pre></td></tr></table></figure>
+<p>最终得到的结果为：</p>
+<p><img src="/2022/06/07/Python%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/.%5CPython%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%5C5.png" alt="image-20220608202545352"></p>
+<ul>
+<li><strong>通配符查找</strong></li>
+</ul>
+<p>有时候为了进行模糊查询，可以匹配通配符，通过“LIKE”来进行查找：</p>
+<p><strong>百分号 （%）</strong>: 代表零个、一个或多个数字或字符；</p>
+<p><strong>下划线 （_）</strong>: 代表一个单一的数字或字符。</p>
+<p>例如：查出所有名字中含有do的记录：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sql=<span class="string">f&quot; SELECT * FROM stu WHERE name LIKE &#x27;%do%&#x27; &quot;</span>  </span><br><span class="line">cursor.execute(sql)  </span><br><span class="line">myresult = cursor.fetchall()      </span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> myresult:  </span><br><span class="line">  <span class="built_in">print</span>(x) </span><br></pre></td></tr></table></figure>
+<p>执行代码，我们得到的结果如下：</p>
+<p><img src="/2022/06/07/Python%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/.%5CPython%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%5C6.png" alt="image-20220608202753988"></p>
+<p>值得注意的是：但是使用Like查询时，即使我们在代码输入的是“do”，执行过程中也会将含有“Do”、“DO”、“dO”的记录同样输出，即用LIKE匹配通配符对大小写不敏感。为了区分大小写，可以用“GLOB”进行查询。详情见：<a target="_blank" rel="noopener" href="https://blog.csdn.net/diaokua8472/article/details/101640342">【SQL】glob 和 like 的区别</a></p>
+<ul>
+<li><strong>排序</strong></li>
+</ul>
+<p>查询结果排序可以使用 ORDER BY 语句，默认的排序方式为升序，如果要设置降序排序，可以设置关键字 DESC。例如：我们要按照年龄对 stu 进行升序排列：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 升序</span></span><br><span class="line">sql = <span class="string">&quot;SELECT * FROM stu ORDER BY age&quot;</span> </span><br><span class="line"><span class="comment"># 降序</span></span><br><span class="line"><span class="comment"># sql = &quot;SELECT * FROM stu ORDER BY age DESC&quot; </span></span><br><span class="line">cursor.execute(sql)  </span><br><span class="line">result=cursor.fetchall()  </span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> myresult:  </span><br><span class="line">    <span class="built_in">print</span>(x)  </span><br></pre></td></tr></table></figure>
+<p>执行代码，得到的结果为：</p>
+<p><img src="/2022/06/07/Python%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/.%5CPython%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%5C7.png" alt="image-20220608203453718"></p>
+<ul>
+<li><strong>LIMIT</strong></li>
+</ul>
+<p>当数据库数量非常大的时候，为了限制查询的数据量，可以采用&quot;LIMIT&quot;语句来指定，比如我们希望在 stu 表中找出年龄最高的三个人：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sql = <span class="string">&quot;SELECT * FROM stu ORDER BY age DESC LIMIT 2&quot;</span>  </span><br><span class="line">cursor.execute(sql)  </span><br><span class="line">result=cursor.fetchall()  </span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> myresult:  </span><br><span class="line">    <span class="built_in">print</span>(x)  </span><br></pre></td></tr></table></figure>
+<p>执行代码，得到结果为：</p>
+<p><img src="/2022/06/07/Python%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/.%5CPython%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%5C7.png" alt="image-20220608203453718"></p>
+<ul>
+<li><strong>二次筛选</strong></li>
+</ul>
+<p>有时候我们在进行一次筛选后，还需要设定一个筛选条件进行二次筛选，我们就可以采用“HAVING”语句。例如：我们希望统计在年龄处于20-30（不包括20岁，但是包括30岁）的人当中，选择薪资大于5000的消费者：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#二次过滤  </span></span><br><span class="line">sql = <span class="string">&quot;SELECT * FROM stu WHERE age=10 HAVING class=1 &quot;</span>  </span><br><span class="line">cursor.execute(sql)  </span><br><span class="line">result=cursor.fetchall()  </span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> myresult:  </span><br><span class="line">    <span class="built_in">print</span>(x)  </span><br><span class="line">con.commit()  </span><br></pre></td></tr></table></figure>
+<p>执行代码后，得到的结果如下：</p>
+<p><img src="https://www.likecs.com/default/index/img?u=aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xMDM4Njk0MC02MjkyOThjNWVhYjAxMWYxP2ltYWdlTW9ncjIvYXV0by1vcmllbnQvc3RyaXAlN0NpbWFnZVZpZXcyLzIvdy8xMjQw" alt="img"></p>
+<h2 id="3-5-分组聚合">3.5 分组聚合</h2>
+<p>在数据库中，分组常用的语句为“GROUP BY”语句，聚合函数，通常是配合分组进行使用，在数据库中常用的聚合函数为：</p>
+<ol>
+<li><strong>COUNT（*）</strong>：表示计算总行数，括号可以写*和字段名字</li>
+<li><strong>MAX（column）</strong>：表示求此列的最大值</li>
+<li><strong>MIN（column）</strong>：表示求此列的最小值</li>
+<li><strong>SUM（column）</strong>：表示求此列的和</li>
+<li><strong>AVG（column）</strong>：表示求此列的平均值</li>
+</ol>
+<ul>
+<li><strong>从customers表中统计出男女薪资总和</strong></li>
+</ul>
+<p>以sex为类别进行GROUP BY 分组，加上WHERE来做条件判断。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#统计出男女的薪水总数  </span></span><br><span class="line">sql = <span class="string">&quot;SELECT sex,sum(sl) FROM customers GROUP BY sex&quot;</span>  </span><br><span class="line">mycursor.execute(sql)  </span><br><span class="line">myresult=mycursor.fetchall()  </span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> myresult:  </span><br><span class="line">    <span class="built_in">print</span>(x)  </span><br></pre></td></tr></table></figure>
+<p>最终结果为：</p>
+<p><img src="https://www.likecs.com/default/index/img?u=aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xMDM4Njk0MC1kMTdkODdjNTg0OTcyZWE2P2ltYWdlTW9ncjIvYXV0by1vcmllbnQvc3RyaXAlN0NpbWFnZVZpZXcyLzIvdy8xMjQw" alt="img"></p>
+<ul>
+<li><strong>从customers表中，按性别进行分组，统计出年龄在20-30的消费者的薪资，并且按照薪资高低进行排序</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 按照性别进行分组，统计出年龄在20-30岁的消费者的薪资  </span><br><span class="line">sql = &quot;SELECT sex,sum(sl) FROM customers WHERE age&gt;20 and age&lt;=30 GROUP BY sex ORDER BY sl&quot;  </span><br><span class="line">mycursor.execute(sql)  </span><br><span class="line">myresult=mycursor.fetchall()  </span><br><span class="line">for x in myresult:  </span><br><span class="line">    print(x)  </span><br></pre></td></tr></table></figure>
+<p><img src="https://www.likecs.com/default/index/img?u=aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xMDM4Njk0MC01NGVjN2RlYWExNzkwOTIwP2ltYWdlTW9ncjIvYXV0by1vcmllbnQvc3RyaXAlN0NpbWFnZVZpZXcyLzIvdy8xMjQw" alt="img"></p>
+<p>值得注意的是：本例是以sex为类别进行GROUP BY 分组，加上WHERE来做条件判断，加上ORDER BY 排序，但是GROUP BY 的位置必须要在WHERE 之后，在ORDER BY 之前。</p>
+<h2 id="3-6-分批量读取和处理数据">3.6 分批量读取和处理数据</h2>
+<p>程序运行的时候，数据都是在内存中的，但是有时候如果数据量太大，内存会装不下，这个时候我们就需要分批从数据库去读取数据，然后再处理，等到处理完了之后，再去读取。比如：我们要从customers当中分批读取和处理薪资大于8000的消费者，并将其存入另一张表中。我们的做法是先新建一个表，然后从数据库当中读取3个，并且将读取的这3个进行处理，处理完读取的这三个后，再去数据库重新读取三个，直到数据库的数据读完为止。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"># 分批读取并且处理将薪资大于8000的消费者的记录存到另一张表中  </span><br><span class="line"># 创建一个临时表   </span><br><span class="line">tmpName = \&#x27;cust_tmp\&#x27;  </span><br><span class="line">dropTable(mycursor, tmpName)    </span><br><span class="line">mycursor.execute(&quot;CREATE TABLE cust_tmp(id INT AUTO_INCREMENT PRIMARY KEY,\</span><br><span class="line">                               name VARCHAR(255), address VARCHAR(255), \  </span><br><span class="line">                               sex VARCHAR(225), age INT(10), sl INT(10))&quot;)</span><br><span class="line">ins = con.cursor(buffered=True)  </span><br><span class="line">if tableExists(mycursor, tableName):  </span><br><span class="line">    print(&quot;process table: %s&quot;, tableName)  </span><br><span class="line">    # 查询表里的记录  </span><br><span class="line">    sql = &quot;SELECT * FROM customers WHERE address is not null&quot;  </span><br><span class="line">    mycursor.execute(sql)  </span><br><span class="line">    # 每次处理 batchsize 条记录，直到所有查询结果处理完  </span><br><span class="line">    batchsize = 3  </span><br><span class="line">    readsize = batchsize  </span><br><span class="line">    while readsize == batchsize:  </span><br><span class="line">        print(&quot;before batch&quot;)  </span><br><span class="line">        myresult = mycursor.fetchmany(size=batchsize)  </span><br><span class="line">        for x in myresult:  </span><br><span class="line">            if x[5]&gt;8000:  </span><br><span class="line">                ins.execute(&quot;INSERT INTO&quot;+tmpName+&quot;(id,name,address,sex,age,sl) VALUES (%s, %s,%s, %s,%s,%s)&quot;, x)  </span><br><span class="line">                print(x)  </span><br><span class="line">        readsize = len(myresult)  </span><br><span class="line">else:  </span><br><span class="line">    print(&quot;table: does not exists&quot;, tableName)  </span><br><span class="line">con.commit()  </span><br><span class="line">con.close()  </span><br></pre></td></tr></table></figure>
+<p>我们回到workbench找到这个新建的表格cust_tmp，我们可以发现薪资大于8000的消费者都被记录上了：</p>
+<p><img src="https://www.likecs.com/default/index/img?u=aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xMDM4Njk0MC05NThhZDE1MGJiNGMxMjRiP2ltYWdlTW9ncjIvYXV0by1vcmllbnQvc3RyaXAlN0NpbWFnZVZpZXcyLzIvdy8xMjQw" alt="img"></p>
+<p>执行代码，我们可以看到处理的过程如下：</p>
+<p>在第一批读取的三条记录中，只有两条是满足薪资大于8000的要求，第二批读取的三条记录中，只有一条满足薪资大于8000的要求，而在第三批读取的三条记录中，没有任何记录是满足薪资大于8000的要求，当没有记录可以读的时候，程序即停止。</p>
+<p><img src="https://www.likecs.com/default/index/img?u=aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xMDM4Njk0MC0xYTRlNGRiZDZiNmEwZDkyP2ltYWdlTW9ncjIvYXV0by1vcmllbnQvc3RyaXAlN0NpbWFnZVZpZXcyLzIvdy8xMjQw" alt="img"></p>
+<h2 id="通用类">通用类</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">mycursor</span>(<span class="params">db_name=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;连接数据库，创建游标&#x27;&#x27;&#x27;</span></span><br><span class="line">    config = <span class="built_in">dict</span>(<span class="built_in">zip</span>([<span class="string">&#x27;host&#x27;</span>, <span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;port&#x27;</span>, <span class="string">&#x27;password&#x27;</span>],</span><br><span class="line">                      [<span class="string">&#x27;192.168.137.155&#x27;</span>, <span class="string">&#x27;shanger&#x27;</span>, <span class="number">3306</span>, <span class="string">&#x27;0123&#x27;</span>]))</span><br><span class="line">    config.update(database=db_name)</span><br><span class="line">    connection = pymysql.connect(**config)</span><br><span class="line">    cursor = connection.cursor()</span><br><span class="line">    <span class="keyword">return</span> cursor</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">use</span>(<span class="params">db_name</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;切换数据库，返回游标&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> mycursor(db_name)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_database</span>(<span class="params">db_name</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;新建数据库&#x27;&#x27;&#x27;</span></span><br><span class="line">    sql = <span class="string">f&#x27;create database if not exists <span class="subst">&#123;db_name&#125;</span>;&#x27;</span></span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">create_table</span>(<span class="params">tbl_name</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;新建数据库&#x27;&#x27;&#x27;</span></span><br><span class="line">    sql = <span class="string">f&#x27;create table if not exists <span class="subst">&#123;tbl_name&#125;</span>;&#x27;</span></span><br><span class="line">    cursor.execute(sql) </span><br><span class="line">    </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">drop_database</span>(<span class="params">db_name</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;删除数据库&#x27;&#x27;&#x27;</span></span><br><span class="line">    sql = <span class="string">f&#x27;drop database if exists <span class="subst">&#123;db_name&#125;</span>;&#x27;</span></span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">       </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">drop_table</span>(<span class="params">tbl_name</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;删除数据库&#x27;&#x27;&#x27;</span></span><br><span class="line">    sql = <span class="string">f&#x27;drop table if exists <span class="subst">&#123;tbl_name&#125;</span>;&#x27;</span></span><br><span class="line">    cursor.execute(sql)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">query</span>(<span class="params">sql</span>):</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;以数据框形式返回查询据结果&#x27;&#x27;&#x27;</span></span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">    data = cursor.fetchall()  <span class="comment"># 以元组形式返回查询数据</span></span><br><span class="line">    header = [t[<span class="number">0</span>] <span class="keyword">for</span> t <span class="keyword">in</span> cursor.description]</span><br><span class="line">    df = pd.DataFrame(<span class="built_in">list</span>(data), columns=header)  <span class="comment"># pd.DataFrem 对列表具有更好的兼容性</span></span><br><span class="line">    <span class="keyword">return</span> df</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show_databases</span>():</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;查看服务器上的所有数据库&#x27;&#x27;&#x27;</span></span><br><span class="line">    sql = <span class="string">&#x27;show databases;&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> query(sql)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">select_database</span>():</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;查看当前数据库&#x27;&#x27;&#x27;</span></span><br><span class="line">    sql = <span class="string">&#x27;select database();&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> query(sql)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">show_tables</span>():</span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;查看当前数据库中所有的表&#x27;&#x27;&#x27;</span></span><br><span class="line">    sql = <span class="string">&#x27;show tables;&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> query(sql)</span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/06/07/Python%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2022/06/16/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-6-16/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Leetcode之每日一题：2022-6-16
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2022/06/01/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-6-1/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Leetcode之每日一题：2022-6-1</div>
+      </a>
+    
+  </nav>
+
+  
+   
+    
+    <script src="https://cdn.staticfile.org/twikoo/1.4.18/twikoo.all.min.js"></script>
+    <div id="twikoo" class="twikoo"></div>
+    <script>
+        twikoo.init({
+            envId: ""
+        })
+    </script>
+ 
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2022
+        <i class="ri-heart-fill heart_icon"></i> Lu Dong
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="LD_blog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.staticfile.org/justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/mathjax/2.7.7/MathJax.js"></script>
+<script src="https://cdn.staticfile.org/mathjax/2.7.7/config/TeX-AMS-MML_HTMLorMML-full.js"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+ 
+    
+        <link rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.15.1/katex.min.css">
+        <script src="https://cdn.staticfile.org/KaTeX/0.15.1/katex.min.js"></script>
+        <script src="https://cdn.staticfile.org/KaTeX/0.15.1/contrib/auto-render.min.js"></script>
+        
+    
+ 
+<!-- busuanzi  -->
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.staticfile.org/clipboard.js/2.0.10/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    
+
+  </div>
+</body>
+
+</html>

@@ -11,7 +11,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>Leetcode之每日一题：2022-5-16 |  LD_blog</title>
+      <title>Leetcode之每日一题：2022-6-1 |  LD_blog</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -53,7 +53,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-Leetcode之每日一题：2022-5-16"
+  id="post-Leetcode之每日一题：2022-6-1"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -64,7 +64,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Leetcode之每日一题：2022-5-16
+  Leetcode之每日一题：2022-6-1
 </h1>
  
 
@@ -72,15 +72,15 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2022/05/16/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-16/" class="article-date">
-  <time datetime="2022-05-16T11:14:19.000Z" itemprop="datePublished">2022-05-16</time>
+      <a href="/2022/06/01/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-6-1/" class="article-date">
+  <time datetime="2022-06-01T10:08:57.000Z" itemprop="datePublished">2022-06-01</time>
 </a>   
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">638</span>
+            <span class="post-count">1.5k</span>
         </span>
     </span>
 
@@ -89,7 +89,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">2 分钟</span>
+            <span class="post-count">5 分钟</span>
         </span>
     </span>
 </div>
@@ -104,43 +104,74 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h2 id="问题描述-2">问题描述</h2>
-<h3 id="题目：后继者">题目：后继者</h3>
-<p>设计一个算法，找出二叉搜索树中指定节点的“下一个”节点（也即中序后继）。如果指定节点没有对应的“下一个”节点，则返回null。</p>
-<h3 id="示例-2">示例</h3>
+  <h2 id="问题描述-6">问题描述</h2>
+<h3 id="题目：外星文字典">题目：外星文字典</h3>
+<p>现有一种使用英语字母的外星文语言，这门语言的字母顺序与英语顺序不同。</p>
+<p>给定一个字符串列表 words ，作为这门语言的词典，words 中的字符串已经按这门新语言的字母顺序进行了排序 。</p>
+<p>请你根据该词典还原出此语言中已知的字母顺序，并按字母递增顺序排列。若不存在合法字母顺序，返回 “” 。若存在多种可能的合法字母顺序，返回其中 任意一种顺序即可。</p>
+<p>字符串 s 字典顺序小于 字符串 t 有两种情况：</p>
+<ul>
+<li>在第一个不同字母处，如果 s 中的字母在这门外星语言的字母顺序中位于 t 中字母之前，那么 s 的字典顺序小于 t 。</li>
+<li>如果前面 min(s.length, t.length) 字母都相同，那么 s.length &lt; t.length 时，s 的字典顺序也小于 t 。</li>
+</ul>
+<h3 id="示例-9">示例</h3>
 <ol>
 <li>
-<p>输入: root = [2,1,3], p = 1</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  2</span><br><span class="line"> / \</span><br><span class="line">1   3</span><br></pre></td></tr></table></figure>
-<p>输出: 2</p>
+<p>输入：words = [“wrt”,“wrf”,“er”,“ett”,“rftt”]<br>
+输出：“wertf”</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x27;wrt&#x27; &lt; &#x27;wrf&#x27;  --&gt;  &#x27;t&#x27; &lt; &#x27;f&#x27;</span><br><span class="line">&#x27;wrf&#x27; &lt; &#x27;er&#x27;   --&gt;  &#x27;w&#x27; &lt; &#x27;e&#x27;</span><br><span class="line">&#x27;er&#x27;  &lt; &#x27;ett&#x27;  --&gt;  &#x27;r&#x27; &lt; &#x27;t&#x27;</span><br><span class="line">&#x27;ett&#x27; &lt; &#x27;rftt&#x27; --&gt;  &#x27;e&#x27; &lt; &#x27;r&#x27;</span><br></pre></td></tr></table></figure>
 </li>
 <li>
-<p>输入: root = [5,3,6,2,4,null,null,1], p = 6</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">      5</span><br><span class="line">     / \</span><br><span class="line">    3   6</span><br><span class="line">   / \</span><br><span class="line">  2   4</span><br><span class="line"> /   </span><br><span class="line">1</span><br></pre></td></tr></table></figure>
-<p>输出: null</p>
+<p>输入：words = [“z”,“x”]<br>
+输出：“zx”</p>
+</li>
+<li>
+<p>输入：words = [“z”,“x”,“z”]<br>
+输出：“”<br>
+解释：不存在合法字母顺序，因此返回 “” 。</p>
 </li>
 </ol>
-<h3 id="来源-2">来源</h3>
-<p>力扣（LeetCode） 链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/successor-lcci">https://leetcode.cn/problems/successor-lcci</a></p>
-<h2 id="问题解答-2">问题解答</h2>
-<h3 id="暴力法-2">暴力法</h3>
-<h4 id="思想">思想</h4>
-<p>先中序遍历树得到节点遍历顺序列表，再一一对比找出指定节点及其下一个节点。</p>
-<h4 id="代码-3">代码</h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TreeNode</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, x</span>):</span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inorderSuccessor</span>(<span class="params">self, root: TreeNode, p: TreeNode</span>) -&gt; TreeNode:</span><br><span class="line">        result = <span class="built_in">list</span>()</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">getitem</span>(<span class="params">rootnode</span>):</span><br><span class="line">            <span class="keyword">if</span> rootnode <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            getitem(rootnode.left)</span><br><span class="line">            result.append(rootnode)</span><br><span class="line">            getitem(rootnode.right)</span><br><span class="line">        getitem(root)</span><br><span class="line">        <span class="keyword">for</span> i, j <span class="keyword">in</span> <span class="built_in">enumerate</span>(result):</span><br><span class="line">            <span class="keyword">if</span> j <span class="keyword">is</span> p:</span><br><span class="line">                <span class="keyword">if</span> i &lt; <span class="built_in">len</span>(result) - <span class="number">1</span>:</span><br><span class="line">                    <span class="keyword">return</span> result[i+<span class="number">1</span>]</span><br><span class="line">        		<span class="keyword">else</span>:</span><br><span class="line">            		<span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">         <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
-<h4 id="改进">改进</h4>
-<p>因为只需要找出指定节点的下一个节点，所以可以用两个指针，一个指向当前节点的上一个节点，一个指向当前节点；若上一个节点是指定节点，则返回当前节点，否则返回null。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inorderSuccessor</span>(<span class="params">self, root: TreeNode, p: TreeNode</span>) -&gt; TreeNode:</span><br><span class="line">        <span class="keyword">global</span> last, now </span><br><span class="line">        last = <span class="literal">None</span></span><br><span class="line">        now = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">getitem</span>(<span class="params">rootnode</span>):</span><br><span class="line">            <span class="keyword">global</span> last, now</span><br><span class="line">            <span class="keyword">if</span> rootnode <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            getitem(rootnode.left)</span><br><span class="line">            <span class="keyword">if</span> last <span class="keyword">is</span> p:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            last = now</span><br><span class="line">            now = rootnode  </span><br><span class="line">            getitem(rootnode.right)</span><br><span class="line">        getitem(root)</span><br><span class="line">        <span class="keyword">if</span> last <span class="keyword">is</span> p:</span><br><span class="line">            <span class="keyword">return</span> now</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
-<h2 id="BST-特性-递归">BST 特性 + 递归</h2>
-<h4 id="思路-2">思路</h4>
-<p>利用 BST 的特性，我们可以根据当前节点 root 与 p 的值大小关系来确定搜索方向：</p>
+<h3 id="提示-5">提示</h3>
 <ul>
-<li>若有<code>root.val &lt;= p.val</code>: 根据 BST 特性可知当前节点 root 及其左子树子节点均满足「值小于等于 p.val」，因此不可能是 p 点的后继，我们直接到 root 的右子树搜索 p 的后继（递归处理）；</li>
-<li>若有 <code>root.val &gt; p.val </code>: 当第一次搜索到满足此条件的节点时，在以 root 为根节点的子树中「位于最左下方」的值为 p 的后继，但也有可能 root 没有左子树，因此 p 的后继要么在 root 的左子树中（若有），要么是 root 本身，此时我们可以直接到 root 的左子树搜索，若搜索结果为空返回 root，否则返回搜索结果。</li>
+<li>1 &lt;= words.length &lt;= 100</li>
+<li>1 &lt;= words[i].length &lt;= 100</li>
+<li>words[i] 仅由小写英文字母组成</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">inorderSuccessor</span>(<span class="params">self, root: TreeNode, p: TreeNode</span>) -&gt; TreeNode:</span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>: <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="keyword">if</span> root.val &lt;= p.val: </span><br><span class="line">            <span class="keyword">return</span> self.inorderSuccessor(root.right, p)</span><br><span class="line">        ans = self.inorderSuccessor(root.left, p)</span><br><span class="line">        <span class="keyword">return</span> root <span class="keyword">if</span> ans <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">else</span> ans</span><br></pre></td></tr></table></figure>
-<h4 id="作者-2">作者</h4>
-<p>AC_OIer，链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/successor-lcci/solution/by-ac_oier-xib5/">https://leetcode.cn/problems/successor-lcci/solution/by-ac_oier-xib5/</a></p>
+<h3 id="来源-9">来源</h3>
+<p>力扣（LeetCode），链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/Jf1JuT">https://leetcode.cn/problems/Jf1JuT</a></p>
+<h2 id="问题解答-9">问题解答</h2>
+<h3 id="拓扑排序-深度优先搜索">拓扑排序 + 深度优先搜索</h3>
+<p>这道题是拓扑排序问题。外星文字典中的字母和字母顺序可以看成有向图，字典顺序即为所有字母的一种排列，满足每一条有向边的起点字母和终点字母的顺序都和这两个字母在排列中的顺序相同，该排列即为有向图的拓扑排序。</p>
+<p>只有当有向图中无环时，才有拓扑排序，且拓扑排序可能不止一种。如果有向图中有环，则环内的字母不存在符合要求的排列，因此没有拓扑排序。</p>
+<p>使用拓扑排序求解时，将外星文字典中的每个字母看成一个节点，将字母之间的顺序关系看成有向边。对于外星文字典中的两个相邻单词，同时从左到右遍历，当遇到第一个不相同的字母时，该位置的两个字母之间即存在顺序关系。</p>
+<p>以下两种情况不存在合法字母顺序：</p>
+<ul>
+<li>字母之间的顺序关系存在由至少 2个字母组成的环，例如 words=[“a”, “b”, “a”]</li>
+<li>相邻两个单词满足后面的单词是前面的单词的前缀，且后面的单词的长度小于前面的单词的长度，例如 words=[“ab”, 'a&quot;]。</li>
+</ul>
+<p>其余情况下都存在合法字母顺序，可以使用拓扑排序得到字典顺序。</p>
+<p>拓扑排序可以使用深度优先搜索或广度优先搜索实现，以下介绍拓扑排序 + 深度优先搜索方法。</p>
+<p>使用深度优先搜索实现拓扑排序的总体思想是：对于一个特定节点，如果该节点的所有相邻节点都已经搜索完成，则该节点也会变成已经搜索完成的节点，在拓扑排序中，该节点位于其所有相邻节点的前面。一个节点的相邻节点指的是从该节点出发通过一条有向边可以到达的节点。</p>
+<p>由于拓扑排序的顺序和搜索完成的顺序相反，因此需要使用一个栈存储所有已经搜索完成的节点。深度优先搜索的过程中需要维护每个节点的状态，每个节点的状态可能有三种情况：「未访问」、「访问中」和「已访问」。初始时，所有节点的状态都是「未访问」。</p>
+<p>每一轮搜索时，任意选取一个「未访问」的节点u，从节点u开始深度优先搜索。将节点u的	状态更新为「访问中」，对于每个与节点u相邻的节点v，判断节点v的状态，执行如下操作：</p>
+<ol>
+<li>
+<p>如果节点v的状态是「未访问」，则继续搜索节点v；</p>
+</li>
+<li>
+<p>如果节点v的状态是「访问中」，则找到有向图中的环，因此不存在拓扑排序；</p>
+</li>
+<li>
+<p>如果节点v的状态是「已访问」，则节点v已经搜索完成并入栈，节点u尚未入栈，因此节点u的拓扑顺序一定在节点v的前面，不需要执行任何操作。</p>
+</li>
+</ol>
+<p>当节点u的所有相邻节点的状态都是「已访问」时，将节点u的状态更新为「已访问」，并将节点u入栈。</p>
+<p>当所有节点都访问结束之后，如果没有找到有向图中的环，则存在拓扑排序，所有节点从栈顶到栈底的顺序即为拓扑排序。</p>
+<p>实现方面，由于每个节点是一个字母，因此可以使用字符数组代替栈，当节点入栈时，在字符数组中按照从后往前的顺序依次填入每个字母。当所有节点都访问结束之后，将字符数组转成字符串，即为字典顺序。</p>
+<h4 id="代码-12">代码</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> pairwise</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">alienOrder</span>(<span class="params">self, words: <span class="built_in">list</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        g = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> words[<span class="number">0</span>]:</span><br><span class="line">            g[c] = []</span><br><span class="line">        <span class="keyword">for</span> s, t <span class="keyword">in</span> pairwise(words):</span><br><span class="line">            <span class="keyword">for</span> c <span class="keyword">in</span> t:</span><br><span class="line">                g.setdefault(c, [])</span><br><span class="line">            <span class="keyword">for</span> u, v <span class="keyword">in</span> <span class="built_in">zip</span>(s, t):</span><br><span class="line">                <span class="keyword">if</span> u != v:</span><br><span class="line">                    g[u].append(v)</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">len</span>(s) &gt; <span class="built_in">len</span>(t):</span><br><span class="line">                    <span class="keyword">return</span> <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">        VISITING, VISITED = <span class="number">1</span>, <span class="number">2</span></span><br><span class="line">        states = &#123;&#125;</span><br><span class="line">        order = []</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">dfs</span>(<span class="params">u: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">            states[u] = VISITING</span><br><span class="line">            <span class="keyword">for</span> v <span class="keyword">in</span> g[u]:</span><br><span class="line">                <span class="keyword">if</span> v <span class="keyword">not</span> <span class="keyword">in</span> states:</span><br><span class="line">                    <span class="keyword">if</span> <span class="keyword">not</span> dfs(v):</span><br><span class="line">                        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">                <span class="keyword">elif</span> states[v] == VISITING:</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            order.append(u)</span><br><span class="line">            states[u] = VISITED</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>.join(<span class="built_in">reversed</span>(order)) <span class="keyword">if</span> <span class="built_in">all</span>(dfs(u) <span class="keyword">for</span> u <span class="keyword">in</span> g <span class="keyword">if</span> u <span class="keyword">not</span> <span class="keyword">in</span> states) <span class="keyword">else</span> <span class="string">&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<h4 id="作者-7">作者</h4>
+<p>LeetCode-Solution，链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/Jf1JuT/solution/wai-xing-wen-zi-dian-by-leetcode-solutio-to66/">https://leetcode.cn/problems/Jf1JuT/solution/wai-xing-wen-zi-dian-by-leetcode-solutio-to66/</a></p>
  
       <!-- reward -->
       
@@ -205,7 +236,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/05/16/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-16/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/06/01/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-6-1/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -218,19 +249,19 @@
    
   <nav class="article-nav">
     
-      <a href="/2022/05/18/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-18/" class="article-nav-link">
+      <a href="/2022/06/07/Python%E8%BF%9E%E6%8E%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            Leetcode之每日一题：2022-5-18
+            Python连接MySQL数据库
           
         </div>
       </a>
     
     
-      <a href="/2022/05/12/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-12/" class="article-nav-link">
+      <a href="/2022/05/30/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-5-30/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Leetcode之每日一题：2022-5-12</div>
+        <div class="article-nav-title">Leetcode之每日一题：2022-5-30</div>
       </a>
     
   </nav>
