@@ -124,7 +124,7 @@
 <li><strong>SQLAlchemy的使用</strong></li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这是是一种ORM（Object-Relational Mapping）框架，将关系数据库的表结构映射到对象上，隐藏了数据库操作背后的细节，简化了数据操作。</span><br></pre></td></tr></table></figure>
-<h2 id="2-1在Python3-X上安装MySQL驱动">2.1在Python3.X上安装MySQL驱动</h2>
+<h2 id="2-1在python3-x上安装mysql驱动">2.1在Python3.X上安装MySQL驱动</h2>
 <p>这里选择PyMySQL作为主要研究对象。安装方法和验证是否安装成功的步骤如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install pymysql</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymysql</span><br></pre></td></tr></table></figure>
@@ -140,7 +140,7 @@
 <p><strong>execute()：是执行语句</strong></p>
 <p><strong>commit()：是提交事务，执行语句后有这个才能对数据库进行真正的操作，也可以在创建连接时，设置autocommit = True</strong>。即：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">connection = pymysql.connect(host=<span class="string">&#x27;localhost&#x27;</span>, <span class="comment"># IP地址，我这里用的本地地址</span></span><br><span class="line">                    port=<span class="number">3306</span>, <span class="comment"># 端口号</span></span><br><span class="line">                    user=<span class="string">&#x27;root&#x27;</span>, <span class="comment"># 用户名</span></span><br><span class="line">                    passwd=<span class="string">&#x27;123456&#x27;</span>, <span class="comment"># 密码</span></span><br><span class="line">                    charset = <span class="string">&#x27;utf8&#x27;</span>, <span class="comment"># 编码方式</span></span><br><span class="line">                    autocommit = <span class="literal">True</span></span><br><span class="line">                    )</span><br></pre></td></tr></table></figure>
-<h2 id="2-5-增、改、删、查">2.5 增、改、删、查</h2>
+<h2 id="2-5-增-改-删-查">2.5 增、改、删、查</h2>
 <h3 id="2-5-1-增">2.5.1 增</h3>
 <p>在cutomers表中插入数据用的是&quot;INSERT INTO&quot;语句。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">insert1 = <span class="string">&quot;INSERT INTO stu(id,name,class, age) Values(1,&#x27;ludong&#x27;,1,10);&quot;</span></span><br><span class="line">cursor.execute(<span class="string">&quot;use s;&quot;</span>) </span><br><span class="line">cursor.execute(insert1) </span><br><span class="line">connection.commit()</span><br></pre></td></tr></table></figure>
