@@ -11,7 +11,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>Leetcode之每日一题：2022-9-26 |  LD_blog</title>
+      <title>Leetcode之每日一题：2022-9-28 |  LD_blog</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -53,7 +53,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-Leetcode之每日一题：2022-9-26"
+  id="post-Leetcode之每日一题：2022-9-28"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -64,7 +64,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Leetcode之每日一题：2022-9-26
+  Leetcode之每日一题：2022-9-28
 </h1>
  
 
@@ -72,15 +72,15 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2022/09/26/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-9-26/" class="article-date">
-  <time datetime="2022-09-26T12:20:03.000Z" itemprop="datePublished">2022-09-26</time>
+      <a href="/2022/09/28/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-9-28/" class="article-date">
+  <time datetime="2022-09-28T13:19:01.000Z" itemprop="datePublished">2022-09-28</time>
 </a>   
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">360</span>
+            <span class="post-count">772</span>
         </span>
     </span>
 
@@ -89,7 +89,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">3 分钟</span>
         </span>
     </span>
 </div>
@@ -105,25 +105,33 @@
     <div class="article-entry" itemprop="articleBody">
        
   <h2 id="问题描述">问题描述</h2>
-<h3 id="题目：消失的两个数字">题目：消失的两个数字</h3>
-<p>给定一个数组，包含从 1 到 N 所有的整数，但其中缺了两个数字。你能在 O(N) 时间内只用 O(1) 的空间找到它们吗？</p>
-<p>以任意顺序返回这两个数字均可。</p>
+<h3 id="题目：第-k-个数">题目：第 k 个数</h3>
+<p>有些数的素因子只有 3，5，7，请设计一个算法找出第 k 个数。注意，不是必须有这些素因子，而是必须不包含其他的素因子。例如，前几个数按顺序应该是 1，3，5，7，9，15，21。</p>
 <h3 id="示例">示例</h3>
 <h4 id="1">1、</h4>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [1]</span><br><span class="line">输出: [2,3]</span><br></pre></td></tr></table></figure>
-<h4 id="2">2、</h4>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [2,3]</span><br><span class="line">输出: [1,4]</span><br></pre></td></tr></table></figure>
-<h3 id="提示">提示</h3>
-<ul>
-<li>0 &lt;= nums.length &lt;= 30000</li>
-</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: k = 5</span><br><span class="line"></span><br><span class="line">输出: 9</span><br></pre></td></tr></table></figure>
 <h3 id="来源">来源</h3>
-<p>力扣（LeetCode），链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/missing-two-lcci">https://leetcode.cn/problems/missing-two-lcci</a></p>
+<p>力扣（LeetCode），链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/get-kth-magic-number-lcci">https://leetcode.cn/problems/get-kth-magic-number-lcci</a></p>
 <h2 id="问题解答">问题解答</h2>
-<h3 id="数学规律">数学规律</h3>
-<p>首先，确定N为输入列表长度加2，那么这N个数字无缺失的情况下，和等于<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mi>u</mi><mi>m</mi><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup><mi>i</mi><mo>=</mo><mfrac><mrow><mi>N</mi><mo stretchy="false">(</mo><mi>N</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">sum=\sum_{i=1}^{N}i=\frac{N(N+1)}{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span><span class="mord mathdefault">u</span><span class="mord mathdefault">m</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.2809409999999999em;vertical-align:-0.29971000000000003em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.981231em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.355em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.01em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.485em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span><span class="mopen mtight">(</span><span class="mord mathdefault mtight" style="margin-right:0.10903em;">N</span><span class="mbin mtight">+</span><span class="mord mtight">1</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>，再求得输入序列的总和为 sum_list，那么缺失的两个数字和为 bias = sum_list - sum，那么这两个数中必有一个数小于 bias/2。那么即可将原问题转化为在原列表中找到一个小于 bias/2 的数，再由于 1~bias/2 无缺失和可直接求得，又可得到原列表所有小于  bias/2 数之和，两者一减便可得缺失的一个数，另一个用 bias 减去这个数即可。</p>
+<h3 id="最小堆">最小堆</h3>
+<p>要得到从小到大的第 k 个数，可以使用最小堆实现。初始时堆为空。首先将最小的数 1加入堆。每次取出堆顶元素 x，则 x 是堆中最小的数，由于 3x,5x,7x 也是符合要求的数，因此将 3x,5x,7x 加入堆。上述做法会导致堆中出现重复元素的情况。为了避免重复元素，可以使用哈希集合去重，避免相同元素多次加入堆。在排除重复元素的情况下，第 k 次从最小堆中取出的元素即为第 k 个数。</p>
 <h4 id="代码">代码</h4>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">missingTwo</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span><br><span class="line">        N = <span class="built_in">len</span>(nums) + <span class="number">2</span></span><br><span class="line">        sum_ = <span class="built_in">sum</span>(nums)</span><br><span class="line">        sum_target = <span class="built_in">int</span>((N**<span class="number">2</span> + N)/<span class="number">2</span>)</span><br><span class="line">        bias_ = sum_target - sum_</span><br><span class="line"></span><br><span class="line">        bias = <span class="built_in">int</span>(bias_/<span class="number">2</span>)</span><br><span class="line">        sum_temp = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> nums:</span><br><span class="line">            <span class="keyword">if</span> i &lt;= bias:</span><br><span class="line">                sum_temp += i</span><br><span class="line"></span><br><span class="line">        sum_bias = <span class="built_in">int</span>((bias**<span class="number">2</span> + bias)/<span class="number">2</span>)</span><br><span class="line">        a = sum_bias - sum_temp</span><br><span class="line">        <span class="keyword">return</span> a, bias_ - a</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">getKthMagicNumber</span>(<span class="params">self, k: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        factors = [<span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>]</span><br><span class="line">        seen = &#123;<span class="number">1</span>&#125;</span><br><span class="line">        heap = [<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(k - <span class="number">1</span>):</span><br><span class="line">            curr = heapq.heappop(heap)</span><br><span class="line">            <span class="keyword">for</span> factor <span class="keyword">in</span> factors:</span><br><span class="line">                <span class="keyword">if</span> (nxt := curr * factor) <span class="keyword">not</span> <span class="keyword">in</span> seen:</span><br><span class="line">                    seen.add(nxt)</span><br><span class="line">                    heapq.heappush(heap, nxt)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> heapq.heappop(heap)</span><br></pre></td></tr></table></figure>
+<h4 id="作者">作者</h4>
+<p>LeetCode-Solution，链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/get-kth-magic-number-lcci/solution/di-k-ge-shu-by-leetcode-solution-vzp7/">https://leetcode.cn/problems/get-kth-magic-number-lcci/solution/di-k-ge-shu-by-leetcode-solution-vzp7/</a></p>
+<h3 id="三指针法">三指针法</h3>
+<p>为了叙述方便，我们就把符合题目要求的这些数叫做丑数。不难发现，一个丑数总是由前面的某一个丑数 x3 / x5 / x7 得到。反过来说也是一样的，一个丑数 x3 / x5 / x7 就会得到某一个更大的丑数。</p>
+<p>如果把丑数数列叫做 ugly[i]，那么考虑一下三个数列：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. ugly[0]*3,ugly[1]*3,ugly[2]*3,ugly[3]*3,ugly[4]*3,……</span><br><span class="line">2. ugly[0]*5,ugly[1]*5,ugly[2]*5,ugly[3]*5,ugly[4]*5,……</span><br><span class="line">3. ugly[0]*7,ugly[1]*7,ugly[2]*7,ugly[3]*7,ugly[4]*7,……</span><br></pre></td></tr></table></figure>
+<p>上面这个三个数列合在一起就形成了新的、更长的丑数数列。如果合在一起呢？这其实就是一个<strong>合并有序线性</strong>表的问题。</p>
+<p>定义三个index 分别指向上面三个数列，下一个丑数一定是三个 index 代表的值中最小的那个。然后相应 index++ 即可。</p>
+<p>举个例子，初始值 ugly[0]=1; index1=0; index2=0; index3=0</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ugly[1]=Min(ugly[index1]*3,ugly[index2]*5,ugly[index3]*7)</span><br><span class="line">=Min(1*3,1*5,1*7)</span><br><span class="line">=3</span><br><span class="line">于是 index1++;</span><br><span class="line"></span><br><span class="line">ugly[2]=Min(ugly[index1]*3,ugly[index2]*5,ugly[index3]*7)</span><br><span class="line">=Min(3*3,1*5,1*7)</span><br><span class="line">=5</span><br><span class="line">于是 index2++;</span><br></pre></td></tr></table></figure>
+<p>以此类推</p>
+<h4 id="代码">代码</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">getKthMagicNumber</span>(<span class="params">self, k: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        num_list = [<span class="number">1</span>]</span><br><span class="line">        index1 = <span class="number">0</span></span><br><span class="line">        index2 = <span class="number">0</span></span><br><span class="line">        index3 = <span class="number">0</span></span><br><span class="line">        index = <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">if</span> index == k:</span><br><span class="line">                <span class="keyword">return</span> num_list[-<span class="number">1</span>]</span><br><span class="line">            a = num_list[index1] * <span class="number">3</span></span><br><span class="line">            b = num_list[index2] * <span class="number">5</span></span><br><span class="line">            c = num_list[index3] * <span class="number">7</span></span><br><span class="line">            <span class="keyword">if</span> a &lt;= b <span class="keyword">and</span> a &lt;= c:</span><br><span class="line">                index1 += <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> a != num_list[-<span class="number">1</span>]:</span><br><span class="line">                    num_list.append(a)</span><br><span class="line">                    index += <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> b &lt;= a <span class="keyword">and</span> b &lt;= c:</span><br><span class="line">                index2 += <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> b != num_list[-<span class="number">1</span>]:</span><br><span class="line">                    num_list.append(b)</span><br><span class="line">                    index += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                index3 += <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> c != num_list[-<span class="number">1</span>]:</span><br><span class="line">                    num_list.append(c)</span><br><span class="line">                    index += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h4 id="作者">作者</h4>
+<p>orangex,链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/get-kth-magic-number-lcci/solution/di-k-ge-shu-jiu-shi-xiang-bu-tong-wei-he-san-zhi-z/">https://leetcode.cn/problems/get-kth-magic-number-lcci/solution/di-k-ge-shu-jiu-shi-xiang-bu-tong-wei-he-san-zhi-z/</a></p>
  
       <!-- reward -->
       
@@ -188,7 +196,7 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/09/26/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-9-26/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2022/09/28/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-9-28/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -201,19 +209,10 @@
    
   <nav class="article-nav">
     
-      <a href="/2022/09/28/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-9-28/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            Leetcode之每日一题：2022-9-28
-          
-        </div>
-      </a>
     
-    
-      <a href="/2022/09/15/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-9-15/" class="article-nav-link">
+      <a href="/2022/09/26/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-9-26/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Leetcode之每日一题：2022-9-15</div>
+        <div class="article-nav-title">Leetcode之每日一题：2022-9-26</div>
       </a>
     
   </nav>
