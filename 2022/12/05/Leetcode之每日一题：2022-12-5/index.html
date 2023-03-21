@@ -191,8 +191,8 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">boxDelivering</span>(<span class="params">self, boxes: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]], portsCount: <span class="built_in">int</span>, maxBoxes: <span class="built_in">int</span>, maxWeight: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">getArray</span>() -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span><br><span class="line">            <span class="keyword">return</span> [<span class="number">0</span>] * (n + <span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        n = <span class="built_in">len</span>(boxes)</span><br><span class="line">        p, w, neg, W = getArray(), getArray(), getArray(), getArray()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">            p[i], w[i] = boxes[i - <span class="number">1</span>]</span><br><span class="line">            <span class="keyword">if</span> i &gt; <span class="number">1</span>:</span><br><span class="line">                neg[i] = neg[i - <span class="number">1</span>] + (p[i - <span class="number">1</span>] != p[i])</span><br><span class="line">            W[i] = W[i - <span class="number">1</span>] + w[i]</span><br><span class="line">        </span><br><span class="line">        opt = deque([<span class="number">0</span>])</span><br><span class="line">        f, g = getArray(), getArray()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">while</span> i - opt[<span class="number">0</span>] &gt; maxBoxes <span class="keyword">or</span> W[i] - W[opt[<span class="number">0</span>]] &gt; maxWeight:</span><br><span class="line">                opt.popleft()</span><br><span class="line">            </span><br><span class="line">            f[i] = g[opt[<span class="number">0</span>]] + neg[i] + <span class="number">2</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> i != n:</span><br><span class="line">                g[i] = f[i] - neg[i + <span class="number">1</span>]</span><br><span class="line">                <span class="keyword">while</span> opt <span class="keyword">and</span> g[i] &lt;= g[opt[-<span class="number">1</span>]]:</span><br><span class="line">                    opt.pop()</span><br><span class="line">                opt.append(i)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> f[n]</span><br></pre></td></tr></table></figure>
 <h4 id="复杂度分析">复杂度分析</h4>
 <ul>
-<li>时间复杂度：O(n)O(n)O(n)，其中 nnn 是数组 boxes\textit{boxes}boxes 的长度。</li>
-<li>空间复杂度：O(n)O(n)O(n)，即为动态规划的数组 fff 和 ggg，单调队列以及前缀和数组需要使用的空间。</li>
+<li>时间复杂度：O(n)，其中 n 是数组 boxes 的长度。</li>
+<li>空间复杂度：O(n)，即为动态规划的数组 f 和 g，单调队列以及前缀和数组需要使用的空间。</li>
 </ul>
 <h4 id="作者">作者</h4>
 <p>力扣官方题解，链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/delivering-boxes-from-storage-to-ports/solutions/2005717/cong-cang-ku-dao-ma-tou-yun-shu-xiang-zi-4uya/">https://leetcode.cn/problems/delivering-boxes-from-storage-to-ports/solutions/2005717/cong-cang-ku-dao-ma-tou-yun-shu-xiang-zi-4uya/</a></p>
@@ -273,6 +273,15 @@
    
   <nav class="article-nav">
     
+      <a href="/2022/12/07/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-12-7/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Leetcode之每日一题：2022-12-7
+          
+        </div>
+      </a>
+    
     
       <a href="/2022/12/02/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-12-2/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
@@ -300,7 +309,7 @@
     <ul>
       <li>
         Copyrights &copy;
-        2022
+        2022-2023
         <i class="ri-heart-fill heart_icon"></i> Lu Dong
       </li>
     </ul>
