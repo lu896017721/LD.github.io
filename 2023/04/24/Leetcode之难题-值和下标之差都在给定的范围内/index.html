@@ -11,7 +11,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>Leetcode之总结——1 |  LD_blog</title>
+      <title>Leetcode之难题:值和下标之差都在给定的范围内 |  LD_blog</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -53,7 +53,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-Leetcode之总结——1"
+  id="post-Leetcode之难题-值和下标之差都在给定的范围内"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -64,7 +64,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  Leetcode之总结——1
+  Leetcode之难题:值和下标之差都在给定的范围内
 </h1>
  
 
@@ -72,15 +72,15 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2023/02/23/Leetcode%E4%B9%8B%E6%80%BB%E7%BB%93%E2%80%94%E2%80%941/" class="article-date">
-  <time datetime="2023-02-23T03:08:10.000Z" itemprop="datePublished">2023-02-23</time>
+      <a href="/2023/04/24/Leetcode%E4%B9%8B%E9%9A%BE%E9%A2%98-%E5%80%BC%E5%92%8C%E4%B8%8B%E6%A0%87%E4%B9%8B%E5%B7%AE%E9%83%BD%E5%9C%A8%E7%BB%99%E5%AE%9A%E7%9A%84%E8%8C%83%E5%9B%B4%E5%86%85/" class="article-date">
+  <time datetime="2023-04-24T06:47:45.000Z" itemprop="datePublished">2023-04-24</time>
 </a>   
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">318</span>
+            <span class="post-count">1.6k</span>
         </span>
     </span>
 
@@ -89,7 +89,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">1 分钟</span>
+            <span class="post-count">6 分钟</span>
         </span>
     </span>
 </div>
@@ -104,9 +104,51 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h2 id="二分查找">二分查找</h2>
-<p>二分查找在有序的数组里寻找数时，还可以寻找等于该数的最右边位置和最左边位置。（java版本）</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">    <span class="type">int</span>[] nums = &#123;......&#125;;<span class="comment">//升序</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">target</span> <span class="operator">=</span> <span class="number">10</span> ;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/* 只查找，不限位置 */</span></span><br><span class="line">    </span><br><span class="line">    <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> nums.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(i &lt;= j)&#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> (i + j) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span>(nums[mid] == target)&#123;</span><br><span class="line">            <span class="keyword">return</span> mid;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(nums[mid] &gt; targt)&#123;</span><br><span class="line">            j = mid - <span class="number">1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            i = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 不存在的情况就是 j &lt; i</span></span><br><span class="line">    <span class="keyword">if</span>(j &lt; i)&#123;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">/* 查找target的最左边位置 */</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> nums.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(i &lt;= j)&#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> (i + j) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span>(nums[mid] &gt;= targt)&#123;</span><br><span class="line">            j = mid - <span class="number">1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            i = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 结束状态有两种，存在该数时，j指向该数的最左边位置-1，i=j+1</span></span><br><span class="line">    <span class="comment">// 所以不存在的情况判断</span></span><br><span class="line">    <span class="keyword">if</span>(i &gt; <span class="number">0</span> &amp;&amp; nums[i] != target)&#123;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 查找target的最右边位置 */</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> nums.length - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(i &lt;= j)&#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> (i + j) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span>(nums[mid] &lt;= targt)&#123;</span><br><span class="line">            i = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            j = mid - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 结束状态有两种，存在该数时，i指向该数的最右边位置+1，j=i-1</span></span><br><span class="line">    <span class="comment">// 所以不存在的情况判断</span></span><br><span class="line">    <span class="keyword">if</span>(j &gt; <span class="number">0</span> &amp;&amp; nums[j] != target)&#123;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  <h2 id="值和下标之差都在给定的范围内">值和下标之差都在给定的范围内</h2>
+<p>给你一个整数数组 <code>nums</code> 和两个整数 <code>k</code> 和 <code>t</code> 。请你判断是否存在 <strong>两个不同下标</strong> <code>i</code> 和 <code>j</code>，使得 <code>abs(nums[i] - nums[j]) &lt;= t</code> ，同时又满足 <code>abs(i - j) &lt;= k</code> 。</p>
+<p>如果存在则返回 <code>true</code>，不存在返回 <code>false</code>。</p>
+<h3 id="示例-28">示例</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [1,2,3,1], k = 3, t = 0</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [1,0,1,1], k = 1, t = 2</span><br><span class="line">输出：true</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [1,5,9,1,5,9], k = 2, t = 3</span><br><span class="line">输出：false</span><br></pre></td></tr></table></figure>
+<h3 id="提示-23">提示</h3>
+<ul>
+<li>$0 &lt;= nums.length &lt;= 2 * 10^4$</li>
+<li>$-2^31 &lt;= nums[i] &lt;= 2^31 - 1$</li>
+<li>$0 &lt;= k &lt;= 10^4$</li>
+<li>$0 &lt;= t &lt;= 2^31 - 1$</li>
+</ul>
+<h4 id="问题解答-28">问题解答</h4>
+<h3 id="方法一：滑动窗口-有序集合">方法一：滑动窗口 + 有序集合</h3>
+<h4 id="思路-6">思路</h4>
+<p>对于序列中每一个元素 x 左侧的至多 k 个元素，如果这 k 个元素中存在一个元素落在区间 [x−t,x+t] 中，我们就找到了一对符合条件的元素。注意到对于两个相邻的元素，它们各自的左侧的 k 个元素中有 k−1 个是重合的。于是我们可以使用滑动窗口的思路，维护一个大小为 k 的滑动窗口，每次遍历到元素 x 时，滑动窗口中包含元素 x 前面的最多 k 个元素，我们检查窗口中是否存在元素落在区间 [x−t,x+t] 中即可。</p>
+<p>如果使用队列维护滑动窗口内的元素，由于元素是无序的，我们只能对于每个元素都遍历一次队列来检查是否有元素符合条件。如果数组的长度为 n，则使用队列的时间复杂度为 O(nk)，会超出时间限制。</p>
+<p>因此我们希望能够找到一个数据结构维护滑动窗口内的元素，该数据结构需要满足以下操作：</p>
+<pre><code>支持添加和删除指定元素的操作，否则我们无法维护滑动窗口；
+
+内部元素有序，支持二分查找的操作，这样我们可以快速判断滑动窗口中是否存在元素满足条件，具体而言，对于元素 x，当我们希望判断滑动窗口中是否存在某个数 y 落在区间 [x−t,x+t] 中，只需要判断滑动窗口中所有大于等于 x−t 的元素中的最小元素是否小于等于 x+t 即可。
+</code></pre>
+<p>我们可以使用<strong>有序集合</strong>来支持这些操作。</p>
+<p>实现方面，我们在有序集合中查找大于等于 x−t 的最小的元素 y，如果 y 存在，且 $y \leq x + t$，我们就找到了一对符合条件的元素。完成检查后，我们将 x 插入到有序集合中，如果有序集合中元素数量超过了 k，我们将有序集合中最早被插入的元素删除即可。</p>
+<p>**注意：**如果当前有序集合中存在相同元素，那么此时程序将直接返回 true，因为此时相当于在k的范围内，存在两个数之差为0，其用于小于等于t。因此本题中的有序集合无需处理相同元素的情况。</p>
+<h4 id="代码-29">代码</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">containsNearbyAlmostDuplicate</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>], k: <span class="built_in">int</span>, t: <span class="built_in">int</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="keyword">from</span> sortedcontainers <span class="keyword">import</span> SortedList</span><br><span class="line">        st=SortedList()</span><br><span class="line">        <span class="keyword">for</span> i,num <span class="keyword">in</span> <span class="built_in">enumerate</span>(nums):            </span><br><span class="line">            st.add(num)</span><br><span class="line">            index=bisect_left(st,num)<span class="comment"># 将num插入st，如果存在相同的值，查找最左边</span></span><br><span class="line">            <span class="keyword">if</span> index&lt;<span class="built_in">len</span>(st)-<span class="number">1</span> <span class="keyword">and</span> st[index+<span class="number">1</span>]-st[index]&lt;=t:<span class="keyword">return</span> <span class="literal">True</span> <span class="comment"># 比较比当前值大一个的数与当前值的差</span></span><br><span class="line">            <span class="keyword">if</span> index&gt;<span class="number">0</span> <span class="keyword">and</span> st[index]-st[index-<span class="number">1</span>]&lt;=t:<span class="keyword">return</span> <span class="literal">True</span> <span class="comment"># 比较比当前值小一个的数与当前值的差</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(st)&gt;k:</span><br><span class="line">                st.remove(nums[i-k]) <span class="comment"># 由于里面不会存在重复值，可以直接使用remove删除最先添加进来的数。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p>有序集合可参考网站：<a target="_blank" rel="noopener" href="https://www.jb51.net/article/221847.htm%E3%80%82">https://www.jb51.net/article/221847.htm。</a></p>
+<h4 id="复杂度分析-8">复杂度分析</h4>
+<p>时间复杂度：$O(n \log(\min(n, k)))$，其中 n 是给定数组的长度。每个元素至多被插入有序集合和从有序集合中删除一次，每次操作时间复杂度均为 $O(\log(\min(n, k))$。</p>
+<p>空间复杂度：$O(\min(n, k))$，其中 n 是给定数组的长度。有序集合中至多包含 $\min(n, k + 1)$个元素。</p>
+<h4 id="作者-20">作者</h4>
+<p>力扣官方题解，链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/7WqeDu/solutions/1038291/zhi-he-xia-biao-zhi-chai-du-zai-gei-ding-94ei/">https://leetcode.cn/problems/7WqeDu/solutions/1038291/zhi-he-xia-biao-zhi-chai-du-zai-gei-ding-94ei/</a></p>
+<h3 id="方法二：桶">方法二：桶*</h3>
+<h4 id="思路-7">思路</h4>
+<p>我们也可以使用利用桶排序的思想解决本题。我们按照元素的大小进行分桶，维护一个滑动窗口内的元素对应的元素。</p>
+<p>对于元素 x，其影响的区间为[x - t, x + t]。于是我们可以设定桶的大小为 t+1。如果两个元素同属一个桶，那么这两个元素必然符合条件，因为一个桶的最大值减去最小值最大为t。如果两个元素属于相邻桶，那么我们需要校验这两个元素是否差值不超过 t。如果两个元素既不属于同一个桶，也不属于相邻桶，那么这两个元素必然不符合条件。</p>
+<p>具体地，我们遍历该序列，假设当前遍历到元素 x，那么我们首先检查 x 所属于的桶是否已经存在元素，如果存在，那么我们就找到了一对符合条件的元素，否则我们继续检查两个相邻的桶内是否存在符合条件的元素。</p>
+<p>实现方面，我们将 int 范围内的每一个整数 x 表示为 $x = (t + 1) \times a + b(0 \leq b \leq t)$的形式，这样 x 即归属于编号为 a 的桶。因为一个桶内至多只会有一个元素，所以我们使用哈希表实现即可。</p>
+<h4 id="代码-30">代码</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">containsNearbyAlmostDuplicate</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>], k: <span class="built_in">int</span>, t: <span class="built_in">int</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="keyword">if</span> k &lt;= <span class="number">0</span> <span class="keyword">or</span> t &lt; <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        buckets=&#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> i, num <span class="keyword">in</span> <span class="built_in">enumerate</span>(nums):</span><br><span class="line">            bucket = num // (t + <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">if</span> bucket <span class="keyword">in</span> buckets:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">            <span class="keyword">if</span> bucket + <span class="number">1</span> <span class="keyword">in</span> buckets <span class="keyword">and</span> <span class="built_in">abs</span>(num - buckets[bucket + <span class="number">1</span>]) &lt;= t:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">            <span class="keyword">if</span> bucket - <span class="number">1</span> <span class="keyword">in</span> buckets <span class="keyword">and</span> <span class="built_in">abs</span>(num - buckets[bucket - <span class="number">1</span>]) &lt;= t:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">                </span><br><span class="line">            buckets[bucket] = num</span><br><span class="line">            <span class="keyword">if</span> i - k &gt;= <span class="number">0</span>:</span><br><span class="line">                old_bucked = nums[i - k] // (t + <span class="number">1</span>)</span><br><span class="line">                <span class="keyword">del</span> buckets[old_bucked]</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<h4 id="作者-21">作者</h4>
+<p>力扣官方题解，链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/7WqeDu/solutions/1038291/zhi-he-xia-biao-zhi-chai-du-zai-gei-ding-94ei/">https://leetcode.cn/problems/7WqeDu/solutions/1038291/zhi-he-xia-biao-zhi-chai-du-zai-gei-ding-94ei/</a></p>
  
       <!-- reward -->
       
@@ -171,12 +213,12 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2023/02/23/Leetcode%E4%B9%8B%E6%80%BB%E7%BB%93%E2%80%94%E2%80%941/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2023/04/24/Leetcode%E4%B9%8B%E9%9A%BE%E9%A2%98-%E5%80%BC%E5%92%8C%E4%B8%8B%E6%A0%87%E4%B9%8B%E5%B7%AE%E9%83%BD%E5%9C%A8%E7%BB%99%E5%AE%9A%E7%9A%84%E8%8C%83%E5%9B%B4%E5%86%85/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Leetcode-Summary/" rel="tag">Leetcode, Summary</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Leetcode-%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88%EF%BC%8C%E6%A1%B6%E6%8E%92%E5%BA%8F/" rel="tag">Leetcode,有序集合，桶排序</a></li></ul>
 
     </footer>
   </div>
@@ -184,19 +226,19 @@
    
   <nav class="article-nav">
     
-      <a href="/2023/02/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/" class="article-nav-link">
+      <a href="/2023/04/24/Leetcode%E4%B9%8B%E9%9A%BE%E9%A2%98-%E6%95%B0%E6%8D%AE%E6%B5%81%E7%9A%84%E7%AC%ACK%E5%A4%A7%E6%95%B0%E5%80%BC/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            大数据相关知识
+            Leetcode之难题:数据流的第K大数值
           
         </div>
       </a>
     
     
-      <a href="/2022/12/14/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-12-14/" class="article-nav-link">
+      <a href="/2023/04/17/JAVA%E5%9F%BA%E7%A1%80%EF%BC%9AAPI/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Leetcode之每日一题：2022-12-14</div>
+        <div class="article-nav-title">JAVA基础：API</div>
       </a>
     
   </nav>

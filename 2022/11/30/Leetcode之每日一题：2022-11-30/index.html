@@ -80,7 +80,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">852</span>
+            <span class="post-count">850</span>
         </span>
     </span>
 
@@ -114,12 +114,12 @@
 <li><code>int pop()</code>删除并返回堆栈中出现频率最高的元素。 如果出现频率最高的元素不只一个，则移除并返回最接近栈顶的元素。</li>
 </ul>
 <h3 id="示例">示例</h3>
-<h4 id="1">1、</h4>
+<h4 id="1、">1、</h4>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">[&quot;FreqStack&quot;,&quot;push&quot;,&quot;push&quot;,&quot;push&quot;,&quot;push&quot;,&quot;push&quot;,&quot;push&quot;,&quot;pop&quot;,&quot;pop&quot;,&quot;pop&quot;,&quot;pop&quot;],</span><br><span class="line">[[],[5],[7],[5],[7],[4],[5],[],[],[],[]]</span><br><span class="line">输出：[null,null,null,null,null,null,null,5,7,5,4]</span><br><span class="line">解释：</span><br><span class="line">FreqStack = new FreqStack();</span><br><span class="line">freqStack.push (5);//堆栈为 [5]</span><br><span class="line">freqStack.push (7);//堆栈是 [5,7]</span><br><span class="line">freqStack.push (5);//堆栈是 [5,7,5]</span><br><span class="line">freqStack.push (7);//堆栈是 [5,7,5,7]</span><br><span class="line">freqStack.push (4);//堆栈是 [5,7,5,7,4]</span><br><span class="line">freqStack.push (5);//堆栈是 [5,7,5,7,4,5]</span><br><span class="line">freqStack.pop ();//返回 5 ，因为 5 出现频率最高。堆栈变成 [5,7,5,7,4]。</span><br><span class="line">freqStack.pop ();//返回 7 ，因为 5 和 7 出现频率最高，但7最接近顶部。堆栈变成 [5,7,5,4]。</span><br><span class="line">freqStack.pop ();//返回 5 ，因为 5 出现频率最高。堆栈变成 [5,7,4]。</span><br><span class="line">freqStack.pop ();//返回 4 ，因为 4, 5 和 7 出现频率最高，但 4 是最接近顶部的。堆栈变成 [5,7]。</span><br></pre></td></tr></table></figure>
 <h3 id="提示">提示:</h3>
 <ul>
 <li>0 &lt;= val &lt;= 109</li>
-<li>push 和 pop 的操作数不大于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>∗</mo><mn>1</mn><msup><mn>0</mn><mn>4</mn></msup></mrow><annotation encoding="application/x-tex">2 * 10^4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span></span></span></span></span></span></span></span>。</li>
+<li>push 和 pop 的操作数不大于 $2 * 10^4$。</li>
 <li>输入保证在调用 pop之前堆栈中至少有一个元素。</li>
 </ul>
 <h3 id="来源">来源</h3>

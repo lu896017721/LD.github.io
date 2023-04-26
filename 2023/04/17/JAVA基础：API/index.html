@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>JAVA基础：API |  LD_blog</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      
+<link rel="stylesheet" href="/css/fonts/remixicon.css">
+
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    <link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-JAVA基础：API"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  JAVA基础：API
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/04/17/JAVA%E5%9F%BA%E7%A1%80%EF%BC%9AAPI/" class="article-date">
+  <time datetime="2023-04-17T12:38:11.000Z" itemprop="datePublished">2023-04-17</time>
+</a>   
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">6.4k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">25 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="JAVA基础：API（应用程序接口）">JAVA基础：API（应用程序接口）</h2>
+<h3 id="Object">Object</h3>
+<p>顶级父类——任何一个类都直接或者间接继承Object——任何一个类的对象都可以赋值给一个Object对象。</p>
+<h4 id="protected-Object-clone">protected Object clone()</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">demo1</span> <span class="variable">b</span> <span class="operator">=</span> (demo1) a.clone();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>一个类所产生的对象要想被克隆，那么这个类必须实现Cloneable接口（这个接口没有任何的方法和属性，仅仅用作一个标记）。</li>
+<li>该方法是产生了一个新对象，而新对象的属性和原对象一致。</li>
+<li>由于它的修饰词为protected，所以一个类要使用clone，只能在该类中使用。</li>
+</ul>
+<h4 id="public-boolean-equals-Object-obj">public boolean equals(Object obj)</h4>
+<p>判断其他对象是否与此对象“相等”。底层使用==进行比较，==默认比较的是地址。</p>
+<p>当要比较两对象的属性是否一致时，需要重写equals()方法，重写一般分为以下几步：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object obj)</span> &#123;</span><br><span class="line">    <span class="comment">// 判断参数是否一致</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">this</span> == obj)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 判断参数是否为null</span></span><br><span class="line">    <span class="keyword">if</span>(obj == <span class="literal">null</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 判断类型是否一致</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">this</span>.getClass() != obj.getClass())&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//下一步开始比较两个对象的属性是否一致，之前需要将obj强转为当前对象</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="protected-void-finalize">protected void finalize()</h4>
+<p>当垃圾回收确定不再有对对象的引用时，由垃圾回收器对该对象调用。</p>
+<ul>
+<li>
+<p>该方法并不是直接调用GC，而是通知GC进行回收。</p>
+</li>
+<li>
+<p>对GC仅仅起通知作用，GC不一定启动。</p>
+</li>
+<li>
+<p>System.gc();语句的实现就是通过finalize()，因此也不是直接调用GC，而是通知GC。</p>
+</li>
+</ul>
+<h4 id="public-Class-getClass">public Class&lt;?&gt; getClass()</h4>
+<p>返回此对象的运行时类。此时返回的是对象的实际类型。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Object</span> <span class="variable">c</span> <span class="operator">=</span> <span class="string">&quot;aaa&quot;</span>;</span><br><span class="line">System.out.println(c.getClass());</span><br><span class="line"><span class="comment">//结果为：class java.lang.String</span></span><br></pre></td></tr></table></figure>
+<h4 id="public-int-hashCode">public int hashCode()</h4>
+<p>哈希码根据哈希散列算法计算出来的，哈希散列算法要求计算出来的值随机散落在int的取值范围内。由于取值范围较大，导致每一个对象与其他对象的哈希码取值重合概率太小，所以人为认定哈希码是唯一的。因此在存储对象的时候也以对象的哈希码作为基准。</p>
+<h4 id="public-String-toString">public String toString()</h4>
+<p>返回对象的字符串表示形式。</p>
+<ul>
+<li>当直接打印对象的时候，实际上底层默认调用对象的toString()方法。</li>
+<li>可以重写toString()方法来自定义输出格式。</li>
+<li>Bin：二进制 Oct：八进制 Dec：十进制 Hex：十六进制</li>
+</ul>
+<h3 id="String">String</h3>
+<h4 id="构造方法-2">构造方法</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">String</span></span><br><span class="line"><span class="keyword">extends</span> <span class="title class_">Object</span></span><br><span class="line"><span class="keyword">implements</span> <span class="title class_">Serializable</span>, Comparable&lt;String&gt;, CharSequence</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>String类表示字符串。Java程序中的所有字符串文字，如“abc”，都是作为此类的实例实现的。底层使用final char数组存储。</p>
+</li>
+<li>
+<p>任何的字符串都是String的对象。</p>
+</li>
+<li>
+<p>字符串是常量；它们的值在创建后不能更改。字符串缓冲区支持可变字符串。因为String对象是不可变的，所以它们可以共享。</p>
+</li>
+<li>
+<p>字符串存储：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">s1</span> <span class="operator">=</span> <span class="string">&quot;ab&quot;</span>;<span class="comment">//指向常量池</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&quot;ab&quot;</span>);<span class="comment">//指向堆内存</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/04/17/JAVA%E5%9F%BA%E7%A1%80%EF%BC%9AAPI/1.png" alt="image-20230418213514926"></p>
+</li>
+<li>
+<pre><code class="language-java">String s4 = &quot;a&quot;;
+s4 = s4 + &quot;b&quot;;//字符串在+拼接时，实际上调用了StringBuilder中的append方法
+// s4 = new StringBuilder(s4).append(&quot;b&quot;).toString() 相当于
+// S4 = new String(&quot;ab&quot;);
+// s1 != s4
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 当大量字符串进行拼接时，StringBuilder的效率远高于+，如果需要拼接多个字符串，建议使用StringBuilder（底层使用char数据存储，无final修饰）。</span><br><span class="line"></span><br><span class="line">- StringBuilder类和StringBuffer类中的方法签名一模一样的，StringBuilder类本身是线程不安全的，StringBuffer类本身是线程安全的。</span><br><span class="line"></span><br><span class="line">#### 常用方法</span><br><span class="line"></span><br><span class="line">字符串中提供了一系列的操作而不改变原字符串的方法，会产生一个新的字符串。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+<p>String str = “zgasdsahd”;</p>
+<p>// 获取字符串的长度<br>
+str.length()</p>
+<p>// 指定下标上的字符<br>
+str.charAt(index);</p>
+<p>// 将字符串转换为字符数组<br>
+str.toCharArray();</p>
+<p>// 将字符数组转换为字符串<br>
+char[] cs= {‘d’,‘a’,‘c’};<br>
+String str = new String(cs);//全部转换<br>
+String str = new String(cs, offset, count);//部分转换，从offset开始总共count个字符</p>
+<p>// 字符串转为大写<br>
+str.toUpperCase();</p>
+<p>// 字符串转为小写<br>
+str.toLowerCase();</p>
+<p>// 判断字符串是否一致<br>
+str.equals(str2);<br>
+str.equalsIgnoreCase(str2); //忽略大小写</p>
+<p>// 拼接字符串，底层利用数组复制实现<br>
+str.concat(str2);</p>
+<p>// 判断字符串是否包含指定的子串<br>
+str.contains(str2);</p>
+<p>// 判断字符串是否以指定子串结尾<br>
+str.endsWith(str2);</p>
+<p>// 判断字符串是否以指定子串开头<br>
+str.startsWith(str2);</p>
+<p>// 将字符串转换为字节数组<br>
+str.getBytes(); //在转换时如果没有指定编码，默认使用当前工程的默认编码<br>
+str.getBytes(“gbk”); //指定编码，gbk utf-8</p>
+<p>// 将字节数组转换为字符串<br>
+String str = new String(字节数组,“gbk”);//指定编码进行构造<br>
+String str = new String(字节数组,start,num,“gbk”);//指定编码进行构造，并只从开始位置起的num个字节。</p>
+<p>// 获取哈希码，底层实现是通过迭代加和实现，hash = hash * 31 + c，c为字符串中的字符。<br>
+str.hashcode(); //字符串在Java中存储的时候用的字符数组，char类型用的的编码是utf-16，因此同一个字符串的哈希码在任何条件下都是相同的。</p>
+<p>// 获取字符串中指定元素（字符、字符串都可）第一次出现的下标，无就返回-1<br>
+str.indexOf(str2)<br>
+str.indexOf(str2, start) // 从start位置开始找起，返回的index依然为在整个字符串中的下标</p>
+<p>// 返回字符串对象的规划化表示形式<br>
+str.intern() //该方法强制返回常量池的值</p>
+<p>// 判断字符串是否为空(“”),不能判断是否为null。<br>
+str.isEmpty()</p>
+<p>// 获取字符串中指定元素（字符、字符串）最后一次出现的下标，无就返回-1<br>
+str.lastIndexOf(str2)<br>
+str.lastIndexOf(str2, end) // 从end位置向前找起，返回的index依然为在整个字符串中的下标</p>
+<p>// 用指定字符替换为原字符<br>
+str.replace(oldchar, newchar)</p>
+<p>// 截取子字符串<br>
+str.substring(start) // 从start位置开始，截取到末尾<br>
+str.substring(start, end) // 从start位置开始，截取到end(不包括)</p>
+<p>// 注意：字符串的toString方法返回的是它本身，不再是地址。</p>
+<p>// 去掉字符串前后的空白字符，包括转折、回车等<br>
+str.trim()</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### int res = str1.compareTo(str2)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>// 按字典顺序(字符升序)比较两个字符串<br>
+int res = str1.compareTo(str2);<br>
+// 如果不考虑大小写<br>
+int res = str1.compareToIgnoreCase(str2);</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 按字典顺序比较两个字符串</span><br><span class="line">- s1,s2在]ava底层是以字符数组形式存储</span><br><span class="line">- 在比较两个字符串的时候，遍历两个字符数组 </span><br><span class="line">- 将字符数组的对应位置上字符进行相减</span><br><span class="line">- 如果这一位相减不为0，那么就将这个相减的差作为结果返回；如果这一位相减为0，则继续遍历，计算下一位 </span><br><span class="line">- 如果每一位相减都为0并且一个字符串先遍历完了，返回两个字符串的长度之差</span><br><span class="line">- **如果返回值为0表示s1 = s2**</span><br><span class="line">- **如果返回值为正数，表示s1 &gt; s2；如果返回值为负数，表示s1 &lt; s2**</span><br><span class="line"></span><br><span class="line">#### instanceof：判断类和对象的关系</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>对象 instanceof 类/接口 //表示判断对象是否指定类/接口及其父类/父接口的对象，这里对象看的是实际对象（即A a = new B(); a instanceof B;中比较的是B和B）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![image-20230421162117975](JAVA基础：API/2.png)</span><br><span class="line"></span><br><span class="line">#### valueOf方法</span><br><span class="line"></span><br><span class="line">静态方法，表示将其他类型数据转化为字符串。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>String str = String.valueOf(6);</p>
+<p>Object o = new Object();<br>
+String str = String.valueOf(o); // 对一个对象进行valueOf操作时，实际上调用了这个对象的toString方法。字符数组除外</p>
+<p>char[] cs = {‘a’,‘b’,‘c’}<br>
+String str1 = String.valueOf(cs); // str1:abc<br>
+String str2 = cs.toString();//类名+地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### replaceAll方法</span><br><span class="line"></span><br><span class="line">匹配指定字符并替换，匹配不成功的部分保留。</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">str.replaceAll(regex, replacement); // regex:正则表达式，replacement:替换字符</span><br><span class="line"></span><br><span class="line">String str = &quot;asdasfaf113&quot;;</span><br><span class="line">// 将所有数字替换成+</span><br><span class="line">str.replaceAll(&quot;\\d&quot;,&quot;+&quot;);</span><br><span class="line"></span><br><span class="line">// 将所有字母提取出来形成字符串</span><br><span class="line">str.replaceAll(&quot;[^a-zA-Z]&quot;,&quot;&quot;);</span><br><span class="line"></span><br><span class="line">//交换Sam和Cat的位置</span><br><span class="line">str.replaceAll(&quot;(.*)(Sam)(.*)(Cat)(.*)&quot;,&quot;$1$4$3$2$5&quot;); // $ 表示引用前面正则表达式的捕获组</span><br></pre></td></tr></table></figure>
+<h4 id="split方法">split方法</h4>
+<p>以指定规则进行切分。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">str. split(regex);<span class="comment">// regex：正则表达式</span></span><br><span class="line"></span><br><span class="line"><span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;12dks3sol33df24&quot;</span>;</span><br><span class="line"><span class="comment">// 以数字作为边界，将这个字符串切分</span></span><br><span class="line">String[] arr = str.split(<span class="string">&quot;\\d&quot;</span>); <span class="comment">// 如果多个边界符相邻，则中间切割出&quot;&quot;字符串。如果边界符在最后，则直接切除。</span></span><br><span class="line"><span class="comment">// 上述结果：[, , dks, sol, , df]</span></span><br></pre></td></tr></table></figure>
+<h3 id="Pattern类——正则表达式-Regular-Expression-REGEX">Pattern类——正则表达式-Regular Expression-REGEX</h3>
+<h4 id="包-2">包</h4>
+<p>java.util.regex</p>
+<h4 id="基本语法">基本语法</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 产生正则对象</span></span><br><span class="line"><span class="type">Pattern</span> <span class="variable">p</span> <span class="operator">=</span> Pattern.compile(s);<span class="comment">// s：匹配规则</span></span><br><span class="line"><span class="comment">// 匹配器，将正则对象和实际对象进行匹配</span></span><br><span class="line"><span class="type">Matcher</span> <span class="variable">m</span> <span class="operator">=</span> p.matcher(str);<span class="comment">// str:待匹配字符串</span></span><br><span class="line"><span class="comment">// 进行判断</span></span><br><span class="line"><span class="type">boolean</span> <span class="variable">b</span> <span class="operator">=</span> m.matches();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 上述流程可以简化为</span></span><br><span class="line"><span class="type">boolean</span> <span class="variable">b</span> <span class="operator">=</span> str.matches(s); <span class="comment">// 调用字符串的matches方法</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 正则语法示例部分1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 字符串由3个字符组成，第一个字符是a/b/c中的一个，第二个字符是1/m/n一个，第三个字符是h/i/j/k的一个</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;[abc][lmn][hijk]&quot;</span>; <span class="comment">// []表示匹配里面任意一个字符</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 匹配由一个字母或数字组成的字符串</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;[a-zA-Z0-9]&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 匹配由一个字符组成的字符串，不包括a/b/c</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;[[a-z]&amp;&amp;^a-c]&quot;</span>; <span class="comment">// 非逻辑,[]里面的^表示除里面的字符，匹配其余所有字符</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 匹配由一个字母组成的字符串，但不包括a/b/c</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;[[a-z]&amp;&amp;^a-c]&quot;</span>; <span class="comment">// &amp;&amp;表示与的意思，前后同时满足</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 匹配以数字开头的由两个字符组成的字符串</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;[0-9].&quot;</span>; <span class="comment">// .是通配符，表示任意字符</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 匹配.</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;\\.&quot;</span>; <span class="comment">//先由java进行转义，转义为\.，然后再由正则进行转义，转义为.。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 匹配\</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;\\\\&quot;</span>; <span class="comment">//先由java进行转义，转义为\\，然后再由正则进行转义，转义为\。</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2023/04/17/JAVA%E5%9F%BA%E7%A1%80%EF%BC%9AAPI/3.png" alt="image-20230424211149485"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 正则语法示例部分2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 数量词——每一个字符之和最多有一个</span></span><br><span class="line"><span class="comment">// 匹配由数字开头的字符串</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;\\d.*&quot;</span>;<span class="comment">// * 表示之前的这个字符可以出现可以不出现 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 匹配由数字开头的至少由两个字符组成的字符串</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;\\d.+&quot;</span>;<span class="comment">// + 表示之前的这个字符至少出现一次</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 匹配由数字开头的至多由两个字符组成的字符串</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;\\d.?&quot;</span>;<span class="comment">// ? 表示之前的这个字符最多出现一次</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 匹配由字母组成的长度为5的字符串</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;[a-zA-Z]&#123;5&#125;&quot;</span>;<span class="comment">// &#123;n&#125; 表示之前的这个字符出现n次。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 匹配由字母组成的长度至少为5的字符串</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;[a-zA-Z]&#123;5,&#125;&quot;</span>;<span class="comment">// &#123;n,&#125; 表示之前的这个字符至少出现n次。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 匹配由字母组成的长度为6到12的字符串</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;[a-zA-Z]&#123;6,12&#125;&quot;</span>;<span class="comment">// &#123;n,m&#125; 表示之前的这个字符至少出现n次，最多出现m次。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 匹配至少含有一个连续&quot;ab&quot;的字符串</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;.*(ab)+.*&quot;</span>;<span class="comment">// (字符) 表示将这些字符作为一个整体进行操作</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 匹配dababcdseababfsa这类字符</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;.*(ab)+.*\\1+.*&quot;</span>;<span class="comment">// \\n 表示引用编号为n的捕获组，正则表达式会对包含的捕获组进行编号，编号从1开始计算，且从&#x27;(&#x27;出现的位置开始计数的。如 (A(BC)D) 编号1：(A(BC)D) 编号2：(BC)。</span></span><br><span class="line"><span class="comment">// 如匹配叠字：aaa,bbb这种</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;(.)\\1+&quot;</span>; <span class="comment">//这里匹配到第一个字符后，使用\\1来引用该字符，然后使它出现至少1次，而&quot;(.)+&quot;表示匹配至少两个字符。</span></span><br></pre></td></tr></table></figure>
+<h3 id="Math类——数学类">Math类——数学类</h3>
+<h4 id="包-3">包</h4>
+<p>java.lang.Math</p>
+<p>public final class Math，最终类。Math类包含用于执行基本数字运算的方法，如初等指数函数、对数函数、平方根函数和三角函数。Math类是针对类型进行运算的。</p>
+<p>Math里面的方法都是静态，不支持对外创建对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 常量</span></span><br><span class="line">Math.E; <span class="comment">// 自然对数</span></span><br><span class="line">Math.PI; <span class="comment">// 圆周率</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">// 向上取整</span></span><br><span class="line">Math.ceil(<span class="number">3.2</span>); <span class="comment">// 返回值: double 结果：4.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 向下取整</span></span><br><span class="line">Math.floor(<span class="number">3.2</span>); <span class="comment">// 返回值: double 结果：3.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 四舍五入</span></span><br><span class="line">Math.round(<span class="number">3.2</span>); <span class="comment">// 返回值：double-&gt;long,float-&gt;int 结果：3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 随机值</span></span><br><span class="line">Math.random(); <span class="comment">// 返回一个double值，其大于等于0，小于1。</span></span><br><span class="line"><span class="comment">// 求随机数的一个类Random</span></span><br><span class="line"><span class="type">Random</span> <span class="variable">r</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Random</span>(); </span><br><span class="line">r.nextInt(<span class="number">10</span>); <span class="comment">// 返回10以内的随机数</span></span><br><span class="line">r.nextInt(<span class="number">50</span>) + <span class="number">30</span>; <span class="comment">// 返回30-80以内的随机数</span></span><br></pre></td></tr></table></figure>
+<h4 id="补充-2">补充</h4>
+<p>关键字：strictfp，只能作用在方法上，表示方法正在计算过程中是以80位二进制进行计算，在计算完成之后依然会以64位二进制进行存储。</p>
+<p>类：BigDecimal，不可变的、任意精度的带符号十进制数。要想使用BigDecimal进行精确存储和计算，那么需要将参数以字符串形式传入。</p>
+<p>类：BigInteger：存储、计算任意大小的整数的类，参数以字符串传入。</p>
+<h3 id="包装类">包装类</h3>
+<p>由于基本类型身上没有方法和属性，所以为了快捷的操作这些数据，针对每一种基本类型提供了对应的类形式。</p>
+<p><img src="/2023/04/17/JAVA%E5%9F%BA%E7%A1%80%EF%BC%9AAPI/4.png" alt="image-20230425203844564"></p>
+<h4 id="Void类">Void类</h4>
+<p>位于java.lang包，且定义形式为：public final class Void extends Object。</p>
+<p>Void类是一个不可实例化的占位符类，用于保存对表示Java关键字Void的class对象的引用。特点：最终类，不可实例化。所以当一个方法的返回值类型为Void类时，其只能返回null。</p>
+<h4 id="数值型包装类">数值型包装类</h4>
+<p>Byte、Short、Integer、Long、Float、Double。</p>
+<p>位于java.lang.Number包。特点：最终类</p>
+<h5 id="以Integer类为例">以Integer类为例</h5>
+<p>Integer类将基本类型int的值包装在对象中。Integer类型的对象包含一个类型为int的字段。此外，这个类提供了几个将int转换为String和将String转换为int的方法，以及处理int时有用的其他常量和方法。</p>
+<p><strong>常用方法：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 构造方法</span></span><br><span class="line"><span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">6</span>;</span><br><span class="line"><span class="type">Integer</span> <span class="variable">in</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Integer</span>(i);</span><br><span class="line"><span class="type">Integer</span> <span class="variable">in2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Integer</span>(<span class="string">&quot;789&quot;</span>); <span class="comment">// 逐位判断是否合法，并计算</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 将基本类型的变量直接赋值给对应的引用类型的对象——（自动封箱）</span></span><br><span class="line"><span class="type">Integer</span> <span class="variable">in</span> <span class="operator">=</span> i; <span class="comment">// 当进行自动封箱的时候，底层会默认调用当前类中的valueOf方法进行封箱：Integer in = Integer.valueOf(i);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// valueOf方法，静态方法</span></span><br><span class="line">Integer.valueOf(<span class="type">int</span>/String i);<span class="comment">// 返回一个Integer实例，该实例表示指定的int/String值。</span></span><br><span class="line"><span class="comment">// 该方法对于Byte、Short、Integer、Long这四种整数类型有一个特性（以Integer为例）：当数值范围在-128~127之间的时候，返回Integer.cache中对应下标上的值，因此在此范围内的两个Integer对象==判断为真，超过这个范围就为假（new了新的Integer对象）。对于其他三种，范围都是-128~127。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 将引用类型的对象直接赋值给了对应的基本类型的变量——（自动拆箱）</span></span><br><span class="line"><span class="type">Integer</span> <span class="variable">in</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Integer</span>(<span class="number">10</span>);</span><br><span class="line"><span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> in; <span class="comment">// 当进行自动拆箱的时候，底层会调用对应对象的***Value()方法进行拆箱：int i = in.intValue();</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// intValue方法</span></span><br><span class="line">Integer in;</span><br><span class="line">in.intValue(); <span class="comment">// 以int形式返回此Integer的值。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// parseInt方法，静态方法</span></span><br><span class="line"><span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> Integer.parseInt(<span class="string">&quot;567&quot;</span>);<span class="comment">// 将字符串参数作为有符号的十进制整数进行解析</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Integer.MAX_VALUE <span class="comment">// int类型能够表示的最大值</span></span><br><span class="line">Integer.MIN_VALUE <span class="comment">// int类型能够表示的最小值</span></span><br><span class="line">    </span><br><span class="line">Double.NaN <span class="comment">// double类型的非数字not-a-number，唯一，和任何值（包括自己）都不相等。因此，判断NaN的方式：调用Double的静态方法:Double.isNaN(double v);或者调用Double对象自身的isNaN()方法来判断当前值是不是NaN。</span></span><br><span class="line">Double.POSITIVE_INFINITY <span class="comment">// double类型的正无穷，与自身相等</span></span><br><span class="line">Double.NEGATIVE_INFINITY <span class="comment">// double类型的负无穷，与自身相等</span></span><br></pre></td></tr></table></figure>
+<h4 id="Character类">Character类</h4>
+<p>只有一种构造方法，即char转化为Character。</p>
+<p>没有parse这种字符串的解析方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Character.MAX_VALUE <span class="comment">// \uFFFF</span></span><br><span class="line">Character.MIN_VALUE <span class="comment">// \u0000</span></span><br></pre></td></tr></table></figure>
+<h4 id="Boolean类">Boolean类</h4>
+<p>当使用字符串进行创建Boolean对象时，如果字符串参数不为null并且等于字符串“true”（忽略大小写），则分配一个表示值true的布尔对象，其余均为false。</p>
+<h4 id="包装类的hashcode方法">包装类的hashcode方法</h4>
+<p>包装类的hashcode方法得到的哈希码不会改变。</p>
+<ul>
+<li>
+<p>Byte、Short、Integer的hashcode()结果为其本身的值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Integer</span> <span class="variable">i</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Integer</span>(<span class="number">8</span>);</span><br><span class="line">i.hashcode(); <span class="comment">// 结果为：8</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>Long由于哈希码为int类型，所以不会是其值本身，hashcode()结果为：前32位与后32位异或结果。</p>
+</li>
+<li>
+<p>Double则是将一个double转为long类型数，然后进行前32位与后32位异或，得到最终hashcode()结果。</p>
+</li>
+<li>
+<p>Float则是将一个float转为int，然后返回。</p>
+</li>
+<li>
+<p>Character的hashcode()方法则是将char强制转为int，然后返回。</p>
+</li>
+<li>
+<p>Boolean的hashcode()方法结果为：值为true：返回1231；值为false：返回1237。</p>
+</li>
+</ul>
+<h4 id="注意-3">注意</h4>
+<p>包装类型在和基本类型进行运算的时候，会自动拆箱。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">200</span>;</span><br><span class="line"><span class="type">Integer</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">200</span>;</span><br><span class="line">i == j; <span class="comment">// True</span></span><br></pre></td></tr></table></figure>
+<p>字面量的哈希码是固定不变的（null的哈希码规定为0）。所有的字面量都是存储在运行时常量池。</p>
+<p>运行时常量池存储的是字面量以及自定义常量。</p>
+<h3 id="日期类">日期类</h3>
+<h4 id="Date类">Date类</h4>
+<p>这里使用的是java.util.Date，代表日期的类，精确到毫秒。</p>
+<p>字符串和日期进行转换：SimpleDateFormat，字符串-&gt;日期：parse方法，日期-&gt;字符串：format方法，使用时需要指定格式。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取的是当前的系统时间</span></span><br><span class="line"><span class="type">Date</span> <span class="variable">date</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line">System.out.println(date);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 此种方法已过时</span></span><br><span class="line"><span class="comment">// 当需要指定日期时，可以指定参数</span></span><br><span class="line"><span class="comment">// 此时底层是在1900-01的基础上进行累加的</span></span><br><span class="line"><span class="type">Date</span> <span class="variable">date</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="number">2100</span>-<span class="number">1900</span>,<span class="number">12</span>-<span class="number">1</span>,<span class="number">17</span>);<span class="comment">// 此时代表2100年12月17日</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 将字符串转换为日期对象</span></span><br><span class="line"><span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;2000-01-17 13:45:11&quot;</span>;</span><br><span class="line"><span class="type">SimpleDateFormat</span> <span class="variable">sdf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SimpleDateFormat</span>(<span class="string">&quot;yyyy-MM-dd hh:mm:ss&quot;</span>);</span><br><span class="line"><span class="type">Date</span> <span class="variable">date</span> <span class="operator">=</span> sdf.parse(str);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将日期转换为字符串</span></span><br><span class="line"><span class="type">String</span> <span class="variable">date</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SimpleDateFormat</span>(<span class="string">&quot;yyyy年MM月dd日 hh时mm分ss秒&quot;</span>).format(date);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="Calendar类">Calendar类</h4>
+<p>java.util.Calendar类，抽象类，代表日历的类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取Calendar对象</span></span><br><span class="line"><span class="type">Calendar</span> <span class="variable">c</span> <span class="operator">=</span> Calendar.getInstance();</span><br></pre></td></tr></table></figure>
+<h4 id="LocalDate类">LocalDate类</h4>
+<p>从JDK1.8开始，对时间体系进行了新的划分，将日期和时间进行分离，并且详细区分，从而形成了一个新的包——时间包 java.time包。</p>
+<p>包；java.time。最终类。只包含日期，不包含时间。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取当前默认时区的日期</span></span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">date</span> <span class="operator">=</span> LocalDate.now();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 指定日期</span></span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">date</span> <span class="operator">=</span> LocalDate.of(year, month, day);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取日期为一周中的第几天</span></span><br><span class="line">date.getDayOfWeek(); <span class="comment">// 直接返回星期几</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取日期为一年中的第几天</span></span><br><span class="line">date.getDayOfYear(); </span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取年</span></span><br><span class="line">date.getYear(); </span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取月</span></span><br><span class="line">date.getMonth(); <span class="comment">// 之间返回月份，如果需要返回数字：date.getMonthValue()</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取日</span></span><br><span class="line">date.getDayOfMonth();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 日期比较</span></span><br><span class="line">date.isAfter(date1);</span><br><span class="line">date.isBefore(date1);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断闰年</span></span><br><span class="line">date.isLeapYear();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这月有几天</span></span><br><span class="line">date.lengthOfMonth();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这年有几天</span></span><br><span class="line">date.lengthOfYear();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 此时只支持日期单位的加减</span></span><br><span class="line"><span class="comment">// 日期加,如加3天</span></span><br><span class="line">date.plus(<span class="number">3</span>, ChronoUnit.DAYS);</span><br><span class="line"><span class="comment">// 日期减,如减3天</span></span><br><span class="line">date.minus(<span class="number">3</span>, ChronoUnit.DAYS);</span><br></pre></td></tr></table></figure>
+<h4 id="LocalTime类">LocalTime类</h4>
+<p>包；java.time。最终类。只包含时间，不包含日期。方法使用同LocalDate类。</p>
+<h3 id="异常">异常</h3>
+<p>异常在Java中式用于问题的反馈和处理的机制。</p>
+<h4 id="异常的基本处理流程">异常的基本处理流程</h4>
+<p><img src="/2023/04/17/JAVA%E5%9F%BA%E7%A1%80%EF%BC%9AAPI/5.png" alt="image-20230426155550279"></p>
+<h4 id="异常的特点">异常的特点</h4>
+<p>异常的顶级父类（除了Object）是Throwable。</p>
+<h4 id="Throwable类">Throwable类</h4>
+<p>Throwable类是Java语言中所有错误和异常的超类。</p>
+<h5 id="Error：错误">Error：错误</h5>
+<p>Error是Throwable的一个子类，表示合理的应用程序（<strong>逻辑、语法没问题</strong>）不应该试图捕捉（<strong>特点：一旦出现，不能处理</strong>）的严重问题。</p>
+<p>其中一个重要子类：<strong>VirtualMachineError</strong>（<strong>StackOverflowError</strong>（当应用程序递归过深而导致堆栈溢出时抛出）、<strong>OutOfMemoryError</strong>（当Java虚拟机由于堆内存不足而无法分配对象，并且垃圾收集器无法提供更多堆内存时抛出。））</p>
+<h5 id="Exception：异常">Exception：异常</h5>
+<p>出现之后可以处理，处理方法有两种：一种是捕获、一种是继续抛出。</p>
+<p>一旦抛出异常对象，后续代码停止执行。异常处理完成后，后续代码（<strong>处理所在方法的后续，而不是抛出异常的方法后续</strong>）可以执行。</p>
+<p>根据异常出现的时间，将异常划分为两类：编译时异常、运行时异常。</p>
+<p>**编译时异常：**由于在编译的时候就已经出现，所以要求必须处理</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">异常</th>
+<th style="text-align:center">异常名</th>
+<th style="text-align:center">原因</th>
+<th style="text-align:center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">CloneNotSupportedException</td>
+<td style="text-align:center">克隆不支持异常</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">ParseException</td>
+<td style="text-align:center">解析异常</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<p>**运行时异常：**在运行的时候才出现，可以处理，也可以不处理。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">异常</th>
+<th style="text-align:center">异常名</th>
+<th style="text-align:center">原因</th>
+<th style="text-align:center"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">ArithmeticException</td>
+<td style="text-align:center">算术异常</td>
+<td style="text-align:center">非0/0</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">ArrayIndexOutofBoundsException</td>
+<td style="text-align:center">数组索引异常</td>
+<td style="text-align:center">数组越界</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">NullPointerException</td>
+<td style="text-align:center">空指针异常</td>
+<td style="text-align:center">对null进行使用</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">ClassCastException</td>
+<td style="text-align:center">类型强制转换异常</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">PatternSyntaxException</td>
+<td style="text-align:center">正则表达式格式异常</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<h4 id="自定义异常">自定义异常</h4>
+<p>定义一个类继承某个异常类，如果继承的是Exception或者是其他的异常，那么就定义了一个编译时异常；如果继承的是RuntimeException（<strong>运行时异常的父类</strong>）或者是它的子类，那么就定义了一个运行时异常。</p>
+<h5 id="基本流程">基本流程</h5>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">exceptionDemo</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            readTxt(<span class="string">&quot;D://1.png&quot;</span>);</span><br><span class="line">        &#125;<span class="keyword">catch</span> (PathNotExistException e)&#123;</span><br><span class="line">            System.out.println(e.getStr());</span><br><span class="line">        &#125;<span class="keyword">catch</span> (FileFormatException e)&#123;</span><br><span class="line">            System.out.println(e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">readTxt</span><span class="params">(String path)</span> <span class="keyword">throws</span> PathNotExistException, FileFormatException&#123;</span><br><span class="line">        <span class="keyword">if</span>(path.startsWith(<span class="string">&quot;H://&quot;</span>))&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">PathNotExistException</span>(<span class="string">&quot;H盘不存在&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(!path.endsWith(<span class="string">&quot;.txt&quot;</span>))&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">FileFormatException</span>(<span class="string">&quot;文件格式不对&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PathNotExistException</span> <span class="keyword">extends</span> <span class="title class_">Exception</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String str;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PathNotExistException</span><span class="params">()</span>&#123;&#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PathNotExistException</span><span class="params">(String str)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.str = str;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getStr</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> str;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FileFormatException</span> <span class="keyword">extends</span> <span class="title class_">Exception</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">FileFormatException</span><span class="params">()</span>&#123;&#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">FileFormatException</span><span class="params">(String str)</span>&#123;</span><br><span class="line">        <span class="built_in">super</span>(str); <span class="comment">// 调用父类的message</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="异常的捕获方式">异常的捕获方式</h4>
+<h5 id="1、多异常时的捕获方式">1、多异常时的捕获方式</h5>
+<ol>
+<li>
+<p>如果多个异常的处理方式不一样，可以使用多个catch来分别捕获、分别处理。</p>
+</li>
+<li>
+<p>如果所有异常的处理方法都一样，可以捕获一个父类异常进行统一处理。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">try&#123;</span><br><span class="line">	...</span><br><span class="line">&#125;catch(Exception e)&#123;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>如果多个异常分成了不同的组来进行处理，那么同一个组异常之间可以用 | 隔开。这种捕获方式从jdk1.7开始。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">try&#123;</span><br><span class="line">	...</span><br><span class="line">&#125;catch(Exception1 | Exception2 e)&#123;</span><br><span class="line">	...</span><br><span class="line">&#125;catch(Exception3)&#123;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h5 id="2、抛出父类异常">2、抛出父类异常</h5>
+<p>在抛出异常时，可以之间抛出一个父类异常，此时在捕获异常时，不仅需要对具体子类异常进行处理，还需要对父类异常进行处理，且只能最后处理父类异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">exceptionDemo</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            readTxt(<span class="string">&quot;D://1.png&quot;</span>);</span><br><span class="line">        &#125;<span class="keyword">catch</span> (PathNotExistException e)&#123;</span><br><span class="line">            System.out.println(e.getStr());</span><br><span class="line">        &#125;<span class="keyword">catch</span> (FileFormatException e)&#123;</span><br><span class="line">            System.out.println(e.getMessage());</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">        	 System.out.println(e.getMessage());</span><br><span class="line">        &#125; <span class="comment">// 这里需要对父类异常进行最后处理</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">readTxt</span><span class="params">(String path)</span> <span class="keyword">throws</span> Exception&#123; <span class="comment">//这里直接抛出父类异常</span></span><br><span class="line">        <span class="keyword">if</span>(path.startsWith(<span class="string">&quot;H://&quot;</span>))&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">PathNotExistException</span>(<span class="string">&quot;H盘不存在&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(!path.endsWith(<span class="string">&quot;.txt&quot;</span>))&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">FileFormatException</span>(<span class="string">&quot;文件格式不对&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PathNotExistException</span> <span class="keyword">extends</span> <span class="title class_">Exception</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String str;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PathNotExistException</span><span class="params">()</span>&#123;&#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PathNotExistException</span><span class="params">(String str)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.str = str;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getStr</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> str;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FileFormatException</span> <span class="keyword">extends</span> <span class="title class_">Exception</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">FileFormatException</span><span class="params">()</span>&#123;&#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">FileFormatException</span><span class="params">(String str)</span>&#123;</span><br><span class="line">        <span class="built_in">super</span>(str);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="3、打印异常的栈轨迹">3、打印异常的栈轨迹</h5>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">	...</span><br><span class="line">&#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">	e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果如图类似：</p>
+<p><img src="/2023/04/17/JAVA%E5%9F%BA%E7%A1%80%EF%BC%9AAPI/6.png" alt="image-20230426194315280"></p>
+<h4 id="方法的重载、重写过程中异常的抛出">方法的重载、重写过程中异常的抛出</h4>
+<p>异常不影响重载，重载方法可以不抛出异常、抛出其他异常、抛出相同异常均可。</p>
+<p>在重写时，子类抛出的编译时异常不能超过父类编译时异常的范围（<strong>跟向上造型有关</strong>），对运行时异常不限定。<strong>子类不能抛出比父类更多的异常（编译时异常、更多指的是范围，不是个数）</strong>。</p>
+<h4 id="finally关键字">finally关键字</h4>
+<p>之前无论出现异常与否，无论如何都会执行一次。必须结合try使用，用于完成一些善后的操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    System.out.println(<span class="number">5</span>/<span class="number">2</span>);</span><br><span class="line">&#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;it is exception&quot;</span>);</span><br><span class="line">&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;it is in exception finally&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 结果：2 \n it is in finally</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    System.out.println(<span class="number">5</span>/<span class="number">0</span>);</span><br><span class="line">&#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;it is exception&quot;</span>);</span><br><span class="line">&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;it is in exception finally&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 结果：it is exception \n it is in finally</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">	...</span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">&#125;<span class="comment">//结果为2：为使得finally至少执行一次，在返回前，会执行finally的代码。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">	...</span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="number">3</span>;<span class="comment">// 这条语句会报错，因为finally里面有return语句使得当前语句不可能执行。</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">3</span>;</span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="comment">// 代码是从上到下从左到右来依次编译运行的</span></span><br><span class="line">    <span class="comment">// 先编译 return i++;</span></span><br><span class="line">    <span class="comment">// 先编译出return 3; -&gt; 表示将3作为结果返回，将3标记为结果</span></span><br><span class="line">    <span class="comment">// 由于return在try之内，所有在返回结果之前需要先检查是否有finally需要执行，这里有，所有程序继续</span></span><br><span class="line">    <span class="comment">// 然后编译i++ -&gt; i = 4</span></span><br><span class="line">    <span class="comment">// 当finally执行完成之后，需要返回结果，此时由于将3标记为结果，所有返回3</span></span><br><span class="line">    <span class="keyword">return</span> i++; <span class="comment">// 返回 3</span></span><br><span class="line">&#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">// 编译i ++，i -&gt; 5。</span></span><br><span class="line">    i++;</span><br><span class="line">    System.out.print(i);<span class="comment">// 结果：5</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2023/04/17/JAVA%E5%9F%BA%E7%A1%80%EF%BC%9AAPI/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JAVA/" rel="tag">JAVA</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2023/04/24/Leetcode%E4%B9%8B%E9%9A%BE%E9%A2%98-%E5%80%BC%E5%92%8C%E4%B8%8B%E6%A0%87%E4%B9%8B%E5%B7%AE%E9%83%BD%E5%9C%A8%E7%BB%99%E5%AE%9A%E7%9A%84%E8%8C%83%E5%9B%B4%E5%86%85/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            Leetcode之难题:值和下标之差都在给定的范围内
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2023/04/17/Leetcode%E4%B9%8B%E9%9A%BE%E9%A2%98-%E7%9F%A9%E9%98%B5%E4%B8%AD%E6%9C%80%E5%A4%A7%E7%9A%84%E7%9F%A9%E5%BD%A2/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Leetcode之难题:矩阵中最大的矩形</div>
+      </a>
+    
+  </nav>
+
+  
+   
+    
+    <script src="https://cdn.staticfile.org/twikoo/1.4.18/twikoo.all.min.js"></script>
+    <div id="twikoo" class="twikoo"></div>
+    <script>
+        twikoo.init({
+            envId: ""
+        })
+    </script>
+ 
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2022-2023
+        <i class="ri-heart-fill heart_icon"></i> Lu Dong
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="LD_blog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.staticfile.org/justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/mathjax/2.7.7/MathJax.js"></script>
+<script src="https://cdn.staticfile.org/mathjax/2.7.7/config/TeX-AMS-MML_HTMLorMML-full.js"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+ 
+    
+        <link rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.15.1/katex.min.css">
+        <script src="https://cdn.staticfile.org/KaTeX/0.15.1/katex.min.js"></script>
+        <script src="https://cdn.staticfile.org/KaTeX/0.15.1/contrib/auto-render.min.js"></script>
+        
+    
+ 
+<!-- busuanzi  -->
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.staticfile.org/clipboard.js/2.0.10/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    
+
+  </div>
+</body>
+
+</html>

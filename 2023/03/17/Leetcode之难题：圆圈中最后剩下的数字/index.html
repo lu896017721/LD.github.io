@@ -107,23 +107,23 @@
   <h2 id="圆圈中最后剩下的数字">圆圈中最后剩下的数字</h2>
 <p>0,1,···,n-1这n个数字排成一个圆圈，从数字0开始，每次从这个圆圈里删除第m个数字（删除后从下一个数字开始计数）。求出这个圆圈里剩下的最后一个数字。</p>
 <p>例如，0、1、2、3、4这5个数字组成一个圆圈，从数字0开始每次删除第3个数字，则删除的前4个数字依次是2、0、4、1，因此最后剩下的数字是3。</p>
-<h3 id="示例">示例</h3>
+<h3 id="示例-40">示例</h3>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入: n = 5, m = 3</span><br><span class="line">输出: 3</span><br><span class="line"></span><br><span class="line">输入: n = 10, m = 17</span><br><span class="line">输出: 2</span><br></pre></td></tr></table></figure>
-<h3 id="限制：">限制：</h3>
+<h3 id="限制：-2">限制：</h3>
 <ul>
 <li><code>1 &lt;= n &lt;= 10^5</code></li>
 <li><code>1 &lt;= m &lt;= 10^6</code></li>
 </ul>
-<h2 id="问题解答">问题解答</h2>
+<h2 id="问题解答-40">问题解答</h2>
 <p>该问题由于m、n较大，所以暴力法会很浪费时间和空间。</p>
 <p>这里需要思考：如果我们知道对于一个长度 <code>n - 1</code> 的序列，留下的是第几个元素，那么我们能否可以由此计算出长度为 <code>n</code> 的序列的答案。答案是可以的：</p>
 <p>我们将上述问题建模为函数 f(n, m)，该函数的返回值为最终留下的元素的序号。</p>
 <p>首先，长度为 n 的序列会先删除第 m % n 个元素，然后剩下一个长度为 n - 1 的序列。那么，我们可以递归地求解 f(n - 1, m)，就可以知道对于剩下的 n - 1 个元素，最终会留下第几个元素，我们设答案为 x = f(n - 1, m)。</p>
 <p>由于我们删除了第 m % n 个元素，将序列的长度变为 n - 1。当我们知道了 f(n - 1, m) 对应的答案 x 之后，我们也就可以知道，长度为 n 的序列最后一个删除的元素，应当是从 m % n 开始数的第 x 个元素。因此有 f(n, m) = (m % n + x) % n = (m + x) % n。</p>
 <p><img src="/2023/03/17/Leetcode%E4%B9%8B%E9%9A%BE%E9%A2%98%EF%BC%9A%E5%9C%86%E5%9C%88%E4%B8%AD%E6%9C%80%E5%90%8E%E5%89%A9%E4%B8%8B%E7%9A%84%E6%95%B0%E5%AD%97/fig1.gif" alt></p>
-<h3 id="代码">代码</h3>
+<h3 id="代码-48">代码</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">lastRemaining</span>(<span class="params">self, n: <span class="built_in">int</span>, m: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        f = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, n + <span class="number">1</span>):</span><br><span class="line">            f = (m + f) % i</span><br><span class="line">        <span class="keyword">return</span> f</span><br></pre></td></tr></table></figure>
-<h3 id="作者">作者</h3>
+<h3 id="作者-32">作者</h3>
 <p>力扣官方题解，链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/yuan-quan-zhong-zui-hou-sheng-xia-de-shu-zi-lcof/solutions/176636/yuan-quan-zhong-zui-hou-sheng-xia-de-shu-zi-by-lee/">https://leetcode.cn/problems/yuan-quan-zhong-zui-hou-sheng-xia-de-shu-zi-lcof/solutions/176636/yuan-quan-zhong-zui-hou-sheng-xia-de-shu-zi-by-lee/</a></p>
  
       <!-- reward -->

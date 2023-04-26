@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>MySQL题目总结 |  LD_blog</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      
+<link rel="stylesheet" href="/css/fonts/remixicon.css">
+
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    <link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-MySQL题目总结"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  MySQL题目总结
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/03/24/MySQL%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/" class="article-date">
+  <time datetime="2023-03-24T12:07:04.000Z" itemprop="datePublished">2023-03-24</time>
+</a>   
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">4.8k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">20 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="1、计算特殊奖金">1、计算特殊奖金</h2>
+<p>表: <code>Employees</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+-------------+---------+</span><br><span class="line">| 列名        | 类型     |</span><br><span class="line">+-------------+---------+</span><br><span class="line">| employee_id | int     |</span><br><span class="line">| name        | varchar |</span><br><span class="line">| salary      | int     |</span><br><span class="line">+-------------+---------+</span><br><span class="line">employee_id 是这个表的主键。</span><br><span class="line">此表的每一行给出了雇员id ，名字和薪水。</span><br></pre></td></tr></table></figure>
+<p>写出一个SQL 查询语句，计算每个雇员的奖金。如果一个雇员的id是奇数并且他的名字不是以’M’开头，那么他的奖金是他工资的100%，否则奖金为0。</p>
+<p>Return the result table ordered by <code>employee_id</code>.</p>
+<p>返回的结果集请按照<code>employee_id</code>排序。</p>
+<p>查询结果格式如下面的例子所示。</p>
+<h3 id="示例-47">示例</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">Employees 表:</span><br><span class="line">+-------------+---------+--------+</span><br><span class="line">| employee_id | name    | salary |</span><br><span class="line">+-------------+---------+--------+</span><br><span class="line">| 2           | Meir    | 3000   |</span><br><span class="line">| 3           | Michael | 3800   |</span><br><span class="line">| 7           | Addilyn | 7400   |</span><br><span class="line">| 8           | Juan    | 6100   |</span><br><span class="line">| 9           | Kannon  | 7700   |</span><br><span class="line">+-------------+---------+--------+</span><br><span class="line">输出：</span><br><span class="line">+-------------+-------+</span><br><span class="line">| employee_id | bonus |</span><br><span class="line">+-------------+-------+</span><br><span class="line">| 2           | 0     |</span><br><span class="line">| 3           | 0     |</span><br><span class="line">| 7           | 7400  |</span><br><span class="line">| 8           | 0     |</span><br><span class="line">| 9           | 7700  |</span><br><span class="line">+-------------+-------+</span><br><span class="line">解释：</span><br><span class="line">因为雇员id是偶数，所以雇员id 是2和8的两个雇员得到的奖金是0。</span><br><span class="line">雇员id为3的因为他的名字以&#x27;M&#x27;开头，所以，奖金是0。</span><br><span class="line">其他的雇员得到了百分之百的奖金。</span><br></pre></td></tr></table></figure>
+<h3 id="MySQL代码">MySQL代码</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> employee_id ,</span><br><span class="line"></span><br><span class="line">if(employee_id <span class="operator">%</span> <span class="number">2</span> <span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> <span class="keyword">left</span>(name,<span class="number">1</span>)<span class="operator">!=</span>&quot;M&quot; ,salary,<span class="number">0</span>) <span class="keyword">as</span> bonus</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> Employees </span><br><span class="line"></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> employee_id</span><br></pre></td></tr></table></figure>
+<p>可以在SELECT里面的列里面使用if语句来条件输出结果。同时，if还可以用于UPDATE里面的SET子句，例如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> Salary <span class="keyword">SET</span> sex<span class="operator">=</span>if(sex<span class="operator">=</span><span class="string">&#x27;f&#x27;</span>,<span class="string">&#x27;m&#x27;</span>,<span class="string">&#x27;f&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="2、删除重复的电子邮箱">2、删除重复的电子邮箱</h2>
+<p>表: <code>Person</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+-------------+---------+</span><br><span class="line">| Column Name | Type    |</span><br><span class="line">+-------------+---------+</span><br><span class="line">| id          | int     |</span><br><span class="line">| email       | varchar |</span><br><span class="line">+-------------+---------+</span><br><span class="line">id是该表的主键列。</span><br><span class="line">该表的每一行包含一封电子邮件。电子邮件将不包含大写字母</span><br></pre></td></tr></table></figure>
+<p>编写一个 SQL <strong>删除语句</strong>来 <strong>删除</strong> 所有重复的电子邮件，只保留一个id最小的唯一电子邮件。</p>
+<p>以 <strong>任意顺序</strong> 返回结果表。 （<strong>注意</strong>： 仅需要写删除语句，将自动对剩余结果进行查询）</p>
+<p>查询结果格式如下所示。</p>
+<h3 id="示例-48">示例</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">输入: </span><br><span class="line">Person 表:</span><br><span class="line">+----+------------------+</span><br><span class="line">| id | email            |</span><br><span class="line">+----+------------------+</span><br><span class="line">| 1  | john@example.com |</span><br><span class="line">| 2  | bob@example.com  |</span><br><span class="line">| 3  | john@example.com |</span><br><span class="line">+----+------------------+</span><br><span class="line">输出: </span><br><span class="line">+----+------------------+</span><br><span class="line">| id | email            |</span><br><span class="line">+----+------------------+</span><br><span class="line">| 1  | john@example.com |</span><br><span class="line">| 2  | bob@example.com  |</span><br><span class="line">+----+------------------+</span><br><span class="line">解释: john@example.com重复两次。我们保留最小的Id = 1。</span><br></pre></td></tr></table></figure>
+<h3 id="代码-55">代码</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM Person WHERE id in (SELECT p3.id FROM (SELECT p2.id FROM Person as p1 JOIN Person as p2 on p1.email = p2.email WHERE p2.id &gt; p1.id) as p3 );</span><br></pre></td></tr></table></figure>
+<p>这里面不能直接写成下面这种：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> Person <span class="keyword">WHERE</span> id <span class="keyword">in</span> (<span class="keyword">SELECT</span> p2.id <span class="keyword">FROM</span> Person <span class="keyword">as</span> p1 <span class="keyword">JOIN</span> Person <span class="keyword">as</span> p2 <span class="keyword">on</span> p1.email <span class="operator">=</span> p2.email <span class="keyword">WHERE</span> p2.id <span class="operator">&gt;</span> p1.id);</span><br></pre></td></tr></table></figure>
+<p>虽然逻辑上是对的，但是MySQL不支持在同一条SQL语句中查询出一张表的某些值，再直接用这些值更新这张表。所以此时必须在用一条SELECT语句查询依次生成一张临时表。同时在MySQL中，派生表必须有别名，所以上面的p3不能删。</p>
+<h2 id="3、修复表中的名字">3、修复表中的名字</h2>
+<p>表： <code>Users</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+----------------+---------+</span><br><span class="line">| Column Name    | Type    |</span><br><span class="line">+----------------+---------+</span><br><span class="line">| user_id        | int     |</span><br><span class="line">| name           | varchar |</span><br><span class="line">+----------------+---------+</span><br><span class="line">user_id 是该表的主键。</span><br><span class="line">该表包含用户的 ID 和名字。名字仅由小写和大写字符组成。</span><br></pre></td></tr></table></figure>
+<p>编写一个 SQL 查询来修复名字，使得只有第一个字符是大写的，其余都是小写的。返回按 <code>user_id</code> 排序的结果表。查询结果格式示例如下。</p>
+<h3 id="示例-49">示例</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">Users table:</span><br><span class="line">+---------+-------+</span><br><span class="line">| user_id | name  |</span><br><span class="line">+---------+-------+</span><br><span class="line">| 1       | aLice |</span><br><span class="line">| 2       | bOB   |</span><br><span class="line">+---------+-------+</span><br><span class="line">输出：</span><br><span class="line">+---------+-------+</span><br><span class="line">| user_id | name  |</span><br><span class="line">+---------+-------+</span><br><span class="line">| 1       | Alice |</span><br><span class="line">| 2       | Bob   |</span><br><span class="line">+---------+-------+</span><br></pre></td></tr></table></figure>
+<h3 id="代码-56">代码</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">	user_id, </span><br><span class="line">	CONCAT(<span class="built_in">UPPER</span>(<span class="keyword">LEFT</span>(name, <span class="number">1</span>)), <span class="built_in">LOWER</span>(<span class="keyword">RIGHT</span>(name, length(name) <span class="operator">-</span> <span class="number">1</span>))) <span class="keyword">as</span> name</span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> Users</span><br><span class="line"></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> user_id;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 一、计算字段</span><br><span class="line"># 其实本题主要考察的就是计算字段的使用。</span><br><span class="line"></span><br><span class="line"># 二、知识点</span><br><span class="line"># 2.1 CONCAT() 函数</span><br><span class="line"># CONCAT 可以将多个字符串拼接在一起。</span><br><span class="line"></span><br><span class="line"># 2.2 LEFT(str, length) 函数</span><br><span class="line"># 从左开始截取字符串，length 是截取的长度。</span><br><span class="line"></span><br><span class="line"># 2.3 UPPER(str) 与 LOWER(str)</span><br><span class="line"># UPPER(str) 将字符串中所有字符转为大写</span><br><span class="line"># LOWER(str) 将字符串中所有字符转为小写</span><br><span class="line"></span><br><span class="line"># 2.4 SUBSTRING(str, begin, end)</span><br><span class="line"># 截取字符串，end 不写默认为空。</span><br><span class="line"># SUBSTRING(name, 2) 从第二个截取到末尾，注意并不是下标，就是第二个。</span><br><span class="line"># CONCAT 用来拼接字符串 ● LEFT 从左边截取字符 ● RIGHT 从右边截取字符 ● UPPER 变为大写 ● LOWER 变为小写 ● LENGTH 获取字符串长度</span><br></pre></td></tr></table></figure>
+<h2 id="4、按日期分组销售产品">4、按日期分组销售产品</h2>
+<p>表 <code>Activities</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+-------------+---------+</span><br><span class="line">| 列名         | 类型    |</span><br><span class="line">+-------------+---------+</span><br><span class="line">| sell_date   | date    |</span><br><span class="line">| product     | varchar |</span><br><span class="line">+-------------+---------+</span><br><span class="line">此表没有主键，它可能包含重复项。</span><br><span class="line">此表的每一行都包含产品名称和在市场上销售的日期。</span><br></pre></td></tr></table></figure>
+<p>编写一个 SQL 查询来查找每个日期、销售的不同产品的数量及其名称。每个日期的销售产品名称应按词典序排列。返回按 <code>sell_date</code> 排序的结果表。查询结果格式如下例所示。</p>
+<h3 id="示例-50">示例</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">Activities 表：</span><br><span class="line">+------------+-------------+</span><br><span class="line">| sell_date  | product     |</span><br><span class="line">+------------+-------------+</span><br><span class="line">| 2020-05-30 | Headphone   |</span><br><span class="line">| 2020-06-01 | Pencil      |</span><br><span class="line">| 2020-06-02 | Mask        |</span><br><span class="line">| 2020-05-30 | Basketball  |</span><br><span class="line">| 2020-06-01 | Bible       |</span><br><span class="line">| 2020-06-02 | Mask        |</span><br><span class="line">| 2020-05-30 | T-Shirt     |</span><br><span class="line">+------------+-------------+</span><br><span class="line">输出：</span><br><span class="line">+------------+----------+------------------------------+</span><br><span class="line">| sell_date  | num_sold | products                     |</span><br><span class="line">+------------+----------+------------------------------+</span><br><span class="line">| 2020-05-30 | 3        | Basketball,Headphone,T-shirt |</span><br><span class="line">| 2020-06-01 | 2        | Bible,Pencil                 |</span><br><span class="line">| 2020-06-02 | 1        | Mask                         |</span><br><span class="line">+------------+----------+------------------------------+</span><br><span class="line">解释：</span><br><span class="line">对于2020-05-30，出售的物品是 (Headphone, Basketball, T-shirt)，按词典序排列，并用逗号 &#x27;,&#x27; 分隔。</span><br><span class="line">对于2020-06-01，出售的物品是 (Pencil, Bible)，按词典序排列，并用逗号分隔。</span><br><span class="line">对于2020-06-02，出售的物品是 (Mask)，只需返回该物品名。</span><br></pre></td></tr></table></figure>
+<h3 id="代码-57">代码</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br><span class="line"></span><br><span class="line">    sell_date,</span><br><span class="line"></span><br><span class="line">    <span class="built_in">count</span>(<span class="keyword">distinct</span> product) num_sold,</span><br><span class="line"></span><br><span class="line">    group_concat(</span><br><span class="line"></span><br><span class="line">        <span class="keyword">distinct</span> product</span><br><span class="line"></span><br><span class="line">        <span class="keyword">order</span> <span class="keyword">by</span> product</span><br><span class="line"></span><br><span class="line">        separator <span class="string">&#x27;,&#x27;</span></span><br><span class="line"></span><br><span class="line">    ) products</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> </span><br><span class="line"></span><br><span class="line">    Activities</span><br><span class="line"></span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> sell_date</span><br><span class="line"></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> sell_date</span><br></pre></td></tr></table></figure>
+<p>COUNT(DISTINCT col_name)：COUNT可以加DISTINCT，统计该字段不同值的次数，不计算NULL。</p>
+<p>GROUP_CONCAT函数，将字段内的值连接起来，形成一个新的值。DISTINCT表示要不要去重，ORDER BY 排序，SEPARATOR ：分隔符的样式。</p>
+<p>group_concat([distinct] 要连接的字段 [order by 排序字段] [separator ‘分隔符’])</p>
+<p>REGEXP：正则表达式，用 ^ 匹配输入字符串的开始位置，|表示或者。例子如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> Patients <span class="keyword">WHERE</span> conditions REGEXP <span class="string">&#x27;^DIAB1|\\sDIAB1&#x27;</span>;</span><br><span class="line">#等同于下面：</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> Patients <span class="keyword">WHERE</span> conditions <span class="keyword">like</span> <span class="string">&#x27;DIAB1%&#x27;</span> <span class="keyword">or</span> conditions <span class="keyword">like</span> <span class="string">&#x27;% DIAB1%&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="5、每个产品在不同商店的价格">5、每个产品在不同商店的价格</h2>
+<p>表：<code>Products</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">+-------------+---------+</span><br><span class="line">| Column Name | Type    |</span><br><span class="line">+-------------+---------+</span><br><span class="line">| product_id  | int     |</span><br><span class="line">| store1      | int     |</span><br><span class="line">| store2      | int     |</span><br><span class="line">| store3      | int     |</span><br><span class="line">+-------------+---------+</span><br><span class="line">这张表的主键是product_id（产品Id）。</span><br><span class="line">每行存储了这一产品在不同商店store1, store2, store3的价格。</span><br><span class="line">如果这一产品在商店里没有出售，则值将为null。</span><br></pre></td></tr></table></figure>
+<p>请你重构 <code>Products</code> 表，查询每个产品在不同商店的价格，使得输出的格式变为<code>(product_id, store, price)</code> 。如果这一产品在商店里没有出售，则不输出这一行。</p>
+<p>输出结果表中的 <strong>顺序不作要求</strong> 。</p>
+<p>查询输出格式请参考下面示例。</p>
+<h3 id="示例-51">示例</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">Products table:</span><br><span class="line">+------------+--------+--------+--------+</span><br><span class="line">| product_id | store1 | store2 | store3 |</span><br><span class="line">+------------+--------+--------+--------+</span><br><span class="line">| 0          | 95     | 100    | 105    |</span><br><span class="line">| 1          | 70     | null   | 80     |</span><br><span class="line">+------------+--------+--------+--------+</span><br><span class="line">输出：</span><br><span class="line">+------------+--------+-------+</span><br><span class="line">| product_id | store  | price |</span><br><span class="line">+------------+--------+-------+</span><br><span class="line">| 0          | store1 | 95    |</span><br><span class="line">| 0          | store2 | 100   |</span><br><span class="line">| 0          | store3 | 105   |</span><br><span class="line">| 1          | store1 | 70    |</span><br><span class="line">| 1          | store3 | 80    |</span><br><span class="line">+------------+--------+-------+</span><br><span class="line">解释：</span><br><span class="line">产品0在store1，store2,store3的价格分别为95,100,105。</span><br><span class="line">产品1在store1，store3的价格分别为70,80。在store2无法买到。</span><br></pre></td></tr></table></figure>
+<h3 id="代码-58">代码</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> product_id, <span class="string">&#x27;store1&#x27;</span> store, store1 <span class="keyword">AS</span> price <span class="keyword">FROM</span> Products <span class="keyword">WHERE</span> store1 <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">NULL</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">UNION</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> product_id, <span class="string">&#x27;store2&#x27;</span> store, store2 <span class="keyword">AS</span> price <span class="keyword">FROM</span> Products <span class="keyword">WHERE</span> store2 <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">NULL</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">UNION</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> product_id, <span class="string">&#x27;store3&#x27;</span> store, store3 <span class="keyword">AS</span> price <span class="keyword">FROM</span> Products <span class="keyword">WHERE</span> store3 <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">NULL</span>;</span><br></pre></td></tr></table></figure>
+<p>该题主要在于如何自定义字段，同时赋予自定义值。在WHERE子句判断是否为NULL：is not null。同时，该题是属于列转行的题目，使用UNION将每一列转化为行并联合输出。</p>
+<p>行转列的方法：</p>
+<p><img src="/2023/03/24/MySQL%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/1.png" alt="image-20230326141100674"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line"></span><br><span class="line">  product_id,</span><br><span class="line"></span><br><span class="line">  <span class="built_in">SUM</span>(IF(store <span class="operator">=</span> <span class="string">&#x27;store1&#x27;</span>, price, <span class="keyword">NULL</span>)) <span class="string">&#x27;store1&#x27;</span>,</span><br><span class="line"></span><br><span class="line">  <span class="built_in">SUM</span>(IF(store <span class="operator">=</span> <span class="string">&#x27;store2&#x27;</span>, price, <span class="keyword">NULL</span>)) <span class="string">&#x27;store2&#x27;</span>,</span><br><span class="line"></span><br><span class="line">  <span class="built_in">SUM</span>(IF(store <span class="operator">=</span> <span class="string">&#x27;store3&#x27;</span>, price, <span class="keyword">NULL</span>)) <span class="string">&#x27;store3&#x27;</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line"></span><br><span class="line">  Products1 </span><br><span class="line"></span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> product_id ;</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/03/24/MySQL%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/2.png" alt="image-20230326141205317"></p>
+<p>这里SUM语句的作用是得到如<code>product_id=0 and store=store1</code>的所有价格的和，因为表中记录只有一条，结果就等于其值。为什么一定要使用聚合函数？是因为这是针对分组后的数据进行处理，必须使用聚合函数对组内数据进行聚合。如上述表：查询分组后的所有记录，结果如下，不使用聚合函数时，有数据会查不到。</p>
+<p><a href><img src="/2023/03/24/MySQL%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/3.png" alt="image-20230326143433809"></a></p>
+<h2 id="6、树节点">6、树节点</h2>
+<p>给定一个表 <code>tree</code>，<strong>id</strong> 是树节点的编号， <strong>p_id</strong> 是它父节点的 <strong>id 。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+----+------+</span><br><span class="line">| id | p_id |</span><br><span class="line">+----+------+</span><br><span class="line">| 1  | null |</span><br><span class="line">| 2  | 1    |</span><br><span class="line">| 3  | 1    |</span><br><span class="line">| 4  | 2    |</span><br><span class="line">| 5  | 2    |</span><br><span class="line">+----+------+</span><br></pre></td></tr></table></figure>
+<p>树中每个节点属于以下三种类型之一：</p>
+<ul>
+<li>叶子：如果这个节点没有任何孩子节点。</li>
+<li>根：如果这个节点是整棵树的根，即没有父节点。</li>
+<li>内部节点：如果这个节点既不是叶子节点也不是根节点。</li>
+</ul>
+<p>写一个查询语句，输出所有节点的编号和节点的类型，并将结果按照节点编号排序。上面样例的结果为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+----+------+</span><br><span class="line">| id | Type |</span><br><span class="line">+----+------+</span><br><span class="line">| 1  | Root |</span><br><span class="line">| 2  | Inner|</span><br><span class="line">| 3  | Leaf |</span><br><span class="line">| 4  | Leaf |</span><br><span class="line">| 5  | Leaf |</span><br><span class="line">+----+------+</span><br></pre></td></tr></table></figure>
+<p><strong>解释</strong></p>
+<ul>
+<li>
+<p>节点 ‘1’ 是根节点，因为它的父节点是 NULL ，同时它有孩子节点 ‘2’ 和 ‘3’ 。</p>
+</li>
+<li>
+<p>节点 ‘2’ 是内部节点，因为它有父节点 ‘1’ ，也有孩子节点 ‘4’ 和 ‘5’ 。</p>
+</li>
+<li>
+<p>节点 ‘3’, ‘4’ 和 ‘5’ 都是叶子节点，因为它们都有父节点同时没有孩子节点。</p>
+</li>
+<li>
+<p>样例中树的形态如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  1</span><br><span class="line">/   \</span><br><span class="line">       2       3</span><br><span class="line">     /   \</span><br><span class="line">   4       5</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>注意</strong></p>
+<p>如果树中只有一个节点，你只需要输出它的根属性。</p>
+<h3 id="代码-59">代码</h3>
+<p>1、使用UNION联合</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> id, <span class="string">&#x27;Root&#x27;</span> <span class="keyword">AS</span> type <span class="keyword">FROM</span> tree <span class="keyword">WHERE</span> p_id <span class="keyword">is</span> <span class="keyword">NULL</span></span><br><span class="line"><span class="keyword">UNION</span> </span><br><span class="line"><span class="keyword">SELECT</span> t1.id, <span class="string">&#x27;Inner&#x27;</span> <span class="keyword">AS</span> type <span class="keyword">FROM</span> tree t1 <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> tree t2 <span class="keyword">ON</span> t1.id <span class="operator">=</span> t2.p_id <span class="keyword">WHERE</span> t1.p_id <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">NULL</span> <span class="keyword">and</span> t2.id <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">NULL</span> </span><br><span class="line"><span class="keyword">UNION</span></span><br><span class="line"><span class="keyword">SELECT</span> t1.id, <span class="string">&#x27;Leaf&#x27;</span> <span class="keyword">AS</span> type <span class="keyword">FROM</span> tree t1 <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> tree t2 <span class="keyword">ON</span> t1.id <span class="operator">=</span> t2.p_id <span class="keyword">WHERE</span> t1.p_id <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">NULL</span> <span class="keyword">and</span> t2.id <span class="keyword">is</span> <span class="keyword">NULL</span>;</span><br></pre></td></tr></table></figure>
+<p>2、流控制语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">WHEN</span> ... <span class="keyword">THEN</span> .. </span><br><span class="line"># <span class="keyword">ELSE</span> ..</span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    id <span class="keyword">AS</span> `Id`,</span><br><span class="line">    <span class="keyword">CASE</span></span><br><span class="line">        <span class="keyword">WHEN</span> tree.id <span class="operator">=</span> (<span class="keyword">SELECT</span> atree.id <span class="keyword">FROM</span> tree atree <span class="keyword">WHERE</span> atree.p_id <span class="keyword">IS</span> <span class="keyword">NULL</span>)</span><br><span class="line">          <span class="keyword">THEN</span> <span class="string">&#x27;Root&#x27;</span></span><br><span class="line">        <span class="keyword">WHEN</span> tree.id <span class="keyword">IN</span> (<span class="keyword">SELECT</span> atree.p_id <span class="keyword">FROM</span> tree atree)</span><br><span class="line">          <span class="keyword">THEN</span> <span class="string">&#x27;Inner&#x27;</span></span><br><span class="line">        <span class="keyword">ELSE</span> <span class="string">&#x27;Leaf&#x27;</span></span><br><span class="line">    <span class="keyword">END</span> <span class="keyword">AS</span> Type</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    tree</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> `Id`;</span><br></pre></td></tr></table></figure>
+<p>3、IF函数</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 双重if语句</span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    atree.id,</span><br><span class="line">    IF(ISNULL(atree.p_id),</span><br><span class="line">        <span class="string">&#x27;Root&#x27;</span>,</span><br><span class="line">        IF(atree.id <span class="keyword">IN</span> (<span class="keyword">SELECT</span> p_id <span class="keyword">FROM</span> tree), <span class="string">&#x27;Inner&#x27;</span>,<span class="string">&#x27;Leaf&#x27;</span>)) Type</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    tree atree</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> atree.id;</span><br></pre></td></tr></table></figure>
+<h2 id="7、第二高的薪水">7、第二高的薪水</h2>
+<p><code>Employee</code> 表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+-------------+------+</span><br><span class="line">| Column Name | Type |</span><br><span class="line">+-------------+------+</span><br><span class="line">| id          | int  |</span><br><span class="line">| salary      | int  |</span><br><span class="line">+-------------+------+</span><br><span class="line">id 是这个表的主键。</span><br><span class="line">表的每一行包含员工的工资信息。 </span><br></pre></td></tr></table></figure>
+<p>编写一个 SQL 查询，获取并返回 <code>Employee</code> 表中第二高的薪水 。如果不存在第二高的薪水，查询应该返回 <code>null</code> 。</p>
+<p>查询结果如下例所示。</p>
+<h3 id="示例-52">示例</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">Employee 表：</span><br><span class="line">+----+--------+</span><br><span class="line">| id | salary |</span><br><span class="line">+----+--------+</span><br><span class="line">| 1  | 100    |</span><br><span class="line">| 2  | 200    |</span><br><span class="line">| 3  | 300    |</span><br><span class="line">+----+--------+</span><br><span class="line">输出：</span><br><span class="line">+---------------------+</span><br><span class="line">| SecondHighestSalary |</span><br><span class="line">+---------------------+</span><br><span class="line">| 200                 |</span><br><span class="line">+---------------------+</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">Employee 表：</span><br><span class="line"><span class="operator">+</span><span class="comment">----+--------+</span></span><br><span class="line"><span class="operator">|</span> id <span class="operator">|</span> salary <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----+--------+</span></span><br><span class="line"><span class="operator">|</span> <span class="number">1</span>  <span class="operator">|</span> <span class="number">100</span>    <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----+--------+</span></span><br><span class="line">输出：</span><br><span class="line"><span class="operator">+</span><span class="comment">---------------------+</span></span><br><span class="line"><span class="operator">|</span> SecondHighestSalary <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">---------------------+</span></span><br><span class="line"><span class="operator">|</span> <span class="keyword">null</span>                <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">---------------------+</span></span><br></pre></td></tr></table></figure>
+<h3 id="代码-60">代码</h3>
+<p>使用子查询和 <code>LIMIT</code> 子句：将不同的薪资按降序排序，然后使用 <a href="https://leetcode.cn/link/?target=https%3A%2F%2Fdev.mysql.com%2Fdoc%2Frefman%2F5.7%2Fen%2Fselect.html"><code>LIMIT</code></a> 子句获得第二高的薪资。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span></span><br><span class="line">    Salary <span class="keyword">AS</span> SecondHighestSalary</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    Employee</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> Salary <span class="keyword">DESC</span></span><br><span class="line">LIMIT <span class="number">1</span> <span class="keyword">OFFSET</span> <span class="number">1</span></span><br><span class="line"># 无法解决<span class="keyword">NULL</span>值问题</span><br><span class="line"># 下面使用IFNULL函数改进了</span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">    IFNULL(</span><br><span class="line">      (<span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> Salary</span><br><span class="line">       <span class="keyword">FROM</span> Employee</span><br><span class="line">       <span class="keyword">ORDER</span> <span class="keyword">BY</span> Salary <span class="keyword">DESC</span></span><br><span class="line">        LIMIT <span class="number">1</span> <span class="keyword">OFFSET</span> <span class="number">1</span>),</span><br><span class="line">    <span class="keyword">NULL</span>) <span class="keyword">AS</span> SecondHighestSalary</span><br></pre></td></tr></table></figure>
+<p>学会使用LIMIT A OFFSET B：输出A条记录，偏移量为B，相当于从B+1开始输出A条记录。</p>
+<h2 id="8、上升的温度">8、上升的温度</h2>
+<p>表： <code>Weather</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+---------------+---------+</span><br><span class="line">| Column Name   | Type    |</span><br><span class="line">+---------------+---------+</span><br><span class="line">| id            | int     |</span><br><span class="line">| recordDate    | date    |</span><br><span class="line">| temperature   | int     |</span><br><span class="line">+---------------+---------+</span><br><span class="line">id 是这个表的主键</span><br><span class="line">该表包含特定日期的温度信息</span><br></pre></td></tr></table></figure>
+<p>编写一个 SQL 查询，来查找与之前（昨天的）日期相比温度更高的所有日期的 <code>id</code> 。</p>
+<p>返回结果 <strong>不要求顺序</strong> 。</p>
+<p>查询结果格式如下例。</p>
+<h3 id="示例-53">示例</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">Weather 表：</span><br><span class="line">+----+------------+-------------+</span><br><span class="line">| id | recordDate | Temperature |</span><br><span class="line">+----+------------+-------------+</span><br><span class="line">| 1  | 2015-01-01 | 10          |</span><br><span class="line">| 2  | 2015-01-02 | 25          |</span><br><span class="line">| 3  | 2015-01-03 | 20          |</span><br><span class="line">| 4  | 2015-01-04 | 30          |</span><br><span class="line">+----+------------+-------------+</span><br><span class="line">输出：</span><br><span class="line">+----+</span><br><span class="line">| id |</span><br><span class="line">+----+</span><br><span class="line">| 2  |</span><br><span class="line">| 4  |</span><br><span class="line">+----+</span><br><span class="line">解释：</span><br><span class="line">2015-01-02 的温度比前一天高（10 -&gt; 25）</span><br><span class="line">2015-01-04 的温度比前一天高（20 -&gt; 30）</span><br></pre></td></tr></table></figure>
+<h2 id="代码-61">代码</h2>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> w1.id <span class="keyword">AS</span> Id <span class="keyword">FROM</span> weather w1, weather w2 <span class="keyword">WHERE</span> DATEDIFF(w1.recordDate, w2.recordDate)<span class="operator">=</span><span class="number">1</span>  <span class="keyword">AND</span> w1.temperature <span class="operator">&gt;</span> w2.temperature;</span><br></pre></td></tr></table></figure>
+<p>这题主要考察日期函数，日期无法之间使用+、-，因为Mysql的日期类型直接加、减，会转换成数字类型加、减。如：‘2023-01-01’ -1 = ‘2023-01-00’ 这是一个不存在的日子。</p>
+<p>因此，日期之间的计算需要用到日期函数：</p>
+<p>**ADDDATE：**ADDDATE()函数用于将指定的时间间隔添加到日期值</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">/</span><span class="operator">/</span><span class="type">date</span>时间字段名  expr时间间隔 <span class="type">INTERVAL</span>关键字  </span><br><span class="line"><span class="operator">/</span><span class="operator">/</span>unit单位 指的时间单位 天<span class="keyword">day</span> 小时<span class="keyword">hour</span>表示等</span><br><span class="line">ADDDATE(<span class="type">date</span>, <span class="type">INTERVAL</span> expr unit)</span><br><span class="line"></span><br><span class="line"><span class="operator">/</span><span class="operator">/</span>其中，可选的时间单位非常多，从MICROSECOND, <span class="keyword">SECOND</span>, 到<span class="keyword">MONTH</span>, <span class="operator">/</span><span class="operator">/</span>QUARTER, <span class="keyword">YEAR</span>都可以接受。甚至复合的时间单位，如HOUR_MINUTE, <span class="operator">/</span><span class="operator">/</span>DAY_HOUR, YEAR_MONTH也可以，</span><br><span class="line">ADDDATE(<span class="type">date</span>, <span class="type">INTERVAL</span> <span class="string">&#x27;1-2&#x27;</span> YEAR_MONTH)</span><br><span class="line">ADDDATE(<span class="string">&#x27;2020-01-02 00:00:00&#x27;</span>, <span class="type">INTERVAL</span> <span class="string">&#x27;1 1:1:1&#x27;</span> DAY_SECOND)</span><br></pre></td></tr></table></figure>
+<p>**DATA_ADD和DATA_SUB：**也是用于将指定的时间间隔添加到日期值，用法与写法与上面ADDDATE差不多。</p>
+<p>与ADDDATE的差别主要在于：当只进行以日为单位的日期加减时，<code>ADDDATE</code>有一个简写的使用方法（省略关键字INTERVAL和单位），而<code>DATE_ADD</code>没有。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DATE_SUB: DATE_SUB(<span class="string">&#x27;2023-12-29&#x27;</span>,<span class="type">INTERVAL</span> <span class="number">2</span> <span class="keyword">DAY</span>) #<span class="number">2023</span><span class="number">-12</span><span class="number">-27</span></span><br><span class="line">DATE_ADD: 同上</span><br></pre></td></tr></table></figure>
+<p>**DATEDIFF：**传入两个日期参数，比较DAY天数，第一个参数减去第二个参数的天数值。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> DATEDIFF(<span class="string">&#x27;2013-01-13&#x27;</span>,<span class="string">&#x27;2012-10-01&#x27;</span>); # <span class="number">104</span></span><br></pre></td></tr></table></figure>
+<p><strong>TIMESTAMPDIFF：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">语法：TIMESTAMPDIFF(interval_type, datetime1, datetime2)</span><br><span class="line">结果：返回（时间<span class="number">2</span><span class="operator">-</span>时间<span class="number">1</span>）的时间差，结果单位由interval_type参数给出。</span><br><span class="line"></span><br><span class="line">frac_second 毫秒（低版本不支持，用<span class="keyword">second</span>，再除于<span class="number">1000</span>）</span><br><span class="line"><span class="keyword">second</span> 秒</span><br><span class="line"><span class="keyword">minute</span> 分钟</span><br><span class="line"><span class="keyword">hour</span> 小时</span><br><span class="line"><span class="keyword">day</span> 天</span><br><span class="line">week 周</span><br><span class="line"><span class="keyword">month</span> 月</span><br><span class="line">quarter 季度</span><br><span class="line"><span class="keyword">year</span> 年</span><br></pre></td></tr></table></figure>
+<p><strong>TIMEDIFF：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">语法：timediff(time1,time2)</span><br><span class="line"></span><br><span class="line">结果：返回两个时间相减得到的差值，time1<span class="operator">-</span>time2</span><br><span class="line"></span><br><span class="line">如：<span class="keyword">SELECT</span> TIMEDIFF(<span class="string">&#x27;2018-05-21 14:51:43&#x27;</span>,<span class="string">&#x27;2018-05-19 12:54:43&#x27;</span>);# <span class="number">49</span>:<span class="number">57</span>:<span class="number">00</span></span><br></pre></td></tr></table></figure>
+<p>**NOW()：**返回的是当前时间的年月日时分秒</p>
+<p>**CURDATE()：**返回的是年月日信息</p>
+<p>**CURTIME()：**返回的是当前时间的时分秒信息</p>
+<h2 id="9、销售员">9、销售员</h2>
+<p>表: <code>SalesPerson</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">+-----------------+---------+</span><br><span class="line">| Column Name     | Type    |</span><br><span class="line">+-----------------+---------+</span><br><span class="line">| sales_id        | int     |</span><br><span class="line">| name            | varchar |</span><br><span class="line">| salary          | int     |</span><br><span class="line">| commission_rate | int     |</span><br><span class="line">| hire_date       | date    |</span><br><span class="line">+-----------------+---------+</span><br><span class="line">sales_id 是该表的主键列。</span><br><span class="line">该表的每一行都显示了销售人员的姓名和 ID ，以及他们的工资、佣金率和雇佣日期。</span><br></pre></td></tr></table></figure>
+<p>表: <code>Company</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+-------------+---------+</span><br><span class="line">| Column Name | Type    |</span><br><span class="line">+-------------+---------+</span><br><span class="line">| com_id      | int     |</span><br><span class="line">| name        | varchar |</span><br><span class="line">| city        | varchar |</span><br><span class="line">+-------------+---------+</span><br><span class="line">com_id 是该表的主键列。</span><br><span class="line">该表的每一行都表示公司的名称和 ID ，以及公司所在的城市。 </span><br></pre></td></tr></table></figure>
+<p>表: <code>Orders</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">+-------------+------+</span><br><span class="line">| Column Name | Type |</span><br><span class="line">+-------------+------+</span><br><span class="line">| order_id    | int  |</span><br><span class="line">| order_date  | date |</span><br><span class="line">| com_id      | int  |</span><br><span class="line">| sales_id    | int  |</span><br><span class="line">| amount      | int  |</span><br><span class="line">+-------------+------+</span><br><span class="line">order_id 是该表的主键列。</span><br><span class="line">com_id 是 Company 表中 com_id 的外键。</span><br><span class="line">sales_id 是来自销售员表 sales_id 的外键。</span><br><span class="line">该表的每一行包含一个订单的信息。这包括公司的 ID 、销售人员的 ID 、订单日期和支付的金额。 </span><br></pre></td></tr></table></figure>
+<p>编写一个SQL查询，报告没有任何与名为 <strong>“RED”</strong> 的公司相关的订单的所有销售人员的姓名。</p>
+<p>以 <strong>任意顺序</strong> 返回结果表。</p>
+<p>查询结果格式如下所示。</p>
+<h3 id="示例-54">示例</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">SalesPerson 表:</span><br><span class="line">+----------+------+--------+-----------------+------------+</span><br><span class="line">| sales_id | name | salary | commission_rate | hire_date  |</span><br><span class="line">+----------+------+--------+-----------------+------------+</span><br><span class="line">| 1        | John | 100000 | 6               | 4/1/2006   |</span><br><span class="line">| 2        | Amy  | 12000  | 5               | 5/1/2010   |</span><br><span class="line">| 3        | Mark | 65000  | 12              | 12/25/2008 |</span><br><span class="line">| 4        | Pam  | 25000  | 25              | 1/1/2005   |</span><br><span class="line">| 5        | Alex | 5000   | 10              | 2/3/2007   |</span><br><span class="line">+----------+------+--------+-----------------+------------+</span><br><span class="line">Company 表:</span><br><span class="line">+--------+--------+----------+</span><br><span class="line">| com_id | name   | city     |</span><br><span class="line">+--------+--------+----------+</span><br><span class="line">| 1      | RED    | Boston   |</span><br><span class="line">| 2      | ORANGE | New York |</span><br><span class="line">| 3      | YELLOW | Boston   |</span><br><span class="line">| 4      | GREEN  | Austin   |</span><br><span class="line">+--------+--------+----------+</span><br><span class="line">Orders 表:</span><br><span class="line">+----------+------------+--------+----------+--------+</span><br><span class="line">| order_id | order_date | com_id | sales_id | amount |</span><br><span class="line">+----------+------------+--------+----------+--------+</span><br><span class="line">| 1        | 1/1/2014   | 3      | 4        | 10000  |</span><br><span class="line">| 2        | 2/1/2014   | 4      | 5        | 5000   |</span><br><span class="line">| 3        | 3/1/2014   | 1      | 1        | 50000  |</span><br><span class="line">| 4        | 4/1/2014   | 1      | 4        | 25000  |</span><br><span class="line">+----------+------------+--------+----------+--------+</span><br><span class="line">输出：</span><br><span class="line">+------+</span><br><span class="line">| name |</span><br><span class="line">+------+</span><br><span class="line">| Amy  |</span><br><span class="line">| Mark |</span><br><span class="line">| Alex |</span><br><span class="line">+------+</span><br><span class="line">解释：</span><br><span class="line">根据表 orders 中的订单 &#x27;3&#x27; 和 &#x27;4&#x27; ，容易看出只有 &#x27;John&#x27; 和 &#x27;Pam&#x27; 两个销售员曾经向公司 &#x27;RED&#x27; 销售过。</span><br><span class="line">所以我们需要输出表 salesperson 中所有其他人的名字。</span><br></pre></td></tr></table></figure>
+<h3 id="代码-62">代码</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name <span class="keyword">FROM</span> salesperson <span class="keyword">WHERE</span> sales_id <span class="keyword">not</span> <span class="keyword">in</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> o.sales_id <span class="keyword">FROM</span> (orders o <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> company c <span class="keyword">ON</span> o.com_id <span class="operator">=</span> c.com_id) <span class="keyword">WHERE</span> c.name <span class="operator">=</span> <span class="string">&#x27;RED&#x27;</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h4 id="知识点">知识点</h4>
+<p><strong>1、多表连接</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> s.name <span class="keyword">from</span> SalesPerson s</span><br><span class="line"><span class="keyword">join</span> Orders o <span class="keyword">on</span> o.sales_id<span class="operator">=</span>s.sales_id</span><br><span class="line"><span class="keyword">join</span> Company c <span class="keyword">on</span> o.com_id<span class="operator">=</span>c.com_id</span><br><span class="line"><span class="keyword">where</span> c.name <span class="operator">!=</span><span class="string">&#x27;RED&#x27;</span> </span><br></pre></td></tr></table></figure>
+<p>写法如上，但上述方法无法解决上述问题，因为它实现了筛选出所有与RED之外公司有交易的销售，一个销售可能即有RED也有其他公司的销售单，会被上面的列出来而不满足题意。</p>
+<p><strong>2、in和exist</strong></p>
+<p>in查询相当于多个or条件的叠加。in查询就是先将子查询条件的记录全都查出来，假设结果集为B，共有m条记录，然后在将子查询条件的结果集分解成m个，再进行m次查询。</p>
+<p>exists对外表用loop逐条查询，每次查询都会查看exists的条件语句，当 exists里的条件语句能够返回记录行时(无论记录行是的多少，只要能返回)，条件就为真，返回当前loop到的这条记录，反之如果exists里的条 件语句不能返回记录行，则当前loop到的这条记录被丢弃，exists的条件就像一个bool条件，当能返回结果集则为true，不能返回结果集则为 false。</p>
+<p>exist基本用法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> AM_USER <span class="keyword">WHERE</span> <span class="keyword">EXISTS</span> (<span class="keyword">SELECT</span> <span class="number">1</span> <span class="keyword">FROM</span> AM_ROLE <span class="keyword">WHERE</span> NAME <span class="operator">=</span> <span class="string">&#x27;admin&#x27;</span>)</span><br><span class="line"># <span class="keyword">SELECT</span> <span class="number">1</span> <span class="keyword">FROM</span> AM_ROLE 返回的数字没有意义，<span class="keyword">exists</span>子句不在乎返回什么，而是在乎有没有结果返回。</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/03/24/MySQL%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/4.png" alt="image-20230328111459956"></p>
+<p><strong>区别</strong>：</p>
+<ol>
+<li>当B表比A表数据大时适合使用exists()，因为它没有那么遍历操作,只需要再执行一次查询就行。当B表数据较大时不适合使用in()，因为它会把B表数据全部遍历一次，因而in()适合B表比A表数据小的情况。</li>
+<li>in引导的子句只能返回一个字段，exists子句是允许多字段返回的。</li>
+</ol>
+<h2 id="10、2020年最后一次登录">10、2020年最后一次登录</h2>
+<p>表: <code>Logins</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+----------------+----------+</span><br><span class="line">| 列名           | 类型      |</span><br><span class="line">+----------------+----------+</span><br><span class="line">| user_id        | int      |</span><br><span class="line">| time_stamp     | datetime |</span><br><span class="line">+----------------+----------+</span><br><span class="line">(user_id, time_stamp) 是这个表的主键。</span><br><span class="line">每一行包含的信息是user_id 这个用户的登录时间。</span><br></pre></td></tr></table></figure>
+<p>编写一个 SQL 查询，该查询可以获取在 <code>2020</code> 年登录过的所有用户的本年度 <strong>最后一次</strong> 登录时间。结果集 <strong>不</strong> 包含 <code>2020</code> 年没有登录过的用户。</p>
+<p>返回的结果集可以按 <strong>任意顺序</strong> 排列。</p>
+<p>查询结果格式如下例。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">输入：</span><br><span class="line">Logins 表:</span><br><span class="line">+---------+---------------------+</span><br><span class="line">| user_id | time_stamp          |</span><br><span class="line">+---------+---------------------+</span><br><span class="line">| 6       | 2020-06-30 15:06:07 |</span><br><span class="line">| 6       | 2021-04-21 14:06:06 |</span><br><span class="line">| 6       | 2019-03-07 00:18:15 |</span><br><span class="line">| 8       | 2020-02-01 05:10:53 |</span><br><span class="line">| 8       | 2020-12-30 00:46:50 |</span><br><span class="line">| 2       | 2020-01-16 02:49:50 |</span><br><span class="line">| 2       | 2019-08-25 07:59:08 |</span><br><span class="line">| 14      | 2019-07-14 09:00:00 |</span><br><span class="line">| 14      | 2021-01-06 11:59:59 |</span><br><span class="line">+---------+---------------------+</span><br><span class="line">输出：</span><br><span class="line">+---------+---------------------+</span><br><span class="line">| user_id | last_stamp          |</span><br><span class="line">+---------+---------------------+</span><br><span class="line">| 6       | 2020-06-30 15:06:07 |</span><br><span class="line">| 8       | 2020-12-30 00:46:50 |</span><br><span class="line">| 2       | 2020-01-16 02:49:50 |</span><br><span class="line">+---------+---------------------+</span><br><span class="line">解释：</span><br><span class="line">6号用户登录了3次，但是在2020年仅有一次，所以结果集应包含此次登录。</span><br><span class="line">8号用户在2020年登录了2次，一次在2月，一次在12月，所以，结果集应该包含12月的这次登录。</span><br><span class="line">2号用户登录了2次，但是在2020年仅有一次，所以结果集应包含此次登录。</span><br><span class="line">14号用户在2020年没有登录，所以结果集不应包含。</span><br></pre></td></tr></table></figure>
+<h3 id="代码-63">代码</h3>
+<h4 id="1、普通写法">1、普通写法</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">	user_id, </span><br><span class="line">	</span><br><span class="line">	<span class="built_in">MAX</span>(time_stamp) last_stamp </span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> logins </span><br><span class="line"></span><br><span class="line"><span class="keyword">WHERE</span> DIFFDATE(time_stamp,<span class="string">&#x27;2019-12-31 23:59:59&#x27;</span>) <span class="operator">&gt;</span> <span class="number">0</span> <span class="keyword">and</span> DIFFDATE(time_stamp,<span class="string">&#x27;2021-01-01 00:00:00&#x27;</span> ) <span class="operator">&lt;</span> <span class="number">0</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> user_id;</span><br></pre></td></tr></table></figure>
+<p>这是自己的写法，使用&lt;和&gt;来判断时间是否为2020年，这时候使用时间函数更好。如下所示：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">TIMEDIFF(time_stamp,<span class="string">&#x27;2020-01-01 00:00:00&#x27;</span>) # 返回值以xx:xx:xx为单位</span><br><span class="line"></span><br><span class="line"># 或者</span><br><span class="line"></span><br><span class="line">DATEDIFF(time_stamp,<span class="string">&#x27;2020-01-01 00:00:00&#x27;</span>) # 返回值以天为单位</span><br><span class="line"></span><br><span class="line"># 或者</span><br><span class="line"></span><br><span class="line"><span class="keyword">YEAR</span>(time_stamp) # 直接返回当前时间的年份</span><br></pre></td></tr></table></figure>
+<h4 id="2、窗口函数">2、窗口函数</h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"># 开窗函数降序排名，最后只保留排名为<span class="number">1</span>的字段。</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line"></span><br><span class="line">    user_id,</span><br><span class="line"></span><br><span class="line">    time_stamp <span class="keyword">AS</span> last_stamp</span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span>(</span><br><span class="line"></span><br><span class="line">    <span class="keyword">SELECT</span> </span><br><span class="line"></span><br><span class="line">        user_id,</span><br><span class="line"></span><br><span class="line">        time_stamp,</span><br><span class="line"></span><br><span class="line">        <span class="built_in">dense_rank</span>() <span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> user_id <span class="keyword">order</span> <span class="keyword">by</span> time_stamp <span class="keyword">DESC</span>) <span class="keyword">AS</span> `rank`</span><br><span class="line"></span><br><span class="line">    <span class="keyword">FROM</span> Logins</span><br><span class="line"></span><br><span class="line">    <span class="keyword">WHERE</span> <span class="keyword">Year</span>(time_stamp) <span class="operator">=</span> <span class="number">2020</span></span><br><span class="line"></span><br><span class="line">)<span class="keyword">AS</span> tmp</span><br><span class="line"></span><br><span class="line"><span class="keyword">WHERE</span> tmp.rank <span class="operator">=</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line"># 作者：dasen</span><br><span class="line"># 链接：https:<span class="operator">/</span><span class="operator">/</span>leetcode.cn<span class="operator">/</span>problems<span class="operator">/</span>the<span class="operator">-</span>latest<span class="operator">-</span>login<span class="operator">-</span><span class="keyword">in</span><span class="number">-2020</span><span class="operator">/</span>solutions<span class="operator">/</span><span class="number">2171916</span><span class="operator">/</span>kai<span class="operator">-</span>chuang<span class="operator">-</span>han<span class="operator">-</span>shu<span class="operator">-</span>pai<span class="operator">-</span>ming<span class="operator">-</span><span class="keyword">where</span><span class="operator">-</span>fen<span class="operator">-</span>zu<span class="operator">-</span>ahyt<span class="operator">/</span></span><br></pre></td></tr></table></figure>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2023/03/24/MySQL%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2023/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%85%AB%E8%82%A1%E6%96%87/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            机器学习八股文
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2023/03/23/%E7%AC%94%E8%AF%95%E9%A2%98%EF%BC%9A%E5%A1%AB%E5%85%85%E6%95%B0%E7%BB%84/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">笔试题：填充数组</div>
+      </a>
+    
+  </nav>
+
+  
+   
+    
+    <script src="https://cdn.staticfile.org/twikoo/1.4.18/twikoo.all.min.js"></script>
+    <div id="twikoo" class="twikoo"></div>
+    <script>
+        twikoo.init({
+            envId: ""
+        })
+    </script>
+ 
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2022-2023
+        <i class="ri-heart-fill heart_icon"></i> Lu Dong
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="LD_blog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.staticfile.org/justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/mathjax/2.7.7/MathJax.js"></script>
+<script src="https://cdn.staticfile.org/mathjax/2.7.7/config/TeX-AMS-MML_HTMLorMML-full.js"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+ 
+    
+        <link rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.15.1/katex.min.css">
+        <script src="https://cdn.staticfile.org/KaTeX/0.15.1/katex.min.js"></script>
+        <script src="https://cdn.staticfile.org/KaTeX/0.15.1/contrib/auto-render.min.js"></script>
+        
+    
+ 
+<!-- busuanzi  -->
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.staticfile.org/clipboard.js/2.0.10/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    
+
+  </div>
+</body>
+
+</html>

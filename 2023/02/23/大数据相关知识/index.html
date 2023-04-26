@@ -104,8 +104,8 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h2 id="hadoop">Hadoop</h2>
-<h3 id="hdfs-hadoop分布式文件系统">HDFS（Hadoop分布式文件系统）</h3>
+  <h2 id="Hadoop">Hadoop</h2>
+<h3 id="HDFS（Hadoop分布式文件系统）">HDFS（Hadoop分布式文件系统）</h3>
 <p><img src="/2023/02/23/%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/image-20230304141412953-1677910468073-1.png" alt="image-20230304141412953"></p>
 <p>1、HDFS来源：《Google File System》。</p>
 <p>2、HDFS是一个分布式、可扩展的、可靠的文件系统。</p>
@@ -146,10 +146,10 @@
 <p>HDFS的应用场景：一次写入，多次使用</p>
 <p>Hadoop2.0之后允许追加数据（在尾部加数据），不允许修改</p>
 <p>14、HDFS不适合存储海量小文件，每上传一个文件，namenode就需要一条元数据来管理，所以存海量小文件会占用大量namenode的内存资源。</p>
-<h3 id="hdfs回收站机制">HDFS回收站机制</h3>
+<h3 id="HDFS回收站机制">HDFS回收站机制</h3>
 <p>trash，默认是关闭的。修改etc/hadoop/core-site.xml来设置：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">        &lt;name&gt;fs.trash.interval&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;1440&lt;/value&gt; //清空回收站间隔，单位为分钟，0表示关闭该机制</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="mapreduce">MapReduce</h3>
+<h3 id="MapReduce">MapReduce</h3>
 <p>分布式的计算框架。Map（映射）、Reduce（归约）</p>
  
       <!-- reward -->
@@ -236,9 +236,9 @@
       </a>
     
     
-      <a href="/2023/02/23/Leetcode%E4%B9%8B%E6%80%BB%E7%BB%93%E2%80%94%E2%80%941/" class="article-nav-link">
+      <a href="/2022/12/14/Leetcode%E4%B9%8B%E6%AF%8F%E6%97%A5%E4%B8%80%E9%A2%98%EF%BC%9A2022-12-14/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">Leetcode之总结——1</div>
+        <div class="article-nav-title">Leetcode之每日一题：2022-12-14</div>
       </a>
     
   </nav>

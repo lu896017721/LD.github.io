@@ -80,7 +80,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">1.8k</span>
+            <span class="post-count">3.2k</span>
         </span>
     </span>
 
@@ -89,7 +89,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">7 分钟</span>
+            <span class="post-count">12 分钟</span>
         </span>
     </span>
 </div>
@@ -108,9 +108,9 @@
 <p>数据库：存储数据的仓库，本质是信息管理系统。</p>
 <p>为什么使用数据库？提供了数据的统一管理，集中访问；使用方便，降低了应用开发的门槛。</p>
 <p>简单描述：利用二维表的形式  来存储数据，用表和表之间的关系保存数据之间的关系的数据库。</p>
-<h3 id="sql语言">SQL语言</h3>
+<h3 id="SQL语言">SQL语言</h3>
 <p>结构化查询语言，关系型数据库通用语言。一种非过程性语言（操作者仅需要给出自己想要的结果）。SQL具有查询、操纵、定义和控制关系型数据库的四方面功能。学习SQL语句依次主要分为以下三部分，每部分主要围绕增删改查四方面进行。</p>
-<h4 id="sql中常见的数据类型">SQL中常见的数据类型</h4>
+<h4 id="SQL中常见的数据类型">SQL中常见的数据类型</h4>
 <h5 id="字符串型">字符串型</h5>
 <p><strong>VARCHAR</strong>：变长的字符串，需要在声明字段时指定能存储的最大字符数，真实占用的空间取决于存入的字符数。能包含的数据大小：0~65536字节。</p>
 <p><strong>CHAR</strong>：定长字符串，需要在声明字段时指定固定字符数。能包含的数据大小：0~255字节</p>
@@ -133,18 +133,30 @@
 <p><strong>TIMESTAMP</strong>：时间戳，占用四个字节</p>
 <p><strong>DATETIME</strong>和<strong>TIMESTAMP</strong>的区别：1、DATETIME和TIMESTAMP显示的结果是一样的，都是“YYYY-MM-DD HH:MM:SS”的格式；2、DATETIME支持的范围是“1000-01-01 00:00:00”到“9999-12-31 23:59:59”。TIMESTAMP的显示范围是“1970-01-01 00:00:00”到2037年，且其实际的存储值为1970年到当前时间的毫秒数。3、在建表时，列为TIMESTAMP的日期类型可以设置一个默认值（默认值：当前时间），而DATETIME不行。4、在更新表时，可以设置TIMESTAMP类型的列自动更新时间为当前时间。</p>
 <h4 id="字段约束">字段约束</h4>
-<h5 id="1-主键约束">1、主键约束</h5>
+<h5 id="1、主键约束">1、主键约束</h5>
 <p>通常每张表都会有一个字段或多个字段联合起来唯一标识表记录这样的字段称为这张表的主键。我们可以为这样的字段增加主键约束。主键约束要求字段<strong>必须不能为空</strong>且<strong>值必须唯一</strong>。</p>
 <p>增加主键约束：<strong>PRIMARY KEY</strong></p>
 <p>可以在定义主键时指定主键的自动增长auto_increment，这样主键就不需要人为的维护，在新增记录时不需要指定主键的值，数据库会自动维护一个计数器，每次计数器的值+ 1后作为主键，保证主键的唯一性。</p>
-<h5 id="2-唯一约束">2、唯一约束</h5>
+<h5 id="2、唯一约束">2、唯一约束</h5>
 <p>如果需要指定某个字段的值不能重复，可以为该字段指定唯一约束，该字段可存在NULL，且可以插入多个NULL值。因为对于MySQL来说，null和任意值的比较结果都为False</p>
 <p>增加唯一约束：<strong>UNIQUE</strong></p>
-<h5 id="3-非空约束">3、非空约束</h5>
+<h5 id="3、非空约束">3、非空约束</h5>
 <p>如果需要指定某个字段的值不能为空，可以为该字段指定非空约束</p>
 <p>增加非空约束：<strong>NOT NULL</strong></p>
-<h5 id="4-外键约束">4、外键约束</h5>
-<h4 id="1-数据库操作相关语句">1、数据库操作相关语句</h4>
+<h5 id="4、外键约束">4、外键约束</h5>
+<p>**什么是外键？**外键是一种约束，一个表的一个字段可以设为外键关联另一张表的主键字段，外键约束是指限定该表该外键字段的值，必须是另一张表中主键字段已经存在的值。 1)向A表中插入数据时，外键字段的值会做校验，必须是B表中主键字段存在的值。 2)在B表中做删除操作时，如果A表中有数据关联了该主键值，则不能进行删除。</p>
+<p>外键作用：维护数据的完整性和一致性</p>
+<p>添加外键：foreign key(本表的字段) references 其他表(字段)</p>
+<p>**注意：**本表的外键只能引用另一张表的主键；</p>
+<h6 id="建表时增加外键">建表时增加外键</h6>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> dept(</span><br><span class="line">	id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,</span><br><span class="line">	name <span class="type">VARCHAR</span>(<span class="number">20</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> emp(</span><br><span class="line">	id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,</span><br><span class="line">	name <span class="type">VARCHAR</span>(<span class="number">20</span>),</span><br><span class="line">	dept_id <span class="type">int</span>, </span><br><span class="line">	<span class="keyword">FOREIGN</span> KEY(dept_id) <span class="keyword">REFERENCES</span> dept(id)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h6 id="修改方式增加外键">修改方式增加外键</h6>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> tab_name <span class="keyword">ADD</span> [<span class="keyword">constraint</span> 真正的外键名称] <span class="keyword">FOREIGN</span> KEY(col_name1) <span class="keyword">REFERENCES</span> tab_name2(col_name2) [<span class="keyword">on</span> <span class="keyword">delete</span> restrict][<span class="keyword">on</span> <span class="keyword">update</span> restrict];</span><br></pre></td></tr></table></figure>
+<p><strong>constraint 真正的外键名称</strong>：用于指定真正的外键名称。如果不指定外键的名称，mysql会自动为你创建一个外键名称。可通过show create table_name查询;</p>
+<p>**RESTRICT：**只要本表格里面有指向主表的数据，在主表里面就无法删除相关记录。</p>
+<p><strong>CASCADE：</strong>（级联，不安全）如果在foreign key所指向的那个表里面删除一条记录，那么在此表里面的跟那个key一样的所有记录都会一同删掉。</p>
+<p>注意：在企业中，由于外键的存在会影响数据库的并发，一般是通过代码实现外键的逻辑，而不是指定外键。</p>
+<h4 id="1、数据库操作相关语句">1、数据库操作相关语句</h4>
 <h5 id="创建数据库">创建数据库</h5>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">/</span><span class="operator">/</span>创建数据库</span><br><span class="line"><span class="keyword">CREATE</span> DATABASE mydb1;</span><br><span class="line"><span class="operator">/</span><span class="operator">/</span>如果不存在再创建</span><br><span class="line"><span class="keyword">CREATE</span> DATABASE IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> mydb1;</span><br><span class="line"><span class="operator">/</span><span class="operator">/</span>创建一个使用gbk字符集的mydb2数据库,<span class="keyword">sql</span>里面UTF<span class="number">-8</span>：utf8</span><br><span class="line"><span class="keyword">CREATE</span> DATABASE mydb2 <span class="type">CHARACTER</span> <span class="keyword">SET</span> gbk;</span><br></pre></td></tr></table></figure>
 <h5 id="删除数据库">删除数据库</h5>
@@ -155,7 +167,7 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">/</span><span class="operator">/</span>查看所有数据库</span><br><span class="line"><span class="keyword">SHOW</span> DATABASES;</span><br><span class="line"><span class="operator">/</span><span class="operator">/</span>查看某一数据库创建语句</span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">CREATE</span> DATABASE db_name;</span><br></pre></td></tr></table></figure>
 <h5 id="选择数据库">选择数据库</h5>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">/</span><span class="operator">/</span>选择数据库</span><br><span class="line">use db_name;</span><br><span class="line"><span class="operator">/</span><span class="operator">/</span> 查看当前选择的库</span><br><span class="line"><span class="keyword">SELECT</span> DATABASE();</span><br></pre></td></tr></table></figure>
-<h4 id="2-表操作相关语句">2、表操作相关语句</h4>
+<h4 id="2、表操作相关语句">2、表操作相关语句</h4>
 <h5 id="新增表">新增表</h5>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> table_name(field1 datatype [字段约束], field2 datatype [字段约束]);</span><br><span class="line"><span class="operator">/</span><span class="operator">/</span>field：列名 datatype：列的类型</span><br><span class="line"><span class="operator">/</span><span class="operator">/</span>建表时可以指定字符集和校对规则，一般不用，和数据库保存一致。</span><br><span class="line"><span class="operator">/</span><span class="operator">/</span>如：</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> employee(</span><br><span class="line">id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY auto_increment,</span><br><span class="line">ename <span class="type">VARCHAR</span>(<span class="number">20</span>),</span><br><span class="line">gender <span class="type">CHAR</span>(<span class="number">4</span>),</span><br><span class="line">birthday <span class="type">DATE</span>,</span><br><span class="line">entry_date <span class="type">DATE</span>,</span><br><span class="line">job <span class="type">VARCHAR</span>(<span class="number">20</span>),</span><br><span class="line">salary <span class="type">SMALLINT</span>,</span><br><span class="line">resume TEXT</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 <h5 id="删除表">删除表</h5>
@@ -182,7 +194,7 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> tables;<span class="operator">/</span><span class="operator">/</span>针对当前库</span><br></pre></td></tr></table></figure>
 <p><strong>查看当前数据库表建表语句</strong>：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> table_Name;</span><br></pre></td></tr></table></figure>
-<h4 id="3-表中记录操作的相关语句">3、表中记录操作的相关语句</h4>
+<h4 id="3、表中记录操作的相关语句">3、表中记录操作的相关语句</h4>
 <h5 id="增加表记录">增加表记录</h5>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tabname (<span class="keyword">column</span>,...) <span class="keyword">VALUES</span> (<span class="keyword">value</span>,...);</span><br><span class="line"><span class="operator">/</span><span class="operator">/</span>多条插入</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tabname (<span class="keyword">column</span>,...) <span class="keyword">VALUES</span> (<span class="keyword">value</span>,...)，(<span class="keyword">values</span>,...);</span><br></pre></td></tr></table></figure>
 <p><strong>注意</strong>：1、插入的数据应与字段的数据类型相同。2、数据的大小应在列的规定范围内。3、在va1ues中列出的数据位置必须与被加入的列的排列位置相对应。4、字符串和日期格式的数据要用<strong>单引号</strong>引起来。5、如果要插入所有字段可以省写列，直接按表中字段顺序写值列表。6、自增字段可以赋值NULL，以实现自增赋值。</p>
@@ -201,7 +213,49 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span><span class="operator">|</span>列名 <span class="keyword">FROM</span> tablename <span class="keyword">WHERE</span> ...</span><br></pre></td></tr></table></figure>
 <p>where子句的作用：查询指定行。</p>
 <p><img src="/2023/03/16/MySQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/1.png" alt="uTools_1679320190846"></p>
-<p><strong>注意</strong>：WHERE子句中不能使用别名和聚合函数，因为where的解析顺序在字段声明的前面。in里面可以接子查询。</p>
+<p><strong>注意</strong>：WHERE子句中不能使用列的别名和聚合函数，因为where的解析顺序在字段声明的前面。WHERE子句可以用表的别名，因为from的执行顺序在where的前面。in里面可以接子查询。</p>
+<h6 id="排序查询：">排序查询：</h6>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> column1,column2,... <span class="keyword">FROM</span> tab_name <span class="keyword">ORDER</span> <span class="keyword">BY</span> column3 <span class="keyword">ASC</span><span class="operator">|</span><span class="keyword">DESC</span>;</span><br></pre></td></tr></table></figure>
+<p>ASC：升序（默认）；DESC：降序。ORDER BY：里面可以用别名。</p>
+<p><strong>ORDER BY 子句在WHERE子句的后面</strong>：因为先筛选再排序（效率高），而不是先排序后筛选（效率低）。</p>
+<h6 id="聚合函数">聚合函数</h6>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> f(col_name)... <span class="keyword">FROM</span> tab_name [<span class="keyword">WHERE</span> ...];</span><br></pre></td></tr></table></figure>
+<p>f代表的有：1、求符合条件的记录中指定列的记录数：COUNT()，COUNT(*)会统计包括NULL值的条数，COUNT(colname)仅统计该列不为NULL值的条数；2、求符合条件的记录中指定列的和值：SUM()；3、求符合条件的记录中指定列的平均值：AVG()；4、求符合条件的记录中指定列的最大值：MAX()；5、求符合条件的记录中指定列的最小值：MIN()；除COUNT外，其他聚合函数均不对<strong>null</strong>值进行统计。</p>
+<h6 id="分组查询">分组查询</h6>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> column1, column2, column3,... <span class="keyword">FROM</span> tab_name <span class="keyword">GROUP</span> <span class="keyword">BY</span> column4 <span class="keyword">HAVING</span> ...</span><br></pre></td></tr></table></figure>
+<p>GROUP BY的运行顺序是；先根据设定的字段对数据分成多个子集，然后对每个子集运行一次其他操作。</p>
+<p>**注意：**WHERE子句和HAVING子句都可以进行过滤，但是使用场景有所不同：WHERE子句对分组之前的数据进行过滤，不能使用聚合函数和别名；HAVING子句对分组之后的数据进行过滤，可以使用聚合函数和别名；使用WHERE子句的地方一般都可以用HAVING替代，但是使用HAVING的地方一般不能用WHERE替代。</p>
+<h4 id="多表设计">多表设计</h4>
+<h5 id="一对一">一对一</h5>
+<p>对于一对一的关系，可以在任意一方表中添加列，保存另外一张表的主键来保存两张表之间的对应关系.</p>
+<p><img src="/2023/03/16/MySQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/2.png" alt="image-20230322205433340"></p>
+<h5 id="一对多">一对多</h5>
+<p>对于一对多的关系，可以在多的一方添加列，保存一的那方主键作为外键，来保存两张表之间的对应关系。</p>
+<p><img src="/2023/03/16/MySQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/3.png" alt="image-20230322205715671"></p>
+<h5 id="多对多">多对多</h5>
+<p>对于多对多的关系，我们可以建一张第三方的表，分别保存两张表的主键，通过这种方式来保存多对多的关系</p>
+<p><img src="/2023/03/16/MySQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/4.png" alt="image-20230322205956076"></p>
+<h4 id="多表查询">多表查询</h4>
+<h5 id="多次查询">多次查询</h5>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">/</span><span class="operator">/</span>暴力法</span><br><span class="line"><span class="keyword">SELECT</span> name <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> dept_id <span class="operator">=</span> (<span class="keyword">SELECT</span> id <span class="keyword">FROM</span> dept <span class="keyword">WHERE</span> name <span class="operator">=</span> <span class="string">&#x27;科技部&#x27;</span>); </span><br></pre></td></tr></table></figure>
+<h5 id="笛卡尔积查询">笛卡尔积查询</h5>
+<p>又称逗号连接，表和表之间使用逗号连接，过滤条件用WHERE子句给定。（少用）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">/</span><span class="operator">/</span>两表的笛卡尔</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> tab_name1, tab_name2;</span><br><span class="line"></span><br><span class="line"><span class="operator">/</span><span class="operator">/</span>多表笛卡尔查询</span><br><span class="line"><span class="keyword">SELECT</span> emp.id, emp.name <span class="keyword">FROM</span> emp, dept <span class="keyword">WHERE</span> emp.dept_id <span class="operator">=</span> dept.id <span class="keyword">and</span> dept.name <span class="operator">=</span> <span class="string">&#x27;科技部&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<h5 id="内连接查询">内连接查询</h5>
+<p>查询左边表有且右边表也有的记录</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> tb1 [<span class="keyword">inner</span>] <span class="keyword">join</span> tb2 <span class="keyword">on</span> tb1.id <span class="operator">=</span> tb2.id;</span><br><span class="line"><span class="operator">/</span><span class="operator">/</span> 查询例子</span><br><span class="line"><span class="keyword">SELECT</span> e.id, e.name, d.name <span class="keyword">as</span> dept <span class="keyword">FROM</span> emp <span class="keyword">as</span> e <span class="keyword">JOIN</span> dept <span class="keyword">as</span> d <span class="keyword">ON</span> e.dept_id <span class="operator">=</span> d.id ;</span><br></pre></td></tr></table></figure>
+<h5 id="左外连接">左外连接</h5>
+<p>在内连接的基础上增加左边表有而右边表没有（NULL）的记录</p>
+<p>代码：left join 或者 left outer join</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">/</span><span class="operator">/</span> 查询例子</span><br><span class="line"><span class="keyword">SELECT</span> emp.id, emp.name, dept.name <span class="keyword">as</span> dept <span class="keyword">FROM</span> dept <span class="keyword">left</span> <span class="keyword">JOIN</span> emp <span class="keyword">ON</span> emp.dept_id <span class="operator">=</span> dept.id ;</span><br></pre></td></tr></table></figure>
+<h5 id="右外连接">右外连接</h5>
+<p>在内连接的基础上增加右边表有而左边表没有的记录</p>
+<p>代码：right join 或者 right outer join</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">/</span><span class="operator">/</span> 查询例子</span><br><span class="line"><span class="keyword">SELECT</span> emp.id, emp.name, dept.name <span class="keyword">as</span> dept <span class="keyword">FROM</span> emp <span class="keyword">right</span> <span class="keyword">JOIN</span> dept <span class="keyword">ON</span> emp.dept_id <span class="operator">=</span> dept.id ;</span><br><span class="line"><span class="operator">/</span><span class="operator">/</span> 跟左外连接的例子结果一致</span><br></pre></td></tr></table></figure>
+<h5 id="全外连接">全外连接</h5>
+<p>在内连接的基础上增加右边表有而左边表没有的记录，以及左边表有而右边表没有的记录（FULL JOIN）</p>
+<p>**注意：**MySQL不支持全连接，可以使用UNION关键字模拟全外连接。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> emp.id, emp.name, dept.name <span class="keyword">as</span> dept <span class="keyword">FROM</span> emp <span class="keyword">left</span> <span class="keyword">JOIN</span> dept <span class="keyword">ON</span> emp.dept_id <span class="operator">=</span> dept.id ;</span><br><span class="line"><span class="keyword">UNION</span></span><br><span class="line"><span class="keyword">SELECT</span> emp.id, emp.name, dept.name <span class="keyword">as</span> dept <span class="keyword">FROM</span> emp <span class="keyword">right</span> <span class="keyword">JOIN</span> dept <span class="keyword">ON</span> emp.dept_id <span class="operator">=</span> dept.id </span><br></pre></td></tr></table></figure>
  
       <!-- reward -->
       

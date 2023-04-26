@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+
+
+<html lang="zh-CN">
+  
+
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>机器学习八股文 |  LD_blog</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
+
+      
+<link rel="stylesheet" href="/css/fonts/remixicon.css">
+
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script>
+       
+ 
+
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    <link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet" /></head>
+  </html>
+</html>
+
+
+<body>
+  <div id="app">
+    
+      
+    <main class="content on">
+      <section class="outer">
+  <article
+  id="post-机器学习八股文"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  机器学习八股文
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2023/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%85%AB%E8%82%A1%E6%96%87/" class="article-date">
+  <time datetime="2023-03-26T11:56:07.000Z" itemprop="datePublished">2023-03-26</time>
+</a>   
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">3.8k</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">13 分钟</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
+  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="机器学习面试八股文">机器学习面试八股文</h2>
+<h3 id="特征工程">特征工程</h3>
+<p>1、为什么要对特征做归一化处理：</p>
+<p>“特征归一化”、“标准化”是数据预处理中的重要技术。特征间的单位（尺度）可能不同，比如身高和体重，比如摄氏度和华氏度，特征的单位不同的同时，特征的取值范围也会不一致，比如身高是1.5-2.0，体重是50-100kg。上述变量在进行有关距离的计算时，尺度大的特征会起决定性作用，而尺度小的特征其作用可能会被忽略。因此为了消除特征间单位和尺度差异的影响，就需要对特征进行归一化，将其映射到一个相同区间。</p>
+<p>2、什么是组合特征？如何处理高维组合特征？</p>
+<p>为了提高复杂关系的拟合能力，特征工程的时候会对一阶离散特征两两组合构成高阶特征。</p>
+<p>针对高维组合特征可以采取降维，矩阵分解或者特征筛选的方法得到具备绝大部分信息的几个特征进行训练。</p>
+<p>对于高维组合特征，常用的方法是进行embedding处理。以uid和nid为例，uid在电商或信息流中量级在百万以上（m=1000000），nid数量也得几十上百万（n=500000）。交叉后会得到高维特征w，其有1000000×500000种特征组合，也就是特征权重的数量。如果我们引入矩阵分解的思想，将uid和nid用远小于uid数量和nid数量的k维向量表示，将矩阵w分解为u和v，u就是m×k的用户矩阵，v是n×k的物品矩阵。那么参数规模变为（m+n)×k。</p>
+<p>3、比较欧氏距离、曼哈顿距离和切比雪夫距离。</p>
+<p>欧氏距离：欧几里得距离，就是平方和再开根号。最常用的。欧氏距离越小，两个向量的相似度越大；欧氏距离越大，两个向量的相似度越小。</p>
+<p>曼哈顿距离：|x1 - x2| + |y1 - y2|。</p>
+<p>切比雪夫距离：max（|x1 - x2|，|y1 - y2|）</p>
+<p>4、什么是余弦相似度？为什么有些场景使用余弦相似度而不使用欧氏距离？</p>
+<p>对于两个向量A和B，其余弦相似度定义为cos（A，B）＝ A<em>B / |A|</em>|B| 即两个向量夹角的余弦值。余弦相似度关注的是向量之间的角度关系，并不关心它们的绝对大小,余弦相似度符合“相同为1，正交为0，相反为-1”的性质，其取值范围是［-1,1］。</p>
+<p>欧式距离是衡量空间点之间的直线距离，余弦距离衡量点在空间的方向差异。欧式距离体现的数值上的绝对差异，而余弦距离体现方向上的相对差异。</p>
+<p>5、one-hot的作用是什么？为什么不能直接用数字来表示？</p>
+<p>One-Hot编码是分类变量作为二进制向量的表示。这首先要求将分类值映射到整数值。然后，每个整数值被表示为二进制向量，除了该整数的索引为1之外，其它都是零值。</p>
+<p>不直接使用数字是因为：直接使用数字会给将人工误差而导致的假设引入到类别特征中，比如类别之间的大小关系，以及差异关系等等</p>
+<h3 id="模型评估">模型评估</h3>
+<p>1、过拟合和欠拟合是啥？具体表现是啥？</p>
+<p>过拟合：模型在训练集上表现越来越好，测试集上表现越来越差的现象。欠拟合：模型在训练集和测试集上表现都很差。</p>
+<p>欠拟合会导致高偏差 ，过拟合会导致高方差 ，所以模型需要在偏差与 方差之间做出一个权衡。</p>
+<p>2、降低过拟合和欠拟合的方法</p>
+<p>1）解决欠拟合的方法：</p>
+<ul>
+<li>增加新特征，可以考虑加入进特征组合、高次特征，来增大假设空间维度;</li>
+<li>尝试非线性模型，比如核SVM 、决策树、DNN等模型;</li>
+<li>如果有正则项，可以调小正则项参数 $\lambda$;</li>
+<li>Boosting，Boosting 往往会有较小的偏差，比如 Gradient Boosting 等.</li>
+</ul>
+<p>2）解决过拟合的方法：</p>
+<ul>
+<li>交叉检验，通过交叉检验得到较优的模型参数;</li>
+<li>减少特征数量</li>
+<li>在损失函数中加入正则项，或调大正则项参数 $\lambda$;、</li>
+</ul>
+<h3 id="树模型">树模型</h3>
+<h4 id="1、决策树">1、决策树</h4>
+<ul>
+<li>决策树由节点和分支组成。</li>
+<li>节点有三种类型:根节点，内部节点和叶节点。</li>
+<li>分支:用于连接各个节点。</li>
+</ul>
+<h4 id="2、特征选择">2、特征选择</h4>
+<h5 id="信息熵ID3">信息熵ID3</h5>
+<p>信息熵(entropy)是度量样本集合内部节点所包含的样本尽可能属于同一类别最常用的一种指标，<strong>$p_k$为以第k类为依据预测正确的概率</strong>，则D的信息熵定义为</p>
+<p><img src="/2023/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%85%AB%E8%82%A1%E6%96%87/1.jpg" alt="v2-8c2a75989449e0e09e51a3b4d24509ba_r"></p>
+<p>在选择分裂节点时，根据<strong>信息熵增益</strong>来选，信息熵增益越大越好。</p>
+<p><img src="/2023/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%85%AB%E8%82%A1%E6%96%87/2.jpg" alt="v2-2f33756d197fd70d09f28f97e59a8094_720w"></p>
+<h5 id="增益率C4-5">增益率C4.5</h5>
+<p><strong>增益率C4.5</strong>（最常用的决策树算法）：思想是先从候选划分属性中找出信息增益高于平均水平的，再从中选取增益率最高的。最大的特点是克服了 ID3 对特征数目的偏重这一缺点，引入信息增益率来作为分类标准。</p>
+<p><img src="/2023/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%85%AB%E8%82%A1%E6%96%87/3.jpg" alt="v2-a1f393b95db2ffb4f861989f491257d5_720w-1"></p>
+<h5 id="基尼系数CART算法">基尼系数CART算法</h5>
+<p>基尼系数CART算法（可以用于回归任务）：其反映了从D中随机抽取两个样例,其类别标记不一致的概率。Gini(D)越小，数据集D的纯度越高</p>
+<h4 id="3、随机森林">3、随机森林</h4>
+<p>**结构：**随机森林建立了多个决策树，并将它们合并在一起以获得更准确和稳定的预测，是以决策树为估计器的Bagging算法。</p>
+<p><strong>过程：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">循环 K 次：</span><br><span class="line"></span><br><span class="line">  1、从训练集 T 中有放回抽样的方式，取样 N 次形成一个新子训练集 D</span><br><span class="line"></span><br><span class="line">  2、随机选择 m 个特征，其中 m &lt; M</span><br><span class="line"></span><br><span class="line">  3、使用新的训练集 D 和 m 个特征，学习出一个完整的决策树</span><br><span class="line"></span><br><span class="line">得到随机森林，随机森林的大小为 K，最后投票决定分类结果。概率为所有树的输出的平均值。</span><br></pre></td></tr></table></figure>
+<h4 id="4、Adaboost">4、Adaboost</h4>
+<p>该算法其实是一个简单的弱分类算法提升过程</p>
+<p><strong>过程：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">**（1）初始化训练数据的权重。**</span><br><span class="line"></span><br><span class="line">如果有N个样本，则每一个训练样本最开始时都被赋予相同的权值：1/N。</span><br><span class="line"></span><br><span class="line">**（2）训练弱分类器。**</span><br><span class="line"></span><br><span class="line">具体训练过程中，如果某个样本点已经被准确地分类，那么在构造下一个训练集中，它的权值就被降低；相反，如果某个样本点没有被准确地分类，那么它的权值就得到提高。然后，权值更新过的样本集被用于训练下一个分类器，整个训练过程如此迭代地进行下去。</span><br><span class="line"></span><br><span class="line">**（3）将各个训练得到的弱分类器组合成强分类器。**</span><br><span class="line"></span><br><span class="line">各个弱分类器的训练过程结束后，加大分类误差率小的弱分类器的权重，使其在最终的分类函数中起着较大的决定作用，而降低分类误差率大的弱分类器的权重，使其在最终的分类函数中起着较小的决定作用。换言之，误差率低的弱分类器在最终分类器中占的权重较大，否则较小。</span><br></pre></td></tr></table></figure>
+<h4 id="5、GBDT">5、GBDT</h4>
+<p>**结构：**一种boosting算法，相当于把多个弱学习器串联（bagging是并联）。残差本质上就是二次损失函数的负梯度。</p>
+<p>弱学习器限定只能使用CART回归树，初始化一颗回归树，然后每棵树由拟合上一轮残差得到，最后将所有弱分类器组合。</p>
+<p><img src="/2023/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%85%AB%E8%82%A1%E6%96%87/4.png" alt="20180713165334912"></p>
+<h4 id="6、XGBoost">6、XGBoost</h4>
+<p>GBDT是机器学习算法，<strong>XGBoost是该算法的工程实现</strong>，包括一些工程实现方面的优化。</p>
+<p>（1）在使用CART作为基分类器时，XGBoost显式地加入了正则项来控制模型的复杂度，有利于防止过拟合，从而提高模型的泛化能力。</p>
+<p>（2）GBDT在模型训练时只使用了代价函数的一阶导数信息，XGBoost对代 价函数进行二阶泰勒展开，可以同时使用一阶和二阶导数。</p>
+<p>（3）传统的GBDT采用CART作为基分类器，XGBoost支持多种类型的基分类器，比如线性分类器。</p>
+<p>（4）传统的GBDT在每轮迭代时使用全部的数据，XGBoost则采用了与随机森林相似的策略，支持对数据进行采样。</p>
+<p>（5）传统的GBDT没有设计对缺失值进行处理，XGBoost采用稀疏感知策略自动学习出缺失值的处理策略。</p>
+<p>（6）XGBoost的列块设计能有效支持并行运算，提高效率。</p>
+<h5 id="寻找最优分裂点：">寻找最优分裂点：</h5>
+<ul>
+<li>对每个待分裂节点遍历所有特征。</li>
+<li>针对每个特征，对属于该节点的训练样本根据该特征值进行预排序，通过线性扫描的方式决定该特征的最佳划分位置，并记录该特征的分裂收益。</li>
+<li>选择收益最大的特征和划分位置作为分裂点，在该节点上分裂出左右两个新的叶节点，并为每个新节点关联对应的样本集。</li>
+</ul>
+<h4 id="7、LightGBM">7、LightGBM</h4>
+<p>LightGBM 是对XGBoost算法进行的优化。</p>
+<p>（1）为了解决xgboost分裂点数量过多的问题，LightGBM采用直方图算法，类似于对特征进行分桶。</p>
+<p>（2）为了解决xgboost样本数量过多的问题， LightGBM采用单边梯度抽样算法。</p>
+<p>（3）为了解决xgboost特征数量过多的问题，LightGBM采用互斥特征捆绑算法</p>
+<h5 id="直方图算法">直方图算法</h5>
+<p>将连续型特征值放入离散化的箱子 (bin) 中，然后用这些箱子构建特征直方图。然后模型基于特征直方图寻找最佳分裂点</p>
+<h5 id="单边梯度抽样算法-GOSS-：">单边梯度抽样算法(GOSS)：</h5>
+<p>梯度小的样本，训练误差也比较小，说明数据已经被模型学习得很好了，直接想法就是丢掉这部分梯度小的数据。然而这样做会改变数据的分布，GOSS根据样本的权重信息对样本进行抽样，减少了大量梯度小的样本，但是还能不会过多的改变数据集的分布。</p>
+<h5 id="带有深度限制的按叶子生长-leaf-wise-算法：">带有深度限制的按叶子生长 (leaf-wise) 算法：</h5>
+<p><img src="/2023/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%85%AB%E8%82%A1%E6%96%87/5.jpg" alt="v2-77e95bf86ae4f2b0ff2c58d07c8749a0_r"></p>
+<p>该策略每次从当前所有叶子中，找到分裂增益最大的一个叶子，然后分裂，如此循环。</p>
+<p>Level-wise相比，优点在于：在分裂次数相同的情况下，Leaf-wise可以降低更多的误差，得到更好的精度。</p>
+<p>缺点在于：可能会长出比较深的决策树，产生过拟合。因此LightGBM会在Leaf-wise之上增加了一个最大深度的限制，在保证高效率的同时防止过拟合。</p>
+<h4 id="问题：简要说一下Lightgbm相对于xgboost的优缺点">问题：简要说一下Lightgbm相对于xgboost的优缺点</h4>
+<p>**优点：**Ligbm是相较于XGBoost，有更高效率，速度更快，内存占用更低，泛化能力更强（分箱与之后的不精确分割也起到了一定防止过拟合的作用）；</p>
+<p>**缺点：**直方图算法对特征进行分桶相较于XGBoost之间进行，会损失一定精度。</p>
+<h4 id="问题：对比一下XGB和lightGBM在节点分裂时候的区别">问题：对比一下XGB和lightGBM在节点分裂时候的区别</h4>
+<p>xgboost是level-wise，lgbm是leaf-wise，level-wise指在树分裂的过程中，同一层的非叶子节点，只要继续分裂能够产生正的增益就继续分裂下去，而leaf-wise更苛刻一点，同一层的非叶子节点，仅仅选择分裂增益最大的叶子节点进行分裂。</p>
+<h4 id="问题：RF和xgboost哪个对异常点更敏感">问题：RF和xgboost哪个对异常点更敏感</h4>
+<p>xgboost更敏感。rf的每棵数的生成是独立的，异常点数量不多的情况下异常点常常和正常样本中的某些样本合并在一个分支里。但是xgboost不一样，异常样本的t-1轮的预测值和真实标签计算出来的负梯度会一直很大。</p>
+<h4 id="问题：XGBoost和GBDT的区别有哪些？">问题：XGBoost和GBDT的区别有哪些？</h4>
+<p><strong>1、算法层面：</strong></p>
+<p>（1）损失函数的二阶泰勒展开；</p>
+<p>（2）树的正则化概念的引入，对叶节点数量和叶子节点输出进行了约束，方式是将二者形成的约束项加入损失函数中；</p>
+<p>（3）二阶泰勒展开与树正则化推出了新的叶子节点输出的计算公式而不是原始gbdt那样的简单平均；</p>
+<p>（4）对于缺失值的处理，xgboost根据左右子节点的增益大小将缺失值分到增益大的节点中，而sklearn中的gbdt是无法处理缺失值的，因为sklearn中的gbdt是以sklearn中的cart为基学习器的，而sklearn中的cart也并没有实现对缺失值的处理功能。</p>
+<p><strong>2、工程层面</strong></p>
+<p>对每个特征进行分块（block）并排序（pre_sort），将排序后的结构保存在内存中，这样后续分裂的时候就不需要重复对特征进行排序然后计算最佳分裂点了，并且能够进行并行化计算。</p>
+<h4 id="8、逻辑回归">8、逻辑回归</h4>
+<p>逻辑回归也称作logistic回归分析，是一种有监督的统计学习方法。其推导过程与计算方式类似于回归的过程，但实际上主要是用来解决二分类问题（也可以解决多分类问题）</p>
+<p>逻辑回归模型的假设是： $h_\theta \left( x \right)=g\left(\theta^{T}X \right)$其中： X代表特征向量,  g代表逻辑函数（logistic function)。一个常用的逻辑函数为S形函数（Sigmoid function），公式为： $g(z)=\frac{1}{1+e^{-z}}$</p>
+<p><strong>逻辑回归的思路</strong>是，先拟合决策边界，再建立这个边界与分类的概率联系，从而得到了二分类情况下的概率。</p>
+<p>Logistic 回归实际上是使用线性回归模型的预测值逼近分类任务真实标记的对数几率，其优点有：</p>
+<ol>
+<li>直接对<strong>分类的概率</strong>建模，无需实现假设数据分布，从而避免了假设分布不准确带来的问题（区别于生成式模型）；</li>
+<li>不仅可预测出类别，还能得到该<strong>预测的概率</strong>，这对一些利用概率辅助决策的任务很有用；</li>
+<li>对数几率函数是<strong>任意阶可导的凸函数</strong>，有许多数值优化算法都可以求出最优解。</li>
+</ol>
+<h4 id="9、判别式模型、生成式模型">9、判别式模型、生成式模型</h4>
+<p>判别式模型是对条件概率建模，学习不同类别之间的最优边界，无法反映训练数据本身的特性</p>
+<p>生成式模型先计算了联合概率P(x,y)，再由贝叶斯公式计算得到条件概率。因此，生成式模型可以体现更多数据本身的分布信息，其普适性更广。</p>
+ 
+      <!-- reward -->
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>版权声明： </strong>
+          
+          本博客所有文章除特别声明外，著作权归作者所有。转载请注明出处！
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://example.com/2023/03/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%85%AB%E8%82%A1%E6%96%87/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ML-%E9%9D%A2%E8%AF%95/" rel="tag">ML, 面试</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+      <a href="/2023/03/26/JAVA%E5%85%AB%E8%82%A1%E6%96%87/" class="article-nav-link">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">
+          
+            JAVA八股文-JAVA基础
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2023/03/24/MySQL%E9%A2%98%E7%9B%AE%E6%80%BB%E7%BB%93/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">MySQL题目总结</div>
+      </a>
+    
+  </nav>
+
+  
+   
+    
+    <script src="https://cdn.staticfile.org/twikoo/1.4.18/twikoo.all.min.js"></script>
+    <div id="twikoo" class="twikoo"></div>
+    <script>
+        twikoo.init({
+            envId: ""
+        })
+    </script>
+ 
+</article>
+
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul>
+      <li>
+        Copyrights &copy;
+        2022-2023
+        <i class="ri-heart-fill heart_icon"></i> Lu Dong
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      <li>
+        
+      </li>
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
+      <li>
+        <!-- cnzz统计 -->
+        
+      </li>
+    </ul>
+  </div>
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
+      <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="LD_blog"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="搜索">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+    </aside>
+    <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    
+  </div>
+</div>
+    
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
+<script src="/js/lazyload.min.js"></script>
+
+<!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.staticfile.org/jquery-modal/0.9.2/jquery.modal.min.css"
+/>
+<script src="https://cdn.staticfile.org/justifiedGallery/3.8.1/js/jquery.justifiedGallery.min.js"></script>
+
+<script src="/dist/main.js"></script>
+
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="https://cdn.staticfile.org/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="https://cdn.staticfile.org/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<script>
+    function viewer_init() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let $imgArr = document.querySelectorAll(('.article-entry img:not(.reward-img)'))
+
+        $imgArr.forEach(($em, i) => {
+            $em.onclick = () => {
+                // slider展开状态
+                // todo: 这样不好，后面改成状态
+                if (document.querySelector('.left-col.show')) return
+                let items = []
+                $imgArr.forEach(($em2, i2) => {
+                    let img = $em2.getAttribute('data-idx', i2)
+                    let src = $em2.getAttribute('data-target') || $em2.getAttribute('src')
+                    let title = $em2.getAttribute('alt')
+                    // 获得原图尺寸
+                    const image = new Image()
+                    image.src = src
+                    items.push({
+                        src: src,
+                        w: image.width || $em2.width,
+                        h: image.height || $em2.height,
+                        title: title
+                    })
+                })
+                var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, {
+                    index: parseInt(i)
+                });
+                gallery.init()
+            }
+        })
+    }
+    viewer_init()
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.staticfile.org/mathjax/2.7.7/MathJax.js"></script>
+<script src="https://cdn.staticfile.org/mathjax/2.7.7/config/TeX-AMS-MML_HTMLorMML-full.js"></script>
+<script>
+  var ayerConfig = {
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+ 
+    
+        <link rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.15.1/katex.min.css">
+        <script src="https://cdn.staticfile.org/KaTeX/0.15.1/katex.min.js"></script>
+        <script src="https://cdn.staticfile.org/KaTeX/0.15.1/contrib/auto-render.min.js"></script>
+        
+    
+ 
+<!-- busuanzi  -->
+
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.staticfile.org/clipboard.js/2.0.10/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
+  }
+</script>
+
+
+    
+    
+
+  </div>
+</body>
+
+</html>
